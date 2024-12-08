@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "576520307756",
+    "project_id": "bike-blooms",
+    "storage_bucket": "bike-blooms.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:576520307756:android:7ead4f10b956134f33bd89",
+        "android_client_info": {
+          "package_name": "com.bikeblooms.android"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDpfkDKii96Dw7U-vs7x6nmTkk1oLpIH1Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

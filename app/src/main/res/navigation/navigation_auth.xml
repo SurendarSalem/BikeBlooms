@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_auth"
+    app:startDestination="@+id/navigation_login">
+
+    <fragment
+        android:id="@+id/navigation_login"
+        android:name="com.bikeblooms.android.ui.dashboard.authentication.login.LoginFragment"
+        android:label="@string/title_home"
+        tools:layout="@layout/fragment_login" />
+
+    <fragment
+        android:id="@+id/navigation_signup"
+        android:name="com.bikeblooms.android.ui.dashboard.authentication.signup.SignupFragment"
+        android:label="@string/title_home"
+        tools:layout="@layout/fragment_home" />
+</navigation>
