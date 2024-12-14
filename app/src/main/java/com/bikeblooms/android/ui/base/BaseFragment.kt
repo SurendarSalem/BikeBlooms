@@ -18,11 +18,13 @@ open class BaseFragment : Fragment() {
             WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
             WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
         )
+        requireActivity().window.setDimAmount(0.5f)
         progressBar.visibility = View.VISIBLE
     }
 
     fun hideProgress() {
         progressBar.visibility = View.GONE
+        requireActivity().window.setDimAmount(1f)
         requireActivity().window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
     }
 

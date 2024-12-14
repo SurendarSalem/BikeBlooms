@@ -1,6 +1,5 @@
 package com.bikeblooms.android.model
 
-import android.util.Patterns
 import androidx.databinding.BaseObservable
 
 data class User(
@@ -9,7 +8,8 @@ data class User(
     var emailId: String,
     var password: String,
     var confirmPassword: String,
+    var firebaseId: String,
     var vehicles: List<Vehicle>
 ) : BaseObservable() {
-    constructor() : this("", "", "", "", "", emptyList())
+    constructor() : this("", "", "", "", "", "", emptyList())
 }

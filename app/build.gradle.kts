@@ -5,6 +5,8 @@ plugins {
     alias(libs.plugins.kotlin.android.ksp)
     alias(libs.plugins.hilt.android)
     id("kotlin-kapt")
+    id("kotlin-parcelize")
+    id("androidx.navigation.safeargs.kotlin")
 }
 
 android {
@@ -57,10 +59,15 @@ dependencies {
     implementation(libs.androidx.legacy.support.v4)
     implementation(libs.androidx.fragment.ktx)
     implementation(libs.firebase.auth)
+    implementation(libs.firebase.database)
+    implementation(libs.firebase.firestore)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
+
+    // splash
+    implementation(libs.androidx.core.splashscreen)
 }

@@ -7,13 +7,13 @@
 
     <fragment
         android:id="@+id/navigation_login"
-        android:name="com.bikeblooms.android.ui.dashboard.authentication.login.LoginFragment"
-        android:label="@string/title_home"
+        android:name="com.bikeblooms.android.ui.authentication.login.LoginFragment"
+        android:label="@string/login"
         tools:layout="@layout/fragment_login" />
 
     <fragment
         android:id="@+id/navigation_signup"
-        android:name="com.bikeblooms.android.ui.dashboard.authentication.signup.SignupFragment"
-        android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
+        android:name="com.bikeblooms.android.ui.authentication.signup.SignupFragment"
+        android:label="@string/register"
+        tools:layout="@layout/fragment_signup" />
 </navigation>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/margin_small"
+    android:background="@color/white"
+    android:padding="@dimen/margin_small">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/margin_small">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/siv_vehicle"
+            android:layout_width="@dimen/icon_size"
+            android:layout_height="@dimen/icon_size"
+            android:padding="@dimen/margin_small"
+            android:scaleType="fitXY"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent"
+            app:srcCompat="@mipmap/ic_launcher"
+            app:strokeColor="@color/cherry_red"
+            app:strokeWidth="2dp" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_name"
+            style="@style/Heading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:text="Bajaj Pusar 150 cc"
+            app:layout_constraintStart_toEndOf="@+id/siv_vehicle"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_reg_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/margin_small"
+            android:text="TN 54 AB 9365"
+            app:layout_constraintStart_toEndOf="@+id/siv_vehicle"
+            app:layout_constraintTop_toBottomOf="@+id/tv_name" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/margin_small"
+            android:text="02-11-1990"
+            android:textSize="10sp"
+            app:layout_constraintStart_toEndOf="@+id/siv_vehicle"
+            app:layout_constraintTop_toBottomOf="@+id/tv_reg_num" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:lineSpacingExtra="0dp"
+            android:text="In Progress"
+            android:textAllCaps="false"
+            android:textColor="@android:color/holo_orange_dark"
+            android:textSize="10sp"
+            app:cornerRadius="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>
