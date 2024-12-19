@@ -6,9 +6,14 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class ComplaintsRepository @Inject constructor(private var firebaseHelper: FirebaseHelper) {
+class ComplaintsRepository @Inject constructor(
+    private var repository: Repository,
+    private var firebaseHelper: FirebaseHelper
+) {
     fun getAllComplaints(callback: LoginCallback<List<Complaint>>) {
         firebaseHelper.getAllComplaints(callback)
     }
+
+
 
 }

@@ -42,4 +42,11 @@ class Repository @Inject constructor(
         firebaseHelper.addService(service, callback)
     }
 
+    fun setPassword(
+        email: String,
+        callback: LoginCallback<String>
+    ) {
+        firebaseHelper.setPassword(email, callback)
+    }
+
 }

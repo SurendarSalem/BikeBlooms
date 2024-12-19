@@ -10,18 +10,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.bikeblooms.android.R
 import com.bikeblooms.android.databinding.ActivityAuthenticationBinding
-import com.bikeblooms.android.util.FCMPushNotificationProvider
-import com.bikeblooms.android.util.FirebaseConstants.FCM.SERVICE_UPDATE
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class AuthenticationActivity() : AppCompatActivity() {

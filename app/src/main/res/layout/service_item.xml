@@ -3,9 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginHorizontal="@dimen/margin_small"
     android:layout_marginTop="@dimen/margin_small"
     android:background="@color/white"
-    android:padding="@dimen/margin_small">
+    android:elevation="4dp"
+    android:padding="@dimen/margin_small"
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="10dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -21,9 +26,9 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent"
-            app:srcCompat="@mipmap/ic_launcher"
-            app:strokeColor="@color/cherry_red"
-            app:strokeWidth="2dp" />
+            app:srcCompat="@drawable/bike"
+            app:strokeColor="@color/dark_gray"
+            app:strokeWidth="0.5dp" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_name"
@@ -42,6 +47,8 @@
             android:layout_marginStart="@dimen/activity_horizontal_margin"
             android:layout_marginTop="@dimen/margin_small"
             android:text="TN 54 AB 9365"
+            android:textColor="@color/dark_gray"
+            android:textSize="10sp"
             app:layout_constraintStart_toEndOf="@+id/siv_vehicle"
             app:layout_constraintTop_toBottomOf="@+id/tv_name" />
 
@@ -51,11 +58,24 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/activity_horizontal_margin"
             android:layout_marginTop="@dimen/margin_small"
-            android:text="02-11-1990"
+            android:text="Updated at 02-11-1990"
             android:textSize="10sp"
             app:layout_constraintStart_toEndOf="@+id/siv_vehicle"
             app:layout_constraintTop_toBottomOf="@+id/tv_reg_num" />
 
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_total_amt"
+            style="@style/Heading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            android:lineSpacingExtra="0dp"
+            android:text="\u20B9 190"
+            android:textAllCaps="false"
+            android:textColor="@color/cherry_red"
+            app:cornerRadius="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_name" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_status"
@@ -65,7 +85,7 @@
             android:text="In Progress"
             android:textAllCaps="false"
             android:textColor="@android:color/holo_orange_dark"
-            android:textSize="10sp"
+            android:textSize="12sp"
             app:cornerRadius="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />

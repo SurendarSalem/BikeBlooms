@@ -8,6 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/off_white"
+        android:padding="@dimen/margin_small"
         tools:context=".ui.service.MyVehiclesFragment">
 
         <androidx.recyclerview.widget.RecyclerView
@@ -15,7 +16,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:listitem="@layout/service_item" />
 
 
         <ProgressBar

@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -25,10 +25,9 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class AddComplaintsFragment : BaseFragment() {
 
-
     lateinit var binding: FragmentAddComplaintsBinding
 
-    private val addComplaintsViewModel: AddComplaintsViewModel by viewModels()
+    private val addComplaintsViewModel: AddComplaintsViewModel by activityViewModels()
 
     private val args: AddComplaintsFragmentArgs by navArgs()
 
@@ -45,6 +44,7 @@ class AddComplaintsFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        progressBar = binding.progressBar
         args.service?.let {
             addComplaintsViewModel.serviceState.value = it
             binding.setVehicleData(it)
@@ -72,13 +72,6 @@ class AddComplaintsFragment : BaseFragment() {
                     binding.tvComplaints.text = complaintsNames
 
                 }
-                getLiveData<Spare>("selectedSpare").observe(viewLifecycleOwner) { selectedSpare ->
-                    selectedSpare?.let {
-                        addComplaintsViewModel.serviceState.value =
-                            addComplaintsViewModel.serviceState.value?.copy(spareParts = listOf(it))
-                    }
-                    binding.tvEngineOil.text = selectedSpare.name
-                }
             }
         }
 
@@ -87,13 +80,7 @@ class AddComplaintsFragment : BaseFragment() {
                 addComplaintsViewModel.spareState.collectLatest { result ->
                     if (result is ApiResponse.Success) {
                         result.data?.first()?.let { spare ->
-                            binding.tvEngineOil.text = spare.name
-                            addComplaintsViewModel.serviceState.value =
-                                addComplaintsViewModel.serviceState.value?.copy(
-                                    spareParts = listOf(
-                                        spare
-                                    )
-                                )
+                            addComplaintsViewModel.updateSelectedVehicle(spare)
                         }
                     }
                 }
@@ -103,6 +90,46 @@ class AddComplaintsFragment : BaseFragment() {
             addComplaintsViewModel.billState.collectLatest {
                 binding.tvInspectionCharges.text = it?.totalAmount.toString()
                 binding.tvTotalAmt.text = it?.totalAmount.toString()
+            }
+        }
+        viewLifecycleOwner.lifecycleScope.launch {
+            addComplaintsViewModel.addServiceState.collectLatest { result ->
+                when (result) {
+                    is ApiResponse.Loading -> {
+                        showProgress()
+                    }
+
+                    is ApiResponse.Success -> {
+                        hideProgress()
+                    }
+
+                    else -> hideProgress()
+                }
+            }
+        }
+        viewLifecycleOwner.lifecycleScope.launch {
+            addComplaintsViewModel.notifyState.collectLatest { result ->
+                when (result) {
+                    is ApiResponse.Success -> {
+                        showToast("Service request has been sent!")
+                        findNavController().popBackStack()
+                    }
+
+                    is ApiResponse.Error -> {
+                        showToast(result.message.toString())
+                    }
+
+                    else -> {}
+                }
+            }
+        }
+        viewLifecycleOwner.lifecycleScope.launch {
+            addComplaintsViewModel.selectedSpareState.collectLatest {
+                it?.let {
+                    addComplaintsViewModel.serviceState.value =
+                        addComplaintsViewModel.serviceState.value?.copy(spareParts = listOf(it))
+                    binding.tvEngineOil.text = it.name
+                }
             }
         }
     }
@@ -133,6 +160,9 @@ class AddComplaintsFragment : BaseFragment() {
                 }
             }
         }
+        btnAddService.setOnClickListener {
+            addComplaintsViewModel.isServiceValid()
+        }
     }
 
     override fun onDestroyView() {
@@ -143,6 +173,11 @@ class AddComplaintsFragment : BaseFragment() {
                 remove<Spare>("selectedSpare")
             }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        addComplaintsViewModel.clearSelections()
     }
 }
 

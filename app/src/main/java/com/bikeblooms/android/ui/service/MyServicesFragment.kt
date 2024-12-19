@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewbinding.ViewBinding
 import com.bikeblooms.android.R
@@ -19,6 +20,8 @@ import com.bikeblooms.android.ui.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.Locale
 import kotlin.Any
 
 @AndroidEntryPoint
@@ -48,7 +51,7 @@ class MyServicesFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         progressBar = binding.progressBar
         binding.rvServices.layoutManager = LinearLayoutManager(requireContext())
-
+        viewModel.getMyServices()
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.myServicesState.collectLatest {
                 when (it) {
@@ -93,10 +96,20 @@ class MyServicesFragment : BaseFragment() {
                     binding.tvName.text = item.vehicleName
                     binding.tvRegNum.text = item.regNum
                     binding.tvStatus.text = item.progress.title
+                    val df = SimpleDateFormat("dd-MM-yy", Locale.US);
+                    binding.tvDate.text = "Updated at " + df.format(item.startDate)
+                    binding.tvTotalAmt.text = "\u20B9 " + 190
                 }
             }
         }
     }
 
-    private fun onItemClick(item: Any, isBookServiceClicked: Boolean = false) {}
+    private fun onItemClick(item: Any, isBookServiceClicked: Boolean = false) {
+        if (item is Service) {
+            val args = ServiceDetailFragmentArgs(item)
+            findNavController().navigate(
+                R.id.action_navigation_bookings_to_navigation_service_detail, args.toBundle()
+            )
+        }
+    }
 }

@@ -40,6 +40,8 @@ class FCMRegistrationService : FirebaseMessagingService() {
 
     private fun sendRegistrationToServer(token: String) {
         val userId = sharedPrefHelper.getUserFirebaseId()
-        FirebaseHelper().updateUserFcmToken(userId, token)
+        if (userId.isNotEmpty()) {
+            FirebaseHelper().updateUserFcmToken(userId, token)
+        }
     }
 }

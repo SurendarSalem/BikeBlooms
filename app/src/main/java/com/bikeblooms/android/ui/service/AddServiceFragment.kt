@@ -72,21 +72,6 @@ class AddServiceFragment : BaseFragment() {
             }
         }
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.addServiceState.collectLatest { result ->
-                when (result) {
-                    is ApiResponse.Loading -> {
-                        showProgress()
-                    }
-
-                    is ApiResponse.Success -> {
-                        hideProgress()
-                    }
-
-                    else -> hideProgress()
-                }
-            }
-        }
-        viewLifecycleOwner.lifecycleScope.launch {
             viewModel.notifyState.collectLatest { result ->
                 when (result) {
                     is ApiResponse.Success -> {

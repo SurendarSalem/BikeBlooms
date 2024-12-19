@@ -84,7 +84,7 @@ class ComplaintsSelectionFragment : BaseFragment() {
                 if (item is Complaint) {
                     binding.tvName.text = item.name
                     binding.cbSelected.visibility = View.VISIBLE
-                    binding.cbSelected.isSelected = item.isSelected
+                    binding.cbSelected.isChecked = item.isSelected
                     binding.cbSelected.setOnCheckedChangeListener { _, isChecked ->
                         item.isSelected = isChecked
                     }

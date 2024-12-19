@@ -74,6 +74,7 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     implementation("com.squareup.okhttp3:okhttp:4.9.0")
     implementation(libs.hilt.android)
+    implementation(libs.maps.ktx)
     kapt(libs.hilt.compiler)
 
     // splash

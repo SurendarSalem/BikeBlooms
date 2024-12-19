@@ -29,4 +29,11 @@
     <string name="add_or_change">Add or Change</string>
     <string name="engine_oil">Engine Oil</string>
     <string name="select_engine_oil">Select Engine Oil</string>
+    <string name="add_vehicle">Add Vehicle</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="send">Send</string>
+    <string name="vehicle_details">Vehicle Details</string>
+    <string name="requested_at">Requested at:</string>
+    <string name="spares">Spares</string>
+    <string name="service_details">Service Details</string>
 </resources>

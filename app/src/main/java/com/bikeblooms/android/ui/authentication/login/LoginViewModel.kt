@@ -11,7 +11,6 @@ import com.bikeblooms.android.model.UserValidator
 import com.bikeblooms.android.util.SharedPrefHelper
 import com.google.firebase.auth.FirebaseUser
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -33,6 +32,9 @@ class LoginViewModel @Inject constructor(
 
     private var _loginState = MutableSharedFlow<ApiResponse<String>>()
     val loginState = _loginState.asSharedFlow()
+
+    private var _notifyState = MutableSharedFlow<String>()
+    val notifyState = _notifyState.asSharedFlow()
 
 
     fun login(user: User) {
@@ -85,5 +87,24 @@ class LoginViewModel @Inject constructor(
         val isValid = UserValidator().isValidForLogin(user)
         _userValidState.value = isValid
         return isValid
+    }
+
+    fun resetPassword(email: String) {
+        viewModelScope.launch {
+            repository.setPassword(email, object : LoginCallback<String> {
+                override fun onSuccess(message: String) {
+                    viewModelScope.launch(Dispatchers.Main) {
+                        _notifyState.emit("Reset password mail has been to your mail id")
+                    }
+                }
+
+                override fun onError(message: String) {
+                    viewModelScope.launch(Dispatchers.Main) {
+                        _notifyState.emit("Failed to send a mail to reset password")
+                    }
+                }
+
+            })
+        }
     }
 }

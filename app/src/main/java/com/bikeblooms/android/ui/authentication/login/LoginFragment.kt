@@ -1,10 +1,13 @@
 package com.bikeblooms.android.ui.authentication.login
 
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
+import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -71,6 +74,24 @@ class LoginFragment : BaseFragment() {
                 viewModel.login(user)
             }
         }
+        tvResetPassword.setOnClickListener {
+            AlertDialog.Builder(requireContext())
+                .setMessage("Do you want to reset password. Mail will send be sent to your email id")
+                .setPositiveButton(getString(
+                    R.string.send
+                ), object : DialogInterface.OnClickListener {
+                    override fun onClick(p0: DialogInterface?, p1: Int) {
+                        val emailId = etEmailId.text.toString()
+                        if (emailId.isNotEmpty() && Patterns.EMAIL_ADDRESS.matcher(emailId)
+                                .matches()
+                        ) {
+                            viewModel.resetPassword(emailId)
+                        } else {
+                            showToast("Please enter a valid email id")
+                        }
+                    }
+                }).show()
+        }
     }
 
     private fun FragmentLoginBinding.createUserFromInput(): User {
@@ -122,6 +143,11 @@ class LoginFragment : BaseFragment() {
 
                     else -> {}
                 }
+            }
+        }
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.notifyState.collectLatest { notifyState ->
+                showToast(notifyState)
             }
         }
     }

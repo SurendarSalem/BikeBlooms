@@ -98,4 +98,14 @@ class VehicleViewModel @Inject constructor(
     fun updateSelectedVehicle(vehicle: Vehicle) {
         _selectedVehicleState.value = vehicle
     }
+
+    fun updateVehicleToMyVehicles(vehicle: Vehicle?) {
+        vehicle?.let {
+            val vehicles = _myVehiclesState.value.data?.toMutableList()
+            vehicles?.let {
+                it.add(vehicle)
+                _myVehiclesState.value = ApiResponse.Success(it)
+            }
+        }
+    }
 }

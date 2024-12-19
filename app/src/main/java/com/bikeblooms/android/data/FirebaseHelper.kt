@@ -210,4 +210,12 @@ class FirebaseHelper {
                 callback.onError(it.message.toString())
             }
     }
+
+    fun setPassword(emailId: String, callback: LoginCallback<String>) {
+        Firebase.auth.sendPasswordResetEmail(emailId).addOnSuccessListener {
+            callback.onSuccess("Success")
+        }.addOnFailureListener { error ->
+            callback.onError(error.message.toString())
+        }
+    }
 }
