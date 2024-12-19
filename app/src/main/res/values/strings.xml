@@ -17,4 +17,16 @@
     <string name="it_seems_you_dont_have_any_vehicles_added">It seems you don\'t have any Vehicles added</string>
     <string name="add_service">Add Service</string>
     <string name="my_vehicles">Vehicles</string>
+    <string name="enter_additional_problems">Enter additional problems</string>
+    <string name="select_vehicle_problem">Select Vehicle Problem</string>
+    <string name="vehicle">Vehicle</string>
+    <string name="inspection_charges">Inspection Charges</string>
+    <string name="total_amount">Total Amount</string>
+    <string name="address">Address</string>
+    <string name="service_type">Service Type</string>
+    <string name="vehicle_problems">Vehicle Problems</string>
+    <string name="add_complaints">Add Complaints</string>
+    <string name="add_or_change">Add or Change</string>
+    <string name="engine_oil">Engine Oil</string>
+    <string name="select_engine_oil">Select Engine Oil</string>
 </resources>

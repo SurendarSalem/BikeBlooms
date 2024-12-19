@@ -1,22 +1,30 @@
 package com.bikeblooms.android.data
 
+import android.util.Log
 import com.bikeblooms.android.LoginCallback
 import com.bikeblooms.android.model.ApiResponse
+import com.bikeblooms.android.model.AppState
 import com.bikeblooms.android.model.Brand
+import com.bikeblooms.android.model.Complaint
 import com.bikeblooms.android.model.Service
+import com.bikeblooms.android.model.Spare
+import com.bikeblooms.android.model.SpareType
 import com.bikeblooms.android.model.User
 import com.bikeblooms.android.model.Vehicle
 import com.bikeblooms.android.model.VehicleType
 import com.bikeblooms.android.util.AppConstants.VEHICLES
 import com.bikeblooms.android.util.FirebaseConstants.Bike.BIKE_BRANDS
 import com.bikeblooms.android.util.FirebaseConstants.Bike.BIKE_MODELS
+import com.bikeblooms.android.util.FirebaseConstants.COMPLAINTS
 import com.bikeblooms.android.util.FirebaseConstants.Car.CAR_BRANDS
 import com.bikeblooms.android.util.FirebaseConstants.Car.CAR_MODELS
 import com.bikeblooms.android.util.FirebaseConstants.SERVICES
+import com.bikeblooms.android.util.FirebaseConstants.SPARES
 import com.bikeblooms.android.util.FirebaseConstants.USERS
 import com.bikeblooms.android.util.FirebaseConstants.USER_VEHICLES
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.Filter
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
@@ -150,20 +158,56 @@ class FirebaseHelper {
     }
 
     fun getMyServices(uid: String, callback: LoginCallback<List<Service>>) {
-        Firebase.firestore.collection(SERVICES).get()
+        Firebase.firestore.collection(SERVICES).get().addOnSuccessListener { result ->
+            val vehicleList = mutableListOf<Service>()
+            result.forEach {
+                val service = it.toObject<Service>(Service::class.java)
+                vehicleList.add(service)
+            }
+            vehicleList.filter {
+                it.firebaseId == uid
+            }
+            callback.onSuccess(vehicleList)
+        }.addOnFailureListener {
+            callback.onError(it.message.toString())
+        }
+    }
+
+
+    fun updateUserFcmToken(userFirebaseId: String, token: String) {
+        Firebase.firestore.collection(USERS).document(userFirebaseId)
+            .update(mapOf("fcmToken" to token)).addOnSuccessListener {
+                AppState.user?.fcmToken = token
+                Log.d("FirebaseHelper", "Token updated to user in firestore")
+            }.addOnFailureListener {
+                Log.d("FirebaseHelper", "Token updated to user in firestore")
+            }
+    }
+
+    fun getAllComplaints(callback: LoginCallback<List<Complaint>>) {
+        Firebase.firestore.collection(COMPLAINTS).get().addOnSuccessListener { result ->
+            val complaints = mutableListOf<Complaint>()
+            result.forEach {
+                val complaint = it.toObject<Complaint>(Complaint::class.java)
+                complaints.add(complaint)
+            }
+            callback.onSuccess(complaints)
+        }.addOnFailureListener {
+            callback.onError(it.message.toString())
+        }
+    }
+
+    fun getAllSpares(callback: LoginCallback<List<Spare>>, type: SpareType) {
+        Firebase.firestore.collection(SPARES).where(Filter.equalTo("spareType", type.name)).get()
             .addOnSuccessListener { result ->
-                val vehicleList = mutableListOf<Service>()
+                val spares = mutableListOf<Spare>()
                 result.forEach {
-                    val service = it.toObject<Service>(Service::class.java)
-                    vehicleList.add(service)
+                    val complaint = it.toObject<Spare>(Spare::class.java)
+                    spares.add(complaint)
                 }
-                vehicleList.filter {
-                    it.firebaseId == uid
-                }
-                callback.onSuccess(vehicleList)
+                callback.onSuccess(spares)
             }.addOnFailureListener {
                 callback.onError(it.message.toString())
             }
     }
-
 }

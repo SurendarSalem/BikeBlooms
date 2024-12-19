@@ -5,7 +5,7 @@ import android.util.SparseIntArray
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,6 +18,7 @@ import com.bikeblooms.android.model.Vehicle
 import com.bikeblooms.android.model.VehicleType
 import com.bikeblooms.android.ui.adapter.GenericAdapter
 import com.bikeblooms.android.ui.base.BaseFragment
+import com.bikeblooms.android.util.toRegNum
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -32,7 +33,7 @@ class MyVehiclesFragment : BaseFragment() {
         }
         GenericAdapter(requireContext(), layoutResIds, ::bindViewHolder, ::onItemClick)
     }
-    private val viewModel: MyVehiclesViewModel by viewModels()
+    private val viewModel: VehicleViewModel by activityViewModels()
     private lateinit var binding: FragmentMyVehiclesBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,7 +59,7 @@ class MyVehiclesFragment : BaseFragment() {
             findNavController().navigate(R.id.navigation_add_vehicle)
         }
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.myVehiclesStatic.collectLatest {
+            viewModel.myVehiclesState.collectLatest {
                 when (it) {
                     is ApiResponse.Success -> {
                         hideProgress()
@@ -104,7 +105,7 @@ class MyVehiclesFragment : BaseFragment() {
             is VehicleItemBinding -> {
                 if (item is Vehicle) {
                     binding.tvName.text = item.name
-                    binding.tvRegNum.text = item.regNo
+                    binding.tvRegNum.text = item.regNo.toRegNum()
                     binding.btnBookService.setOnClickListener {
                         onItemClick(item, true)
                     }
@@ -117,13 +118,7 @@ class MyVehiclesFragment : BaseFragment() {
 
     private fun onItemClick(item: Any, isBookServiceClicked: Boolean = false) {
         if (item is Vehicle) {
-            if (isBookServiceClicked) {
-                val args =
-                    MyVehiclesFragmentDirections.actionNavigationHomeToNavigationAddService(item)
-                findNavController().navigate(R.id.navigation_add_service, args.arguments)
-            } else {
 
-            }
         }
     }
 }

@@ -21,37 +21,72 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:context=".ui.dashboard.AddVehicleFragment">
 
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/Caption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Choose your Service Type"
+                android:textColor="@color/cherry_red"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <RadioGroup
+                android:id="@+id/rg_service_type"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="0dp">
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/rb_general_service"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="-5dp"
+                    android:drawableEnd="@drawable/black_bike"
+                    android:drawablePadding="15dp"
+                    android:padding="0dp"
+                    android:text="General Service" />
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/rb_vehicle_repair"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="-5dp"
+                    android:layout_marginTop="-15dp"
+                    android:drawableEnd="@drawable/black_repair"
+                    android:drawablePadding="15dp"
+                    android:padding="0dp"
+                    android:text="Vehicle Repairing" />
+
+            </RadioGroup>
+
             <RelativeLayout
-                android:id="@+id/rl_vehicle_manufacture"
+                android:id="@+id/rl_vehicle_details"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white">
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/tv_vehicle_title"
-                    style="@style/Heading"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingVertical="@dimen/margin_small"
-                    android:text="For Vehicle" />
-
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:src="@drawable/arrow_right" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tv_vehicle_name"
                     style="@style/Caption"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/tv_vehicle_title"
                     android:layout_marginTop="@dimen/margin_small"
-                    android:text="Royal Enfield Classic 350" />
+                    android:text="Royal Enfield Classic 350"
+                    android:textColor="@color/cherry_red"
+                    android:textSize="18sp" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_add_change"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/border_rounded_gray"
+                    android:clickable="true"
+                    android:gravity="center"
+                    android:text="@string/add_or_change"
+                    android:textColor="@color/dark_gray"
+                    android:textSize="10sp" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tv_vehicle_number"
@@ -63,34 +98,20 @@
                     android:text="TN 54 AB 6767" />
             </RelativeLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/til_email_id"
-                android:layout_width="match_parent"
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:id="@+id/cb_pick_drop"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="Any complaints?.."
-                app:boxBackgroundColor="@color/off_white"
-                app:boxBackgroundMode="outline"
-                app:boxStrokeColor="@color/cherry_red"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_complaints"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="start"
-                    android:lines="3" />
-
-            </com.google.android.material.textfield.TextInputLayout>
+                android:layout_marginStart="-5dp"
+                android:text="Pick and Drop Service (Optional)" />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btn_add_service"
+                android:id="@+id/btn_next"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
                 android:layout_marginTop="@dimen/activity_horizontal_margin"
                 android:background="?attr/colorPrimary"
-                android:text="Book a Service"
+                android:text="Next"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:textSize="18sp" />
@@ -100,10 +121,8 @@
 
         <ProgressBar
             android:id="@+id/progress_bar"
-            style="?android:attr/progressBarStyle"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
-            android:indeterminateDrawable="@drawable/progress_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

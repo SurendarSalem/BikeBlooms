@@ -10,12 +10,14 @@ import com.bikeblooms.android.util.vehicleTypes
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
+import javax.inject.Singleton
 
 data class VehicleMap(
     var carMap: HashMap<Brand, List<Vehicle>>? = null,
     var bikeMap: HashMap<Brand, List<Vehicle>>? = null
 )
 
+@Singleton
 class VehiclesRepository @Inject constructor(private val firebaseHelper: FirebaseHelper) {
     var vehicleMap = VehicleMap()
     val _vehiclesState = MutableStateFlow<ApiResponse<VehicleMap?>>(ApiResponse.Empty())
@@ -57,7 +59,12 @@ class VehiclesRepository @Inject constructor(private val firebaseHelper: Firebas
     fun getMyVehicles(uid: String, callback: LoginCallback<List<Vehicle>>) {
         firebaseHelper.getMyVehicles(uid, callback)
     }
+
     fun getMyServices(uid: String, callback: LoginCallback<List<Service>>) {
         firebaseHelper.getMyServices(uid, callback)
+    }
+
+    fun addVehicleToState(vehicle: Vehicle) {
+
     }
 }

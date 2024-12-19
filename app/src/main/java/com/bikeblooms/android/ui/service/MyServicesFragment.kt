@@ -5,7 +5,7 @@ import android.util.SparseIntArray
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewbinding.ViewBinding
@@ -30,7 +30,7 @@ class MyServicesFragment : BaseFragment() {
         }
         GenericAdapter(requireContext(), layoutResIds, ::bindViewHolder, ::onItemClick)
     }
-    private val viewModel: MyServicesViewModel by viewModels()
+    private val viewModel: ServiceViewModel by activityViewModels()
     private lateinit var binding: FragmentMyServicesBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {

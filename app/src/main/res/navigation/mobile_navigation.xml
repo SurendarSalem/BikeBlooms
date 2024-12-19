@@ -3,16 +3,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_home">
+    app:startDestination="@+id/navigation_add_service">
+
 
     <fragment
-        android:id="@+id/navigation_home"
+        android:id="@+id/navigation_my_vehicles"
         android:name="com.bikeblooms.android.ui.vehicles.MyVehiclesFragment"
         android:label="@string/my_vehicles"
         tools:layout="@layout/fragment_my_vehicles">
         <action
-            android:id="@+id/action_navigation_home_to_navigation_add_service"
-            app:destination="@id/navigation_add_service" />
+            android:id="@+id/action_navigation_my_vehicles_to_navigation_add_service"
+            app:destination="@id/navigation_add_service"
+            app:enterAnim="@anim/nav_slide_in_right"
+            app:exitAnim="@anim/nav_slide_out_left"
+            app:popEnterAnim="@anim/nav_slide_in_left"
+            app:popExitAnim="@anim/nav_slide_out_right" />
     </fragment>
 
     <fragment
@@ -66,9 +71,86 @@
         android:name="com.bikeblooms.android.ui.service.AddServiceFragment"
         android:label="@string/add_service"
         tools:layout="@layout/fragment_add_service">
-        <argument
-            android:name="vehicle"
-            app:argType="com.bikeblooms.android.model.Vehicle" />
+        <action
+            android:id="@+id/action_navigation_add_service_to_vehicle_list_fragment"
+            app:destination="@id/vehicle_list_fragment_dialog" />
+        <action
+            android:id="@+id/action_navigation_add_service_to_navigation_add_complaints"
+            app:destination="@id/navigation_add_complaints"
+            app:enterAnim="@anim/nav_slide_in_right"
+            app:exitAnim="@anim/nav_slide_out_left"
+            app:popEnterAnim="@anim/nav_slide_in_left"
+            app:popExitAnim="@anim/nav_slide_out_right" />
 
     </fragment>
+
+
+    <fragment
+        android:id="@+id/navigation_add_complaints"
+        android:name="com.bikeblooms.android.ui.service.compaints.AddComplaintsFragment"
+        android:label="@string/add_complaints"
+        tools:layout="@layout/fragment_add_complaints">
+
+        <argument
+            android:name="service"
+            android:defaultValue="@null"
+            app:argType="com.bikeblooms.android.model.Service"
+            app:nullable="true" />
+        <action
+            android:id="@+id/action_navigation_add_complaints_to_navigation_complaints_selection"
+            app:destination="@id/navigation_complaints_selection"
+            app:enterAnim="@anim/nav_slide_in_right"
+            app:exitAnim="@anim/nav_slide_out_left"
+            app:popEnterAnim="@anim/nav_slide_in_left"
+            app:popExitAnim="@anim/nav_slide_out_right" />
+        <action
+            android:id="@+id/action_navigation_add_complaints_to_navigation_spares_selection"
+            app:destination="@id/navigation_spares_selection"
+            app:enterAnim="@anim/nav_slide_in_right"
+            app:exitAnim="@anim/nav_slide_out_left"
+            app:popEnterAnim="@anim/nav_slide_in_left"
+            app:popExitAnim="@anim/nav_slide_out_right" />
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/navigation_complaints_selection"
+        android:name="com.bikeblooms.android.ui.service.compaints.ComplaintsSelectionFragment"
+        android:label="@string/add_service"
+        tools:layout="@layout/fragment_list_items" />
+
+    <fragment
+        android:id="@+id/navigation_spares_selection"
+        android:name="com.bikeblooms.android.ui.service.compaints.SpareSelectionFragment"
+        android:label="Select the spare"
+        tools:layout="@layout/fragment_list_items">
+
+        <argument
+            android:name="spares"
+            android:defaultValue="@null"
+            app:argType="com.bikeblooms.android.model.SpareListArgs"
+            app:nullable="true" />
+
+    </fragment>
+
+    <dialog
+        android:id="@+id/vehicle_list_fragment_dialog"
+        android:name="com.bikeblooms.android.ui.VehicleListDialogFragment"
+        android:label="@string/my_vehicles"
+        tools:layout="@layout/fragment_vehicle_list_dialog">
+
+        <argument
+            android:name="vehicles"
+            android:defaultValue="@null"
+            app:argType="com.bikeblooms.android.model.Vehicles"
+            app:nullable="true" />
+
+        <argument
+            android:name="selectedVehicle"
+            android:defaultValue="@null"
+            app:argType="com.bikeblooms.android.model.Vehicle"
+            app:nullable="true" />
+
+    </dialog>
+
 </navigation>

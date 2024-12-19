@@ -11,23 +11,24 @@ data class Service(
     var vehicleId: String = "",
     var regNum: String = "",
     var startDate: Date = Calendar.getInstance().time,
-    var endDate: Date?=null,
-    var spareParts: List<SparePart>? = null,
+    var endDate: Date? = null,
+    var spareParts: List<Spare>? = null,
+    var complaints: List<Complaint>? = null,
     var complaint: String? = "",
     var firebaseId: String = "",
-    var progress: Progress = Progress.STARTED
+    var progress: Progress = Progress.STARTED,
+    var serviceType: ServiceType = ServiceType.GENERAL_SERVICE,
+    var pickDrop: Boolean = false
 ) : Parcelable {}
 
 @Parcelize
 enum class Progress(var title: String) : Parcelable {
-    STARTED("Started"),
-    PENDING("Pending"),
-    IN_PROGRESS("In Progress"),
-    COMPLETED("Completed"),
-    CANCELLED("Cancelled")
+    STARTED("Started"), PENDING("Pending"), IN_PROGRESS("In Progress"), COMPLETED("Completed"), CANCELLED(
+        "Cancelled"
+    )
 }
 
 @Parcelize
-data class SparePart(
-    var name: String = "", var description: String = "", var price: Long = 0
-) : Parcelable {}
+enum class ServiceType(var title: String) : Parcelable {
+    GENERAL_SERVICE("General Service"), VEHICLE_REPAIR("Vehicle Repair")
+}

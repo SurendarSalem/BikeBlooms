@@ -43,6 +43,11 @@ android {
         viewBinding = true
         dataBinding = true
     }
+    packaging {
+        resources {
+            excludes += "META-INF/DEPENDENCIES"
+        }
+    }
 }
 
 dependencies {
@@ -61,10 +66,13 @@ dependencies {
     implementation(libs.firebase.auth)
     implementation(libs.firebase.database)
     implementation(libs.firebase.firestore)
+    implementation(libs.firebase.messaging)
+    implementation(libs.androidx.recyclerview)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
+    implementation(libs.google.auth.library.oauth2.http)
     androidTestImplementation(libs.androidx.espresso.core)
-
+    implementation("com.squareup.okhttp3:okhttp:4.9.0")
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
 

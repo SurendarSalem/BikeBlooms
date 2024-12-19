@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatEditText
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -20,12 +21,12 @@ import com.bikeblooms.android.model.Vehicle
 import com.bikeblooms.android.model.VehicleType
 import com.bikeblooms.android.model.Vehicles
 import com.bikeblooms.android.ui.base.BaseFragment
+import com.bikeblooms.android.ui.vehicles.VehicleViewModel
 import com.bikeblooms.android.util.AppConstants.BRAND
 import com.bikeblooms.android.util.AppConstants.VEHICLE
 import com.bikeblooms.android.util.GenericKeyEvent
 import com.bikeblooms.android.util.GenericTextWatcher
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -33,7 +34,7 @@ import kotlinx.coroutines.launch
 class AddVehicleFragment : BaseFragment() {
 
     private lateinit var binding: FragmentDashboardBinding
-    val dashboardViewModel: DashboardViewModel by viewModels()
+    val dashboardViewModel: VehicleViewModel by activityViewModels()
     private var currentVehicle = Vehicle()
     private var totalVehicleMap: VehicleMap? = null
     private var selectedBrands: List<Brand> = emptyList()
