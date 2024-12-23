@@ -7,6 +7,7 @@ import java.util.Date
 
 @Parcelize
 data class Service(
+    var id: String = "",
     var vehicleName: String = "",
     var vehicleId: String = "",
     var regNum: String = "",
@@ -18,7 +19,8 @@ data class Service(
     var firebaseId: String = "",
     var progress: Progress = Progress.STARTED,
     var serviceType: ServiceType = ServiceType.GENERAL_SERVICE,
-    var pickDrop: Boolean = false
+    var pickDrop: Boolean = false,
+    var address: String = ""
 ) : Parcelable {}
 
 @Parcelize

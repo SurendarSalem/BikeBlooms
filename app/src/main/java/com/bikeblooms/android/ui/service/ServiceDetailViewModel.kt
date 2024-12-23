@@ -1,7 +1,106 @@
 package com.bikeblooms.android.ui.service
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.bikeblooms.android.LoginCallback
+import com.bikeblooms.android.data.ServiceRepository
+import com.bikeblooms.android.data.SpareRepository
+import com.bikeblooms.android.model.ApiResponse
+import com.bikeblooms.android.model.NotifyState
+import com.bikeblooms.android.model.Service
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class ServiceDetailViewModel : ViewModel() {
-    // TODO: Implement the ViewModel
+@HiltViewModel
+class ServiceDetailViewModel @Inject constructor(
+    private var serviceRepository: ServiceRepository,
+    private var spareRepository: SpareRepository
+) :
+    ViewModel() {
+
+    private var _updateServiceState = MutableStateFlow<ApiResponse<Service>>(ApiResponse.Empty())
+    var updateServiceState = _updateServiceState.asStateFlow()
+
+    private var _cancelServiceState = MutableStateFlow<ApiResponse<Service>>(ApiResponse.Empty())
+    var cancelServiceState = _cancelServiceState.asStateFlow()
+
+    var notifyState = MutableSharedFlow<NotifyState>()
+
+    fun setService(service: Service) {
+        viewModelScope.launch {
+            _serviceState.value = service
+        }
+    }
+
+    fun updateService(service: Service?) {
+        viewModelScope.launch {
+            _serviceState.value = service
+        }
+    }
+
+    val myVehiclesState = serviceRepository.myVehicleState
+    val allSparesState = spareRepository.allSparesState
+
+    private var _serviceState = MutableStateFlow<Service?>(null)
+    val serviceState = _serviceState.asStateFlow()
+
+    fun updateServiceInFirebase() {
+        viewModelScope.launch {
+            with(_serviceState.value) {
+                this?.let {
+                    _updateServiceState.value = ApiResponse.Loading()
+                    serviceRepository.updateService(it, object : LoginCallback<Service> {
+                        override fun onSuccess(service: Service) {
+                            _updateServiceState.value = ApiResponse.Success(service)
+                            viewModelScope.launch(Dispatchers.Main) {
+                                notifyState.emit(NotifyState.Success("Service updated successfully"))
+                            }
+
+                        }
+
+                        override fun onError(message: String) {
+                            _updateServiceState.value = ApiResponse.Error(message)
+                            viewModelScope.launch(Dispatchers.Main) {
+                                notifyState.emit(NotifyState.Error(message))
+                            }
+                        }
+
+                    })
+                }
+            }
+        }
+    }
+
+    fun cancelService() {
+        viewModelScope.launch {
+            with(_serviceState.value) {
+                this?.let {
+                    _cancelServiceState.value = ApiResponse.Loading()
+                    serviceRepository.cancelService(it, object : LoginCallback<Service> {
+                        override fun onSuccess(service: Service) {
+                            _cancelServiceState.value = ApiResponse.Success(service)
+                            viewModelScope.launch(Dispatchers.Main) {
+                                notifyState.emit(NotifyState.Success("Service cancelled successfully"))
+                            }
+
+                        }
+
+                        override fun onError(message: String) {
+                            _cancelServiceState.value = ApiResponse.Error(message)
+                            viewModelScope.launch(Dispatchers.Main) {
+                                notifyState.emit(NotifyState.Error(message))
+                            }
+                        }
+
+                    })
+                }
+            }
+        }
+    }
+
 }

@@ -1,10 +1,8 @@
 package com.bikeblooms.android.ui.profile
 
 import android.content.Intent
-import androidx.fragment.app.viewModels
 import android.os.Bundle
 import android.util.SparseIntArray
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,17 +12,13 @@ import androidx.viewbinding.ViewBinding
 import com.bikeblooms.android.R
 import com.bikeblooms.android.databinding.FragmentListItemsBinding
 import com.bikeblooms.android.databinding.NameItemBinding
-import com.bikeblooms.android.model.Brand
+import com.bikeblooms.android.model.AppState
 import com.bikeblooms.android.model.ProfileItem
-import com.bikeblooms.android.model.Vehicle
 import com.bikeblooms.android.ui.adapter.GenericAdapter
 import com.bikeblooms.android.ui.authentication.AuthenticationActivity
 import com.bikeblooms.android.ui.base.BaseFragment
-import com.bikeblooms.android.util.AppConstants.BRAND
-import com.bikeblooms.android.util.AppConstants.VEHICLE
 import com.bikeblooms.android.util.SharedPrefHelper
 import com.google.firebase.Firebase
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -89,6 +83,7 @@ class ProfileFragment : BaseFragment() {
             } else if (item == ProfileItem.LOGOUT) {
                 Firebase.auth.signOut()
                 sharedPrefHelper.clearAll()
+                AppState.user = null
                 val intent = Intent(requireActivity(), AuthenticationActivity::class.java)
                 startActivity(intent)
                 requireActivity().finish()

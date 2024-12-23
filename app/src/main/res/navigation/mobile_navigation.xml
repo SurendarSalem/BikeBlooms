@@ -44,6 +44,12 @@
             android:defaultValue="@null"
             app:argType="com.bikeblooms.android.model.Service"
             app:nullable="true" />
+        <action
+            android:id="@+id/action_navigation_service_detail_to_navigation_complaints_selection"
+            app:destination="@id/navigation_complaints_selection" />
+        <action
+            android:id="@+id/action_navigation_service_detail_to_navigation_spares_selection"
+            app:destination="@id/navigation_spares_selection" />
 
     </fragment>
 
@@ -69,26 +75,11 @@
 
     <fragment
         android:id="@+id/navigation_vehicle_list"
-        android:name="com.bikeblooms.android.ui.vehicles.VehicleSelectionFragment"
-        android:label="Vehicle List"
+        android:name="com.bikeblooms.android.ui.vehicles.MyVehiclesFragment"
+        android:label="@string/my_vehicles"
         tools:layout="@layout/fragment_list_items">
 
-        <argument
-            android:name="brands"
-            android:defaultValue="@null"
-            app:argType="com.bikeblooms.android.model.Brands"
-            app:nullable="true" />
 
-        <argument
-            android:name="vehicles"
-            android:defaultValue="@null"
-            app:argType="com.bikeblooms.android.model.Vehicles"
-            app:nullable="true" />
-        <argument
-            android:name="profiles"
-            android:defaultValue="@null"
-            app:argType="com.bikeblooms.android.model.ProfileItems"
-            app:nullable="true" />
     </fragment>
 
     <fragment
@@ -134,7 +125,41 @@
         android:id="@+id/navigation_complaints_selection"
         android:name="com.bikeblooms.android.ui.service.compaints.ComplaintsSelectionFragment"
         android:label="@string/add_service"
-        tools:layout="@layout/fragment_list_items" />
+        tools:layout="@layout/fragment_list_items">
+
+        <argument
+            android:name="complaints"
+            android:defaultValue="@null"
+            app:argType="com.bikeblooms.android.model.ComplaintsList"
+            app:nullable="true" />
+
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/navigation_vehicle_selection"
+        android:name="com.bikeblooms.android.ui.vehicles.VehicleSelectionFragment"
+        android:label="@string/add_service"
+        tools:layout="@layout/fragment_list_items">
+
+        <argument
+            android:name="brands"
+            android:defaultValue="@null"
+            app:argType="com.bikeblooms.android.model.Brands"
+            app:nullable="true" />
+
+        <argument
+            android:name="vehicles"
+            android:defaultValue="@null"
+            app:argType="com.bikeblooms.android.model.Vehicles"
+            app:nullable="true" />
+        <argument
+            android:name="profiles"
+            android:defaultValue="@null"
+            app:argType="com.bikeblooms.android.model.ProfileItems"
+            app:nullable="true" />
+
+    </fragment>
 
     <dialog
         android:id="@+id/navigation_spares_selection"
@@ -167,6 +192,13 @@
             android:defaultValue="@null"
             app:argType="com.bikeblooms.android.model.Vehicle"
             app:nullable="true" />
+        <action
+            android:id="@+id/action_vehicle_list_fragment_dialog_to_navigation_add_vehicle"
+            app:destination="@id/navigation_add_vehicle"
+            app:enterAnim="@anim/nav_slide_in_right"
+            app:exitAnim="@anim/nav_slide_out_left"
+            app:popEnterAnim="@anim/nav_slide_in_left"
+            app:popExitAnim="@anim/nav_slide_out_right" />
 
     </dialog>
 

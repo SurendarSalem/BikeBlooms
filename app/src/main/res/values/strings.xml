@@ -36,4 +36,9 @@
     <string name="requested_at">Requested at:</string>
     <string name="spares">Spares</string>
     <string name="service_details">Service Details</string>
+    <string name="rupee_symbol">₹</string>
+    <string name="delete_vehicle">Delete Vehicle</string>
+    <string name="delete_vehicle_msg">Are you sure want to delete this vehicle</string>
+    <string name="search_for_places">Search for places</string>
+    <string name="choose_your_service_type">Choose your Service Type</string>
 </resources>

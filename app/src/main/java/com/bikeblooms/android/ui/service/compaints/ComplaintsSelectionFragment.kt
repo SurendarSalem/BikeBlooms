@@ -9,6 +9,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewbinding.ViewBinding
 import com.bikeblooms.android.R
@@ -33,6 +34,7 @@ class ComplaintsSelectionFragment : BaseFragment() {
         }
         GenericAdapter(requireContext(), layoutResIds, ::bindViewHolder, ::onItemClick)
     }
+    val args: ComplaintsSelectionFragmentArgs by navArgs()
 
 
     override fun onCreateView(
@@ -50,7 +52,7 @@ class ComplaintsSelectionFragment : BaseFragment() {
         callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 findNavController().previousBackStackEntry?.savedStateHandle?.set(
-                    "selectedComplaints", selectedComplaints
+                    "selectedComplaints", selectedComplaints.filter { it.isSelected == true }
                 )
                 findNavController().popBackStack()
             }
@@ -84,6 +86,9 @@ class ComplaintsSelectionFragment : BaseFragment() {
                 if (item is Complaint) {
                     binding.tvName.text = item.name
                     binding.cbSelected.visibility = View.VISIBLE
+                    if (args.complaints?.contains(item) == true) {
+                        item.isSelected = true
+                    }
                     binding.cbSelected.isChecked = item.isSelected
                     binding.cbSelected.setOnCheckedChangeListener { _, isChecked ->
                         item.isSelected = isChecked

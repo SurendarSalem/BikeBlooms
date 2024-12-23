@@ -23,7 +23,6 @@
         android:layout_gravity="center"
         android:layout_marginTop="@dimen/activity_horizontal_margin"
         android:text="Add Vehicle"
-        android:textAllCaps="false"
-        android:textSize="20sp" />
+        style="@style/AppButton"/>
 
 </LinearLayout>

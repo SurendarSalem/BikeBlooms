@@ -14,6 +14,7 @@ import com.bikeblooms.android.R
 import com.bikeblooms.android.databinding.FragmentMyServicesBinding
 import com.bikeblooms.android.databinding.ServiceItemBinding
 import com.bikeblooms.android.model.ApiResponse
+import com.bikeblooms.android.model.Progress
 import com.bikeblooms.android.model.Service
 import com.bikeblooms.android.ui.adapter.GenericAdapter
 import com.bikeblooms.android.ui.base.BaseFragment
@@ -79,7 +80,9 @@ class MyServicesFragment : BaseFragment() {
 
         } else {
             binding.rvServices.adapter = adapter
-            adapter.setItem(services)
+            adapter.setItem(services.sortedWith({ service1, service2 ->
+                service1.progress.compareTo(service2.progress)
+            }).toList())
         }
     }
 
@@ -99,6 +102,11 @@ class MyServicesFragment : BaseFragment() {
                     val df = SimpleDateFormat("dd-MM-yy", Locale.US);
                     binding.tvDate.text = "Updated at " + df.format(item.startDate)
                     binding.tvTotalAmt.text = "\u20B9 " + 190
+                    if (item.progress == Progress.CANCELLED) {
+                        binding.root.alpha = 0.5f
+                    } else {
+                        binding.root.alpha = 1f
+                    }
                 }
             }
         }

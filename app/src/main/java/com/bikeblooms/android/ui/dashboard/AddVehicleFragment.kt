@@ -20,6 +20,7 @@ import com.bikeblooms.android.model.Vehicle
 import com.bikeblooms.android.model.VehicleType
 import com.bikeblooms.android.model.Vehicles
 import com.bikeblooms.android.ui.base.BaseFragment
+import com.bikeblooms.android.ui.vehicles.VehicleSelectionFragmentArgs
 import com.bikeblooms.android.ui.vehicles.VehicleViewModel
 import com.bikeblooms.android.util.AppConstants.BRAND
 import com.bikeblooms.android.util.AppConstants.VEHICLE
@@ -211,26 +212,22 @@ class AddVehicleFragment : BaseFragment() {
 
         rlVehicleManufacture.setOnClickListener {
             if (selectedBrands.isNotEmpty()) {
-                val args =
-                    AddVehicleFragmentDirections.actionNavigationDashboardToNavigationVehicleList(
-                        Brands().apply {
-                            addAll(selectedBrands)
-                        }, null
-                    )
+                val args = VehicleSelectionFragmentArgs(
+                    Brands().apply {
+                        addAll(selectedBrands)
+                    }, null
+                )
                 findNavController().navigate(
-                    R.id.navigation_vehicle_list, args.arguments
+                    R.id.navigation_vehicle_selection, args.toBundle()
                 )
             }
         }
         rlVehicleModel.setOnClickListener {
             if (selectedVehicles.isNotEmpty()) {
-                val args =
-                    AddVehicleFragmentDirections.actionNavigationDashboardToNavigationVehicleList(
-                        null,
-                        Vehicles().apply {
-                            addAll(selectedVehicles)
-                        })
-                findNavController().navigate(R.id.navigation_vehicle_list, args.arguments)
+                val args = VehicleSelectionFragmentArgs(null, Vehicles().apply {
+                    addAll(selectedVehicles)
+                })
+                findNavController().navigate(R.id.navigation_vehicle_selection, args.toBundle())
             }
         }
         tgBtnFuelType.addOnButtonCheckedListener { group, checkedId, isChecked ->

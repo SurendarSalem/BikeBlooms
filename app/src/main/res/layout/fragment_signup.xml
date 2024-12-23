@@ -141,12 +141,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/activity_horizontal_margin"
-            android:paddingHorizontal="40dp"
-            android:paddingVertical="14dp"
             android:text="@string/register"
-            android:textAllCaps="false"
-            app:cornerRadius="10dp"
             app:layout_constraintEnd_toEndOf="parent"
+            style="@style/AppButton"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_error" />
 

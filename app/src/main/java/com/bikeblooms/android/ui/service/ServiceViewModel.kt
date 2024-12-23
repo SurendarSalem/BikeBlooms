@@ -3,16 +3,12 @@ package com.bikeblooms.android.ui.service
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bikeblooms.android.LoginCallback
-import com.bikeblooms.android.data.Repository
 import com.bikeblooms.android.data.VehiclesRepository
 import com.bikeblooms.android.model.ApiResponse
 import com.bikeblooms.android.model.AppState
 import com.bikeblooms.android.model.Service
 import com.bikeblooms.android.model.ServiceType
-import com.bikeblooms.android.util.FCMPushNotificationProvider
-import com.bikeblooms.android.util.FirebaseConstants.FCM.SERVICE_UPDATE
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -64,5 +60,9 @@ class ServiceViewModel @Inject constructor(
             }
             return ""
         }
+    }
+
+    fun updateAddress(address: String) {
+        _serviceState.value = _serviceState.value.copy(address = address)
     }
 }

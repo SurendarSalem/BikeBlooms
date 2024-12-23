@@ -3,9 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginHorizontal="@dimen/margin_small"
     android:layout_marginTop="@dimen/margin_small"
     android:background="@color/white"
-    android:padding="@dimen/margin_small">
+    android:padding="@dimen/margin_small"
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="8dp">
+
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -17,17 +21,17 @@
             android:layout_width="@dimen/icon_size"
             android:layout_height="@dimen/icon_size"
             android:padding="@dimen/margin_small"
-            android:scaleType="fitXY"
+            android:scaleType="centerCrop"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent"
-            app:srcCompat="@mipmap/ic_launcher"
-            app:strokeColor="@color/cherry_red"
-            app:strokeWidth="2dp" />
+            app:srcCompat="@drawable/bike"
+            app:strokeColor="@color/dark_gray"
+            app:strokeWidth="0.5dp" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_name"
-            style="@style/Heading"
+            style="@style/RedCaption"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/activity_horizontal_margin"
@@ -43,20 +47,18 @@
             android:layout_marginStart="@dimen/activity_horizontal_margin"
             android:layout_marginTop="@dimen/margin_small"
             android:text="TN 54 AB 9365"
+            android:textColor="@color/dark_gray"
             app:layout_constraintStart_toEndOf="@+id/siv_vehicle"
             app:layout_constraintTop_toBottomOf="@+id/tv_name" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_book_service"
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_delete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:lineSpacingExtra="0dp"
-            android:text="Book a service"
-            android:textAllCaps="false"
-            android:textSize="10sp"
-            app:cornerRadius="20dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            android:padding="@dimen/activity_horizontal_margin"
+            android:src="@drawable/delete"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

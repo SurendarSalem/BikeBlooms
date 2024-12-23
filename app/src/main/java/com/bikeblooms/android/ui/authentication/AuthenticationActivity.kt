@@ -1,13 +1,15 @@
 package com.bikeblooms.android.ui.authentication
 
 import android.Manifest
-import android.content.pm.PackageManager
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.navigation.NavController
@@ -16,6 +18,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.bikeblooms.android.R
 import com.bikeblooms.android.databinding.ActivityAuthenticationBinding
+import com.bikeblooms.android.ui.Utils
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -23,19 +26,31 @@ class AuthenticationActivity() : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var navController: NavController
-    private val requestPermissionLauncher = registerForActivityResult(
-        ActivityResultContracts.RequestPermission(),
-    ) { isGranted: Boolean ->
-        if (isGranted) {
 
-        } else {
+    private val multiplePermissionContract =
+        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissionsStatusMap ->
+            // permissionStatusMap is of type <String, Boolean>
+            // if all permissions accepted
+            if (!permissionsStatusMap.containsValue(false)) {
 
+            } else {
+                Utils.showAlertDialog(context = this,
+                    message = "Please approve all the permissions before opening the app",
+                    positiveBtnText = "Open Settings",
+                    positiveBtnCallback = {
+                        this.openAppSystemSettings()
+                    },
+                    negativeBtnText = "Cancel",
+                    negativeBtnCallback = {
+                        finish()
+                    })
+            }
         }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        checkForPermissions()
         var binding = ActivityAuthenticationBinding.inflate(layoutInflater)
         setContentView(binding.root)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
@@ -48,12 +63,18 @@ class AuthenticationActivity() : AppCompatActivity() {
         navController = navHostFragment.navController
         appBarConfiguration = AppBarConfiguration(emptySet())
         setSupportActionBar(binding.toolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(false)
-        supportActionBar?.setDisplayShowHomeEnabled(false)
-        supportActionBar?.setHomeButtonEnabled(false)
-        supportActionBar?.setDisplayUseLogoEnabled(true)
         setupActionBarWithNavController(navController, appBarConfiguration)
-        askNotificationPermission()
+    }
+
+    private fun checkForPermissions() {
+        val arr = mutableListOf(
+            Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION
+        )
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            arr.add(Manifest.permission.POST_NOTIFICATIONS)
+        }
+
+        multiplePermissionContract.launch(arr.toTypedArray())
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -65,21 +86,10 @@ class AuthenticationActivity() : AppCompatActivity() {
         }
     }
 
-
-    private fun askNotificationPermission() {
-        // This is only necessary for API level >= 33 (TIRAMISU)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (ContextCompat.checkSelfPermission(
-                    this, Manifest.permission.POST_NOTIFICATIONS
-                ) == PackageManager.PERMISSION_GRANTED
-            ) {
-                // FCM SDK (and your app) can post notifications.
-            } else if (shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)) {
-
-            } else {
-                // Directly ask for the permission
-                requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
-            }
-        }
+    fun Context.openAppSystemSettings() {
+        startActivity(Intent().apply {
+            action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+            data = Uri.fromParts("package", packageName, null)
+        })
     }
 }

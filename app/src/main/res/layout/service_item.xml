@@ -82,10 +82,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:lineSpacingExtra="0dp"
-            android:text="In Progress"
             android:textAllCaps="false"
             android:textColor="@android:color/holo_orange_dark"
-            android:textSize="12sp"
+            android:textSize="14sp"
             app:cornerRadius="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />

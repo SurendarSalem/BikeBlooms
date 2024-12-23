@@ -10,7 +10,8 @@ data class Vehicle(
     var brand: Brand? = null,
     var type: VehicleType? = null,
     var fuelType: FuelType? = null,
-    var regNo: String = ""
+    var regNo: String = "",
+    var vehicleStatus: VehicleStatus = VehicleStatus.ACTIVE
 ) : Parcelable {
 }
 
@@ -23,6 +24,11 @@ class Vehicles : ArrayList<Vehicle>(), Parcelable
 @Parcelize
 enum class VehicleType(var value: String) : Parcelable {
     CAR("Car"), BIKE("Bike")
+}
+
+@Parcelize
+enum class VehicleStatus(var value: String) : Parcelable {
+    ACTIVE("Active"), INACTIVE("Inactive")
 }
 
 @Parcelize

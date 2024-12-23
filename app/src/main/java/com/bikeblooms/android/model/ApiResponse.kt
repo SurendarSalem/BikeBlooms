@@ -13,3 +13,8 @@ sealed class ApiResponse<T>(
     class Empty<T> : ApiResponse<T>()
 
 }
+
+sealed class NotifyState {
+    class Success(val message: String) : NotifyState()
+    class Error(val message: String) : NotifyState()
+}

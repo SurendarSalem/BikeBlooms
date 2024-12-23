@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewbinding.ViewBinding
@@ -14,6 +15,8 @@ import com.bikeblooms.android.databinding.FragmentVehicleListDialogBinding
 import com.bikeblooms.android.databinding.NameItemBinding
 import com.bikeblooms.android.model.Spare
 import com.bikeblooms.android.ui.adapter.GenericAdapter
+import com.bikeblooms.android.util.AppConstants.SELECTED_SPARE
+import com.bikeblooms.android.util.AppConstants.VEHICLE
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlin.Any
@@ -77,6 +80,9 @@ class SpareSelectionFragment : BottomSheetDialogFragment() {
     private fun onItemClick(item: Any, isBookServiceClicked: Boolean = false) {
         if (item is Spare) {
             viewModel.updateSelectedVehicle(item)
+            findNavController().previousBackStackEntry?.savedStateHandle?.set(
+                SELECTED_SPARE, item
+            )
             this@SpareSelectionFragment.dismiss()
         }
     }

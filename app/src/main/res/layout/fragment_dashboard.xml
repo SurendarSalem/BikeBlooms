@@ -32,7 +32,7 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_vehicle"
-                style="@style/Heading"
+                style="@style/RedCaption"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/select_your_vehicle_type" />
@@ -73,13 +73,14 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_vehicle_type_title"
-                style="@style/Heading"
+                style="@style/RedCaption"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Choose Manufacturer" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_vehicle_type"
+                style="@style/Body"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tv_vehicle_type_title"
@@ -107,13 +108,14 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_vehicle_model_title"
-                style="@style/Heading"
+                style="@style/RedCaption"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Choose Model" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_vehicle_model"
+                style="@style/Body"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tv_vehicle_model_title"
@@ -140,7 +142,7 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_vehicle_fuel_type_title"
-                style="@style/Heading"
+                style="@style/RedCaption"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Select Fuel Type" />
@@ -174,7 +176,7 @@
         </RelativeLayout>
 
         <androidx.appcompat.widget.AppCompatTextView
-            style="@style/Heading"
+            style="@style/RedCaption"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_small"
@@ -191,59 +193,59 @@
                 android:id="@+id/rn_1"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:background="@drawable/border_gray"
+                android:background="@drawable/border_blue"
                 android:hint="TN"
+                android:gravity="center"
                 android:inputType="textCapCharacters"
                 android:maxLength="2"
-                android:textColorHint="@color/light_gray" />
+                android:textColorHint="@color/very_light_gray" />
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/rn_2"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
+                android:gravity="center"
                 android:layout_marginStart="@dimen/margin_small"
-                android:background="@drawable/border_gray"
+                android:background="@drawable/border_blue"
                 android:hint="54"
                 android:inputType="number"
                 android:maxLength="2"
-                android:textColorHint="@color/light_gray" />
+                android:textColorHint="@color/very_light_gray" />
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/rn_3"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_marginStart="@dimen/margin_small"
-                android:background="@drawable/border_gray"
+                android:background="@drawable/border_blue"
                 android:hint="AB"
+                android:gravity="center"
                 android:inputType="textCapCharacters"
                 android:maxLength="2"
-                android:textColorHint="@color/light_gray" />
+                android:textColorHint="@color/very_light_gray" />
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/rn_4"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
                 android:layout_marginStart="@dimen/margin_small"
-                android:background="@drawable/border_gray"
+                android:background="@drawable/border_blue"
                 android:hint="1234"
                 android:inputType="number"
+                android:gravity="center"
                 android:maxLength="4"
-                android:textColorHint="@color/light_gray" />
+                android:textColorHint="@color/very_light_gray" />
 
 
         </LinearLayout>
 
-        <androidx.appcompat.widget.AppCompatButton
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_add_vehicle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
             android:layout_marginTop="@dimen/activity_horizontal_margin"
-            android:background="?attr/colorPrimary"
             android:text="Add Vehicle"
-            android:textAllCaps="false"
-            android:textColor="@color/white"
-            android:textSize="18sp" />
+            style="@style/AppButton"/>
 
     </LinearLayout>
 

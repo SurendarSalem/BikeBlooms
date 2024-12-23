@@ -62,7 +62,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
                     android:layout_marginTop="@dimen/margin_small"
-                    android:background="@drawable/border_gray"
+                    android:background="@drawable/border_gray_dotted"
                     android:clickable="true"
                     android:gravity="center"
                     android:lineSpacingExtra="@dimen/margin_small"
@@ -93,7 +93,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
                     android:layout_marginTop="@dimen/margin_small"
-                    android:background="@drawable/border_gray"
+                    android:background="@drawable/border_gray_dotted"
                     android:clickable="true"
                     android:drawableEnd="@drawable/arrow_right"
                     android:gravity="center"
@@ -103,19 +103,32 @@
 
             </LinearLayout>
 
-            <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/et_other_complaints"
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
                 android:layout_marginTop="@dimen/margin_small"
-                android:background="@drawable/border_gray"
-                android:gravity="center"
                 android:hint="@string/enter_additional_problems"
-                android:padding="@dimen/activity_horizontal_margin"
-                android:textColor="@color/black"
-                android:textColorHint="@color/black"
-                android:textSize="14sp" />
+                app:boxBackgroundColor="@color/white"
+                app:boxBackgroundMode="outline"
+                app:boxCornerRadiusBottomEnd="@dimen/text_area_corner_radius"
+                app:boxCornerRadiusBottomStart="@dimen/text_area_corner_radius"
+                app:boxCornerRadiusTopEnd="@dimen/text_area_corner_radius"
+                app:boxCornerRadiusTopStart="@dimen/text_area_corner_radius"
+                app:boxStrokeColor="@color/cherry_red"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_other_complaints"
+                    style="@style/Body"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="start|top"
+                    android:minLines="2" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="match_parent"
@@ -286,11 +299,8 @@ Tamilnadu -6000018"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/activity_horizontal_margin"
-                android:paddingHorizontal="40dp"
-                android:paddingVertical="14dp"
                 android:text="Place Your Booking"
-                android:textAllCaps="false"
-                android:textSize="18sp" />
+                style="@style/AppButton"/>
 
 
         </LinearLayout>

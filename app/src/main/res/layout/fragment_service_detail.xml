@@ -1,154 +1,376 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="@dimen/margin_small"
-    tools:context=".ui.service.ServiceDetailFragment">
 
-    <LinearLayout
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="match_parent"
+        android:padding="@dimen/margin_small">
 
-        <androidx.appcompat.widget.AppCompatTextView
-            style="@style/RedCaption"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/vehicle_details" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            style="@style/Body"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Royal Enfield Classic 350" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            style="@style/Small"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="TN 54 AB 3456" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_small"
-            android:orientation="horizontal">
-
-            <androidx.appcompat.widget.AppCompatTextView
-                style="@style/RedCaption"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/service_type"
-                android:textColor="@color/cherry_red" />
-
-            <androidx.appcompat.widget.AppCompatTextView
-
-                style="@style/Body"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/margin_small"
-                android:text="General Service" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <androidx.appcompat.widget.AppCompatTextView
-                style="@style/RedCaption"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/requested_at"
-                android:textColor="@color/cherry_red" />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                style="@style/Body"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/margin_small"
-                android:text="02-11-2024" />
-
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_small"
-        android:orientation="vertical">
-
-        <LinearLayout
+        <ScrollView
             android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:nestedScrollingEnabled="true"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="vertical"
+                android:padding="@dimen/margin_small"
+                tools:context=".ui.dashboard.AddVehicleFragment">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/Caption"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Service Type"
+                    android:textColor="@color/cherry_red"
+                    android:textSize="18sp" />
+
+                <RadioGroup
+                    android:id="@+id/rg_service_type"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="0dp">
+
+                    <com.google.android.material.radiobutton.MaterialRadioButton
+                        android:id="@+id/rb_general_service"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="-5dp"
+                        android:drawableEnd="@drawable/black_bike"
+                        android:drawablePadding="15dp"
+                        android:padding="0dp"
+                        android:text="General Service" />
+
+                    <com.google.android.material.radiobutton.MaterialRadioButton
+                        android:id="@+id/rb_vehicle_repair"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="-5dp"
+                        android:layout_marginTop="-15dp"
+                        android:drawableEnd="@drawable/black_repair"
+                        android:drawablePadding="15dp"
+                        android:padding="0dp"
+                        android:text="Vehicle Repairing" />
+
+                </RadioGroup>
+
+                <RelativeLayout
+                    android:id="@+id/rl_vehicle_details"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_vehicle_name"
+                        style="@style/Caption"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_small"
+                        android:text="Royal Enfield Classic 350"
+                        android:textColor="@color/cherry_red"
+                        android:textSize="18sp" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_add_change"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/border_gray_dotted"
+                        android:clickable="true"
+                        android:gravity="center"
+                        android:padding="@dimen/margin_small"
+                        android:text="@string/add_or_change"
+                        android:textColor="@color/dark_gray"
+                        android:textSize="12sp"
+                        android:visibility="gone" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_vehicle_number"
+                        style="@style/Body"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv_vehicle_name"
+                        android:layout_marginTop="@dimen/margin_small"
+                        android:text="TN 54 AB 6767" />
+                </RelativeLayout>
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/cb_pick_drop"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="-5dp"
+                    android:text="Pick and Drop Service (Optional)" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:orientation="vertical"
+                    android:padding="@dimen/margin_small"
+                    tools:context=".ui.service.compaints.AddComplaintsFragment">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:layout_marginTop="@dimen/margin_small"
+                        android:layerType="software"
+                        android:src="@drawable/dotted" />
+
+                    <LinearLayout
+                        android:id="@+id/ll_vehicle_repair"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/margin_small"
+                            android:text="@string/vehicle_problems"
+                            android:textColor="@color/cherry_red"
+                            android:textSize="16sp" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tv_complaints"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
+                            android:layout_marginTop="@dimen/margin_small"
+                            android:background="@drawable/border_gray"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:gravity="start"
+                            android:lineSpacingExtra="@dimen/margin_small"
+                            android:padding="@dimen/margin_small"
+                            android:text="@string/select_vehicle_problem"
+                            android:textSize="14sp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/ll_engine_oil"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/margin_small"
+                            android:text="@string/engine_oil"
+                            android:textColor="@color/cherry_red"
+                            android:textSize="16sp" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tv_engine_oil"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
+                            android:layout_marginTop="@dimen/margin_small"
+                            android:background="@drawable/border_gray_dotted"
+                            android:clickable="true"
+                            android:drawableEnd="@drawable/arrow_right"
+                            android:focusable="true"
+                            android:gravity="center"
+                            android:padding="@dimen/activity_horizontal_margin"
+                            android:text="@string/select_engine_oil"
+                            android:textSize="14sp" />
+
+                    </LinearLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_small"
+                        android:hint="@string/enter_additional_problems"
+                        app:boxBackgroundColor="@color/white"
+                        app:boxBackgroundMode="outline"
+                        app:boxCornerRadiusBottomEnd="@dimen/text_area_corner_radius"
+                        app:boxCornerRadiusBottomStart="@dimen/text_area_corner_radius"
+                        app:boxCornerRadiusTopEnd="@dimen/text_area_corner_radius"
+                        app:boxCornerRadiusTopStart="@dimen/text_area_corner_radius"
+                        app:boxStrokeColor="@color/cherry_red"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_other_complaints"
+                            style="@style/Body"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="start|top"
+                            android:minLines="2" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:layout_marginTop="@dimen/margin_small"
+                        android:layerType="software"
+                        android:src="@drawable/dotted" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:layout_marginTop="@dimen/margin_small"
+                            android:text="@string/address"
+                            android:textColor="@color/cherry_red"
+                            android:textSize="16sp" />
+
+                        <RelativeLayout
+                            android:id="@+id/rl_address_details"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginTop="@dimen/margin_small"
+                            android:background="@color/white">
+
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/tv_address"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:lineSpacingExtra="@dimen/margin_small"
+                                android:text="56/2, 3rd Phase, Park Avenue \n
+Egmore, Chennai\n
+Tamilnadu -6000018"
+                                android:textSize="14sp" />
+
+                        </RelativeLayout>
+
+                    </LinearLayout>
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:layout_marginTop="@dimen/margin_small"
+                        android:layerType="software"
+                        android:src="@drawable/dotted" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:layout_marginTop="@dimen/margin_small"
+                            android:text="@string/inspection_charges"
+                            android:textColor="@color/cherry_red"
+                            android:textSize="16sp" />
+
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginTop="@dimen/margin_small"
+                            android:background="@color/white">
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/tv_inspection_charges"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="\u20B9 199"
+                                android:textSize="14sp" />
+
+                        </RelativeLayout>
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            style="@style/Heading"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:layout_marginTop="@dimen/margin_small"
+                            android:text="@string/total_amount"
+                            android:textColor="@color/cherry_red"
+                            android:textSize="18sp" />
+
+
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginTop="@dimen/margin_small"
+                            android:background="@color/white">
+
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/tv_total_amt"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="\u20B9 199"
+                                android:textSize="18sp" />
+
+                        </RelativeLayout>
+
+                    </RelativeLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:orientation="horizontal">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_update_service"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/activity_horizontal_margin"
+                            android:backgroundTint="@android:color/holo_green_dark"
+                            style="@style/AppButton"
+                            android:text="Update"/>
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_cancel_service"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/activity_horizontal_margin"
+                            android:layout_marginTop="@dimen/activity_horizontal_margin"
+                            style="@style/AppButton"
+                            android:text="Cancel" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </ScrollView>
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <androidx.appcompat.widget.AppCompatTextView
-                style="@style/RedCaption"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/spares"
-                android:textColor="@color/cherry_red"
-                android:textSize="18sp" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="2">
-
-            <androidx.appcompat.widget.AppCompatTextView
-                style="@style/Heading"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Spare Name" />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                style="@style/Heading"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Price per Qty" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="2">
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tv_spares"
-                style="@style/Body"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Spare Name" />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tv_price"
-                style="@style/Body"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Price per Qty" />
-        </LinearLayout>
-
-    </LinearLayout>
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
-</LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

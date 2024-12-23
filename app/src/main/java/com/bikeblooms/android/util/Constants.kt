@@ -13,6 +13,8 @@ object AppConstants {
     const val BRANDS = "brands"
     const val SOURCE = "source"
     const val VEHICLES = "vehicles"
+    const val SELECTED_SPARE = "selectedSpare"
+    const val SELECTED_COMPLAINTS = "selectedComplaints"
 }
 
 object FirebaseConstants {

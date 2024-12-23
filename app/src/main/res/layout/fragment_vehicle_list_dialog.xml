@@ -8,7 +8,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingHorizontal="@dimen/margin_small"
         android:paddingBottom="50dp">
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -21,6 +20,7 @@
             android:padding="@dimen/margin_small"
             android:text="Select your Vehicle"
             android:textColor="@color/white"
+            android:textSize="18sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -28,21 +28,20 @@
             android:id="@+id/rv_items"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginHorizontal="@dimen/margin_small"
             android:clipToPadding="false"
             app:layout_constraintBottom_toTopOf="@+id/btn_add_vehicle"
             app:layout_constraintTop_toBottomOf="@+id/tv_heading"
             tools:context=".ui.service.compaints.VehicleListDialogFragment"
             tools:listitem="@layout/name_item" />
 
-        <androidx.appcompat.widget.AppCompatButton
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_add_vehicle"
+            style="@style/AppButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_small"
-            android:backgroundTint="@color/cherry_red"
             android:text="Add a Vehicle"
-            android:textAllCaps="false"
-            android:textColor="@color/off_white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

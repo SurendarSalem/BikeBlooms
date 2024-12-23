@@ -14,8 +14,10 @@ import com.bikeblooms.android.R
 import com.bikeblooms.android.databinding.FragmentMyVehiclesBinding
 import com.bikeblooms.android.databinding.VehicleItemBinding
 import com.bikeblooms.android.model.ApiResponse
+import com.bikeblooms.android.model.AppState
 import com.bikeblooms.android.model.Vehicle
 import com.bikeblooms.android.model.VehicleType
+import com.bikeblooms.android.ui.Utils
 import com.bikeblooms.android.ui.adapter.GenericAdapter
 import com.bikeblooms.android.ui.base.BaseFragment
 import com.bikeblooms.android.util.toRegNum
@@ -106,11 +108,18 @@ class MyVehiclesFragment : BaseFragment() {
                 if (item is Vehicle) {
                     binding.tvName.text = item.name
                     binding.tvRegNum.text = item.regNo.toRegNum()
-                    binding.btnBookService.setOnClickListener {
-                        onItemClick(item, true)
-                    }
                     val icon = if (item.type == VehicleType.CAR) R.drawable.car else R.drawable.bike
                     binding.sivVehicle.setImageResource(icon)
+                    binding.ivDelete.setOnClickListener {
+                        Utils.showAlertDialog(
+                            context = requireContext(),
+                            message = getString(R.string.delete_vehicle_msg),
+                            positiveBtnText = "Delete",
+                            positiveBtnCallback = {
+                                viewModel.delete(item, AppState.user?.firebaseId.toString())
+                            }
+                        )
+                    }
                 }
             }
         }

@@ -27,8 +27,7 @@ android {
         release {
             isMinifyEnabled = false
             proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
             )
         }
     }
@@ -72,10 +71,12 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     implementation(libs.google.auth.library.oauth2.http)
     androidTestImplementation(libs.androidx.espresso.core)
-    implementation("com.squareup.okhttp3:okhttp:4.9.0")
+    implementation(libs.okhttp3.okhttp)
     implementation(libs.hilt.android)
     implementation(libs.maps.ktx)
     kapt(libs.hilt.compiler)
+    implementation(libs.places)
+    implementation(libs.play.services.location)
 
     // splash
     implementation(libs.androidx.core.splashscreen)

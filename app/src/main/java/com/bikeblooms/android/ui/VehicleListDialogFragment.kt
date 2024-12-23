@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewbinding.ViewBinding
@@ -15,6 +16,7 @@ import com.bikeblooms.android.databinding.NameItemBinding
 import com.bikeblooms.android.model.Vehicle
 import com.bikeblooms.android.ui.adapter.GenericAdapter
 import com.bikeblooms.android.ui.vehicles.VehicleViewModel
+import com.bikeblooms.android.util.AppConstants.VEHICLE
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlin.Any
@@ -49,6 +51,10 @@ class VehicleListDialogFragment : BottomSheetDialogFragment() {
         args.vehicles?.let {
             adapter.setItem(it)
         }
+        binding.btnAddVehicle.setOnClickListener {
+            this@VehicleListDialogFragment.dismiss()
+            findNavController().navigate(R.id.action_vehicle_list_fragment_dialog_to_navigation_add_vehicle)
+        }
     }
 
     private fun bindViewHolder(view: View, item: Any, viewType: Int) {
@@ -72,10 +78,13 @@ class VehicleListDialogFragment : BottomSheetDialogFragment() {
         }
     }
 
-    private fun onItemClick(item: Any, isBookServiceClicked: Boolean = false) {
+    private fun onItemClick(item: Any) {
         if (item is Vehicle) {
             viewModel.updateSelectedVehicle(item)
-            this@VehicleListDialogFragment.dismiss()
+            findNavController().previousBackStackEntry?.savedStateHandle?.set(
+                VEHICLE, item
+            )
+            findNavController().popBackStack()
         }
     }
 

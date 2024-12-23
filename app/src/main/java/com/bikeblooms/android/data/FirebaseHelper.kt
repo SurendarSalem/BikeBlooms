@@ -11,6 +11,7 @@ import com.bikeblooms.android.model.Spare
 import com.bikeblooms.android.model.SpareType
 import com.bikeblooms.android.model.User
 import com.bikeblooms.android.model.Vehicle
+import com.bikeblooms.android.model.VehicleStatus
 import com.bikeblooms.android.model.VehicleType
 import com.bikeblooms.android.util.AppConstants.VEHICLES
 import com.bikeblooms.android.util.FirebaseConstants.Bike.BIKE_BRANDS
@@ -135,7 +136,8 @@ class FirebaseHelper {
     }
 
     fun getMyVehicles(uid: String, callback: LoginCallback<List<Vehicle>>) {
-        Firebase.firestore.collection(USER_VEHICLES).document(uid).collection(VEHICLES).get()
+        Firebase.firestore.collection(USER_VEHICLES).document(uid).collection(VEHICLES)
+            .whereNotEqualTo("vehicleStatus", VehicleStatus.INACTIVE).get()
             .addOnSuccessListener { result ->
                 val vehicleList = mutableListOf<Vehicle>()
                 result.forEach {
@@ -158,19 +160,18 @@ class FirebaseHelper {
     }
 
     fun getMyServices(uid: String, callback: LoginCallback<List<Service>>) {
-        Firebase.firestore.collection(SERVICES).get().addOnSuccessListener { result ->
-            val vehicleList = mutableListOf<Service>()
-            result.forEach {
-                val service = it.toObject<Service>(Service::class.java)
-                vehicleList.add(service)
+        Firebase.firestore.collection(SERVICES).whereEqualTo("firebaseId", uid).get()
+            .addOnSuccessListener { result ->
+                val vehicleList = mutableListOf<Service>()
+                result.forEach {
+                    val service = it.toObject<Service>(Service::class.java)
+                    service.id = it.id
+                    vehicleList.add(service)
+                }
+                callback.onSuccess(vehicleList)
+            }.addOnFailureListener {
+                callback.onError(it.message.toString())
             }
-            vehicleList.filter {
-                it.firebaseId == uid
-            }
-            callback.onSuccess(vehicleList)
-        }.addOnFailureListener {
-            callback.onError(it.message.toString())
-        }
     }
 
 
@@ -197,7 +198,7 @@ class FirebaseHelper {
         }
     }
 
-    fun getAllSpares(callback: LoginCallback<List<Spare>>, type: SpareType) {
+    fun getAllSpares(type: SpareType, callback: LoginCallback<List<Spare>>) {
         Firebase.firestore.collection(SPARES).where(Filter.equalTo("spareType", type.name)).get()
             .addOnSuccessListener { result ->
                 val spares = mutableListOf<Spare>()
@@ -211,11 +212,36 @@ class FirebaseHelper {
             }
     }
 
+    fun getAllSparesAndReturn(callback: LoginCallback<List<Spare>>, type: SpareType) {
+        Firebase.firestore.collection(SPARES).get()
+            .addOnSuccessListener { result ->
+                val spares = mutableListOf<Spare>()
+                result.forEach {
+                    val complaint = it.toObject<Spare>(Spare::class.java)
+                    spares.add(complaint)
+                }
+                callback.onSuccess(spares)
+            }.addOnFailureListener {
+                callback.onError(it.message.toString())
+            }
+    }
+
+
     fun setPassword(emailId: String, callback: LoginCallback<String>) {
         Firebase.auth.sendPasswordResetEmail(emailId).addOnSuccessListener {
             callback.onSuccess("Success")
         }.addOnFailureListener { error ->
             callback.onError(error.message.toString())
         }
+    }
+
+    fun deleteVehicle(userId: String, vehicle: Vehicle, callback: LoginCallback<Vehicle>) {
+        Firebase.firestore.collection(USER_VEHICLES).document(userId).collection(VEHICLES)
+            .document(vehicle.regNo).update("vehicleStatus", VehicleStatus.INACTIVE)
+            .addOnSuccessListener {
+                callback.onSuccess(vehicle)
+            }.addOnFailureListener {
+                callback.onError(it.message.toString())
+            }
     }
 }

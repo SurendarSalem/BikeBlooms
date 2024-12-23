@@ -99,13 +99,16 @@ class VehicleViewModel @Inject constructor(
         _selectedVehicleState.value = vehicle
     }
 
-    fun updateVehicleToMyVehicles(vehicle: Vehicle?) {
-        vehicle?.let {
-            val vehicles = _myVehiclesState.value.data?.toMutableList()
-            vehicles?.let {
-                it.add(vehicle)
-                _myVehiclesState.value = ApiResponse.Success(it)
+    fun delete(vehicle: Vehicle, firebaseId: String) {
+        vehiclesRepository.deleteVehicle(firebaseId,vehicle, object : LoginCallback<Vehicle>{
+            override fun onSuccess(t: Vehicle) {
+                TODO("Not yet implemented")
             }
-        }
+
+            override fun onError(message: String) {
+                TODO("Not yet implemented")
+            }
+
+        })
     }
 }
