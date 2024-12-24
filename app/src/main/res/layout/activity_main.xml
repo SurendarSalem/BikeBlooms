@@ -34,10 +34,16 @@
             android:backgroundTint="@android:color/transparent"
             android:elevation="0dp"
             android:theme="@style/ToolbarTheme"
+            app:contentInsetEnd="0dp"
+            app:contentInsetStart="0dp"
             app:navigationIcon="@null"
             app:titleCentered="true"
-            app:titleTextColor="@color/cherry_red"
-            tools:title="@string/app_name" />
+            app:titleTextColor="@color/white"
+            tools:title="@string/app_name">
+
+            <include layout="@layout/custom_toolbar" />
+
+        </com.google.android.material.appbar.MaterialToolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
 

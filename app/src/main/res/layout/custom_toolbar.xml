@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="?attr/actionBarSize"
+    android:background="@drawable/wave"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/siv_profile"
+        android:layout_width="?attr/actionBarSize"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_marginStart="@dimen/margin_small"
+        android:padding="@dimen/margin_small"
+        android:scaleType="centerCrop"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent"
+        app:srcCompat="@drawable/main"
+        app:strokeColor="@color/dark_gray"
+        app:strokeWidth="0.5dp" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_custom_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginStart="@dimen/margin_small"
+        android:fontFamily="@font/monday"
+        android:gravity="center_vertical"
+        android:text="BikeBlooms"
+        android:textColor="@color/cherry_red"
+        android:textSize="20sp" />
+
+</RelativeLayout>

@@ -35,6 +35,7 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
@@ -90,7 +91,7 @@ class AddServiceFragment : BaseFragment(), OnMapReadyCallback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mGeocoder = Geocoder(requireContext(), Locale.getDefault())
-        Places.initialize(requireContext(), "AIzaSyBXhQq1EGtqL8gDzOfiXVcHE0j8Vu2pits")
+        Places.initialize(requireContext(), "AIzaSyB1E_XAP2VhvW2c3aFIAZywY6jcgvseucc")
 
         fusedLocationProviderClient =
             LocationServices.getFusedLocationProviderClient(requireContext())
@@ -212,10 +213,15 @@ class AddServiceFragment : BaseFragment(), OnMapReadyCallback {
                     pickDrop = viewModel.serviceState.value.pickDrop,
                     address = viewModel.serviceState.value.address
                 )
-                val args = AddComplaintsFragmentArgs(service)
-                findNavController().navigate(
-                    R.id.action_navigation_add_service_to_navigation_add_complaints, args.toBundle()
-                )
+                if (isValid(service)) {
+                    val args = AddComplaintsFragmentArgs(service)
+                    findNavController().navigate(
+                        R.id.action_navigation_add_service_to_navigation_add_complaints,
+                        args.toBundle()
+                    )
+                } else {
+                    showToast("Please enter all the fields")
+                }
             }
         }
         tvAddChange.setOnClickListener {
@@ -246,32 +252,54 @@ class AddServiceFragment : BaseFragment(), OnMapReadyCallback {
         }
     }
 
+    private fun isValid(service: Service): Boolean {
+        with(service) {
+            return vehicleName.isNotEmpty() && vehicleId.isNotEmpty() && regNum.length>=8 &&
+                    firebaseId.isNotEmpty() && address.isNotEmpty()
+        }
+    }
+
     @SuppressLint("MissingPermission")
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
         mMap.isMyLocationEnabled = true
-        mMap.mapType = GoogleMap.MAP_TYPE_SATELLITE
         setLocationToMap(mMap, currentLocation.toLatLng())
         mMap.setOnCameraMoveListener(object : GoogleMap.OnCameraMoveListener {
-            override fun onCameraMove() {
-                val options = MarkerOptions().position(mMap.cameraPosition.target);
-                marker.remove();
-                marker = mMap.addMarker(options)!!
+            override fun onCameraMove() {/* val options =
+                     MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.bike_marker))
+                         .position(mMap.cameraPosition.target);
+                 marker.remove();
+                 marker = mMap.addMarker(options)!!*/
             }
         })
         mMap.setOnCameraIdleListener {
+            val options =
+                MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.bike_marker))
+                    .position(mMap.cameraPosition.target);
+            marker.remove();
+            options.title(viewModel.serviceState.value.address)
+            options.snippet(viewModel.serviceState.value.address)
+            marker.title = viewModel.serviceState.value.address
+            marker.snippet = viewModel.serviceState.value.address
+            marker = mMap.addMarker(options)!!
+            marker.showInfoWindow()
             viewModel.reverseGeocode(mMap.cameraPosition.target, mGeocoder)
         }
 
     }
 
     private fun setLocationToMap(map: GoogleMap, location: LatLng) {
-        val options = MarkerOptions().position(location);
+        val options =
+            MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.bike_marker))
+                .position(location);
+        options.title(viewModel.serviceState.value.address)
+        options.snippet(viewModel.serviceState.value.address)
         marker = map.addMarker(options)!!
+        marker.showInfoWindow()
         marker.isDraggable = true
         map.moveCamera(
             CameraUpdateFactory.newLatLngZoom(
-                location, 18f
+                location, 19f
             )
         )
     }

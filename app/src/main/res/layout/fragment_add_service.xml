@@ -7,7 +7,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="@dimen/margin_small">
+        android:paddingHorizontal="@dimen/margin_small">
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/btn_search_places"
@@ -124,7 +124,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/tv_vehicle_name"
-                        android:layout_marginTop="@dimen/margin_small"
                         tools:text="TN 54 AB 6767" />
                 </RelativeLayout>
 
