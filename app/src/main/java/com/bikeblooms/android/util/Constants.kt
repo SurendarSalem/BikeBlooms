@@ -4,7 +4,7 @@ import com.bikeblooms.android.model.VehicleType
 import okhttp3.MediaType.Companion.toMediaType
 
 const val BASE_URL = ""
-val vehicleTypes = arrayOf(VehicleType.CAR, VehicleType.BIKE)
+val vehicleTypes = arrayOf(VehicleType.BIKE)
 
 object AppConstants {
     const val BRAND = "brand"
@@ -28,11 +28,6 @@ object FirebaseConstants {
     object Bike {
         const val BIKE_BRANDS = "bikebrands"
         const val BIKE_MODELS = "bikes"
-    }
-
-    object Car {
-        const val CAR_BRANDS = "carbrands"
-        const val CAR_MODELS = "cars"
     }
 
     object FCM {

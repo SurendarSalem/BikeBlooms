@@ -13,7 +13,6 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 data class VehicleMap(
-    var carMap: HashMap<Brand, List<Vehicle>>? = null,
     var bikeMap: HashMap<Brand, List<Vehicle>>? = null
 )
 
@@ -29,12 +28,10 @@ class VehiclesRepository @Inject constructor(private val firebaseHelper: Firebas
             _vehiclesState.value = ApiResponse.Loading()
             getAllVehicles(type, object : LoginCallback<HashMap<Brand, List<Vehicle>>> {
                 override fun onSuccess(vehicles: HashMap<Brand, List<Vehicle>>) {
-                    if (type == VehicleType.CAR) {
-                        vehicleMap.carMap = vehicles
-                    } else if (type == VehicleType.BIKE) {
+                    if (type == VehicleType.BIKE) {
                         vehicleMap.bikeMap = vehicles
                     }
-                    if (vehicleMap.carMap != null && vehicleMap.bikeMap != null) {
+                    if (vehicleMap.bikeMap != null) {
                         _vehiclesState.value = ApiResponse.Success(vehicleMap)
                     }
                 }

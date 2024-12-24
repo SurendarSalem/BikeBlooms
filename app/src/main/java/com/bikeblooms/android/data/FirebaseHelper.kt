@@ -17,8 +17,6 @@ import com.bikeblooms.android.util.AppConstants.VEHICLES
 import com.bikeblooms.android.util.FirebaseConstants.Bike.BIKE_BRANDS
 import com.bikeblooms.android.util.FirebaseConstants.Bike.BIKE_MODELS
 import com.bikeblooms.android.util.FirebaseConstants.COMPLAINTS
-import com.bikeblooms.android.util.FirebaseConstants.Car.CAR_BRANDS
-import com.bikeblooms.android.util.FirebaseConstants.Car.CAR_MODELS
 import com.bikeblooms.android.util.FirebaseConstants.SERVICES
 import com.bikeblooms.android.util.FirebaseConstants.SPARES
 import com.bikeblooms.android.util.FirebaseConstants.USERS
@@ -72,16 +70,8 @@ class FirebaseHelper {
         vehicleType: VehicleType, callback: LoginCallback<HashMap<Brand, List<Vehicle>>>
     ) {
         var vehiclesMap = HashMap<Brand, List<Vehicle>>()
-        val brandCollectionName: String = if (vehicleType == VehicleType.BIKE) {
-            BIKE_BRANDS
-        } else {
-            CAR_BRANDS
-        }
-        val brandDocumentName: String = if (vehicleType == VehicleType.BIKE) {
-            BIKE_MODELS
-        } else {
-            CAR_MODELS
-        }
+        val brandCollectionName: String = BIKE_BRANDS
+        val brandDocumentName: String = BIKE_MODELS
         Firebase.firestore.collection(brandCollectionName).get().addOnSuccessListener { brands ->
             brands.documents.forEach { brand ->
                 val vehicleBrand = Brand(brand.id, (brand.data?.get("Name") ?: "") as String)
@@ -213,17 +203,16 @@ class FirebaseHelper {
     }
 
     fun getAllSparesAndReturn(callback: LoginCallback<List<Spare>>, type: SpareType) {
-        Firebase.firestore.collection(SPARES).get()
-            .addOnSuccessListener { result ->
-                val spares = mutableListOf<Spare>()
-                result.forEach {
-                    val complaint = it.toObject<Spare>(Spare::class.java)
-                    spares.add(complaint)
-                }
-                callback.onSuccess(spares)
-            }.addOnFailureListener {
-                callback.onError(it.message.toString())
+        Firebase.firestore.collection(SPARES).get().addOnSuccessListener { result ->
+            val spares = mutableListOf<Spare>()
+            result.forEach {
+                val complaint = it.toObject<Spare>(Spare::class.java)
+                spares.add(complaint)
             }
+            callback.onSuccess(spares)
+        }.addOnFailureListener {
+            callback.onError(it.message.toString())
+        }
     }
 
 

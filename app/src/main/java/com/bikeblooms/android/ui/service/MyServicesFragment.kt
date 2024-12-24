@@ -37,6 +37,7 @@ class MyServicesFragment : BaseFragment() {
     private val viewModel: ServiceViewModel by activityViewModels()
     private lateinit var binding: FragmentMyServicesBinding
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -101,7 +102,7 @@ class MyServicesFragment : BaseFragment() {
                     binding.tvStatus.text = item.progress.title
                     val df = SimpleDateFormat("dd-MM-yy", Locale.US);
                     binding.tvDate.text = "Updated at " + df.format(item.startDate)
-                    binding.tvTotalAmt.text = "\u20B9 " + 190
+                    binding.tvTotalAmt.text = "\u20B9 " + item.bill?.totalAmount.toString()
                     if (item.progress == Progress.CANCELLED) {
                         binding.root.alpha = 0.5f
                     } else {

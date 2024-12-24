@@ -21,6 +21,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -79,15 +80,18 @@ class AddComplaintsViewModel @Inject constructor(
             })
         }
         viewModelScope.launch {
-            serviceState.collect { service ->
+            serviceState.collectLatest { service ->
                 service?.let {
                     var spareAmount = service.spareParts?.sumOf { it.price } ?: 0.0
                     var complaintsAmount = service.complaints?.sumOf { it.price } ?: 0.0
-
+                    serviceState.value = serviceState.value?.copy(
+                        bill = Bill(
+                            totalAmount = spareAmount + complaintsAmount, service.startDate
+                        )
+                    )
                     _billState.value = Bill(
                         totalAmount = spareAmount + complaintsAmount, service.startDate
                     )
-
                 }
             }
         }
@@ -141,8 +145,8 @@ class AddComplaintsViewModel @Inject constructor(
             AppState.user?.let { user ->
                 val body = mutableMapOf(
                     "serviceId" to "",
-                    "title" to "New service request",
-                    "message" to "${user.name}) has requested a service for his vehicle ${service.vehicleName}"
+                    "title" to "Hi ${user.name}!. New service request",
+                    "message" to "${user.name} has requested a service for his vehicle ${service.vehicleName}"
                 )
                 FCMPushNotificationProvider.sendMessage(
                     AppState.user?.fcmToken,

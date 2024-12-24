@@ -34,7 +34,7 @@ import kotlinx.coroutines.launch
 class AddVehicleFragment : BaseFragment() {
 
     private lateinit var binding: FragmentDashboardBinding
-    val dashboardViewModel: VehicleViewModel by activityViewModels()
+    val addVehicleViewModel: VehicleViewModel by activityViewModels()
     private var currentVehicle = Vehicle()
     private var totalVehicleMap: VehicleMap? = null
     private var selectedBrands: List<Brand> = emptyList()
@@ -80,7 +80,7 @@ class AddVehicleFragment : BaseFragment() {
 
     private fun observeStates() {
         viewLifecycleOwner.lifecycleScope.launch {
-            dashboardViewModel.vehiclesState.collectLatest { vehicleState ->
+            addVehicleViewModel.vehiclesState.collectLatest { vehicleState ->
                 when (vehicleState) {
                     is ApiResponse.Loading -> {
                         showProgress()
@@ -105,7 +105,7 @@ class AddVehicleFragment : BaseFragment() {
             }
         }
         viewLifecycleOwner.lifecycleScope.launch {
-            dashboardViewModel.currentVehicleState.collectLatest { it ->
+            addVehicleViewModel.currentVehicleState.collectLatest { it ->
                 it?.let {
                     currentVehicle = it
                     setTheViewBasedOnVehicleType(currentVehicle)
@@ -113,13 +113,14 @@ class AddVehicleFragment : BaseFragment() {
             }
         }
         viewLifecycleOwner.lifecycleScope.launch {
-            dashboardViewModel.addVehicleState.collectLatest { addVehicleState ->
+            addVehicleViewModel.addVehicleState.collectLatest { addVehicleState ->
                 when (addVehicleState) {
                     is ApiResponse.Loading -> {
                         showProgress()
                     }
 
                     is ApiResponse.Success -> {
+                        addVehicleViewModel.setSelectedVehicle(addVehicleState.data)
                         hideProgress()
                     }
 
@@ -132,7 +133,7 @@ class AddVehicleFragment : BaseFragment() {
             }
         }
         viewLifecycleOwner.lifecycleScope.launch {
-            dashboardViewModel.vehicleAddedFlow.collectLatest {
+            addVehicleViewModel.vehicleAddedFlow.collectLatest {
                 showToast("Vehicle Added")
                 findNavController().popBackStack()
             }
@@ -141,11 +142,6 @@ class AddVehicleFragment : BaseFragment() {
 
     fun setTheViewBasedOnVehicleType(vehicle: Vehicle) {
         currentVehicle.type = vehicle.type
-        if (currentVehicle.type == VehicleType.BIKE) {
-            binding.ivBike.isSelected = true
-        } else if (currentVehicle.type == VehicleType.CAR) {
-            binding.ivCar.isSelected = true
-        }
         setBrands(currentVehicle.type)
         binding.tvVehicleType.text = currentVehicle.brand?.name
         binding.tvVehicleModel.text = currentVehicle.name
@@ -161,20 +157,12 @@ class AddVehicleFragment : BaseFragment() {
             totalVehicleMap?.bikeMap?.keys?.let {
                 selectedBrands = it.toList()
             }
-        } else {
-            totalVehicleMap?.carMap?.keys?.let {
-                selectedBrands = it.toList()
-            }
         }
     }
 
     fun setVehicles(brand: Brand) {
         if (currentVehicle.type == VehicleType.BIKE) {
             totalVehicleMap?.bikeMap?.get(brand)?.let {
-                selectedVehicles = it
-            }
-        } else {
-            totalVehicleMap?.carMap?.get(brand)?.let {
                 selectedVehicles = it
             }
         }
@@ -191,25 +179,8 @@ class AddVehicleFragment : BaseFragment() {
     }
 
     private fun FragmentDashboardBinding.initViews() {
-        binding.ivBike.setOnClickListener {
-            if (!it.isSelected) {
-                binding.ivBike.isSelected = true
-                binding.ivCar.isSelected = false
-                resetVehicleAndViews()
-                currentVehicle.type = VehicleType.BIKE
-                setTheViewBasedOnVehicleType(currentVehicle)
-            }
-        }
-        binding.ivCar.setOnClickListener {
-            if (!it.isSelected) {
-                binding.ivCar.isSelected = true
-                binding.ivBike.isSelected = false
-                resetVehicleAndViews()
-                currentVehicle.type = VehicleType.CAR
-                setTheViewBasedOnVehicleType(currentVehicle)
-            }
-        }
-
+        currentVehicle.type = VehicleType.BIKE
+        setTheViewBasedOnVehicleType(currentVehicle)
         rlVehicleManufacture.setOnClickListener {
             if (selectedBrands.isNotEmpty()) {
                 val args = VehicleSelectionFragmentArgs(
@@ -217,6 +188,7 @@ class AddVehicleFragment : BaseFragment() {
                         addAll(selectedBrands)
                     }, null
                 )
+                addVehicleViewModel.updateCurrentState(currentVehicle)
                 findNavController().navigate(
                     R.id.navigation_vehicle_selection, args.toBundle()
                 )
@@ -227,6 +199,7 @@ class AddVehicleFragment : BaseFragment() {
                 val args = VehicleSelectionFragmentArgs(null, Vehicles().apply {
                     addAll(selectedVehicles)
                 })
+                addVehicleViewModel.updateCurrentState(currentVehicle)
                 findNavController().navigate(R.id.navigation_vehicle_selection, args.toBundle())
             }
         }
@@ -244,9 +217,9 @@ class AddVehicleFragment : BaseFragment() {
                 val regNum = readRegNums(regNumsViews)
                 currentVehicle.regNo = regNum
             }
-            if (dashboardViewModel.isValid(currentVehicle)) {
+            if (addVehicleViewModel.isValid(currentVehicle)) {
                 AppState.user?.firebaseId?.let {
-                    dashboardViewModel.addVehicle(currentVehicle, it)
+                    addVehicleViewModel.addVehicle(currentVehicle, it)
                 }
 
             } else {
@@ -285,8 +258,8 @@ class AddVehicleFragment : BaseFragment() {
         return true
     }
 
-    override fun onStop() {
-        super.onStop()
-        dashboardViewModel.updateCurrentState(currentVehicle)
+    override fun onDestroy() {
+        super.onDestroy()
+        addVehicleViewModel.updateCurrentState(Vehicle())
     }
 }

@@ -28,11 +28,13 @@
             android:id="@+id/map"
             android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
-            android:layout_height="400dp"
+            android:layout_height="0dp"
             android:layout_marginTop="@dimen/margin_small"
+            app:layout_constraintBottom_toTopOf="@+id/sv_container"
             app:layout_constraintTop_toBottomOf="@+id/btn_search_places" />
 
         <ScrollView
+            android:id="@+id/sv_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:nestedScrollingEnabled="true"
@@ -98,9 +100,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/margin_small"
-                        android:text="Royal Enfield Classic 350"
                         android:textColor="@color/cherry_red"
-                        android:textSize="18sp" />
+                        android:textSize="18sp"
+                        tools:text="Royal Enfield Classic 350" />
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/tv_add_change"
@@ -123,7 +125,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/tv_vehicle_name"
                         android:layout_marginTop="@dimen/margin_small"
-                        android:text="TN 54 AB 6767" />
+                        tools:text="TN 54 AB 6767" />
                 </RelativeLayout>
 
                 <com.google.android.material.checkbox.MaterialCheckBox

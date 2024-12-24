@@ -3,17 +3,14 @@ package com.bikeblooms.android.ui.service
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
-import android.location.Address
 import android.location.Geocoder
 import android.location.Location
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RadioGroup
 import android.widget.RadioGroup.OnCheckedChangeListener
-import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.activityViewModels
@@ -39,6 +36,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
@@ -48,7 +46,6 @@ import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import java.io.IOException
 import java.util.Calendar
 import java.util.Locale
 import kotlin.getValue
@@ -64,6 +61,9 @@ class AddServiceFragment : BaseFragment(), OnMapReadyCallback {
     private val FINE_PERSMISSION_CODE = 1
     lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private lateinit var currentLocation: Location
+    private lateinit var marker: Marker
+    lateinit var mGeocoder: Geocoder
+
 
     val startAutocomplete: ActivityResultLauncher<Intent> = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
@@ -73,8 +73,14 @@ class AddServiceFragment : BaseFragment(), OnMapReadyCallback {
             val intent = result.data;
             if (intent != null) {
                 val place = Autocomplete.getPlaceFromIntent(intent)
-
-                Log.i("Surendar", "Place: $place")
+                var address = ""
+                place.addressComponents?.asList()?.forEach {
+                    address += it.name
+                }
+                place.latLng?.let {
+                    setLocationToMap(mMap, it)
+                    viewModel.updateAddress(address)
+                }
             }
         } else if (result.resultCode == Activity.RESULT_CANCELED) {
 
@@ -83,6 +89,7 @@ class AddServiceFragment : BaseFragment(), OnMapReadyCallback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        mGeocoder = Geocoder(requireContext(), Locale.getDefault())
         Places.initialize(requireContext(), "AIzaSyBXhQq1EGtqL8gDzOfiXVcHE0j8Vu2pits")
 
         fusedLocationProviderClient =
@@ -117,6 +124,7 @@ class AddServiceFragment : BaseFragment(), OnMapReadyCallback {
         super.onViewCreated(view, savedInstanceState)
         progressBar = binding.progressBar
         observeStates()
+        binding.addListeners()
     }
 
     private fun observeStates() {
@@ -154,11 +162,16 @@ class AddServiceFragment : BaseFragment(), OnMapReadyCallback {
         }
         viewLifecycleOwner.lifecycleScope.launch {
             vehicleViewModel.myVehiclesState.collectLatest { result ->
-                if (result is ApiResponse.Success && result.data?.isNotEmpty() == true) {
-                    this@AddServiceFragment.myVehicles = result.data
+                if (result is ApiResponse.Success) result.data?.let {
+                    if (it.isEmpty()) {
+                        binding.tvVehicleName.text = getString(R.string.no_vehicle_added)
+                    } else {
+                        this@AddServiceFragment.myVehicles = result.data
+                    }
                 }
             }
         }
+        binding.addListeners()
     }
 
     fun closeThisScreen() {
@@ -168,11 +181,9 @@ class AddServiceFragment : BaseFragment(), OnMapReadyCallback {
     private fun FragmentAddServiceBinding.showVehicleDetails(vehicle: Vehicle) {
         tvVehicleName.text = vehicle.name
         tvVehicleNumber.text = vehicle.regNo.toRegNum()
-
-        initViews(vehicle)
     }
 
-    private fun FragmentAddServiceBinding.initViews(vehicle: Vehicle) {
+    private fun FragmentAddServiceBinding.addListeners() {
 
         rgServiceType.setOnCheckedChangeListener(object : OnCheckedChangeListener {
             override fun onCheckedChanged(p0: RadioGroup?, id: Int) {
@@ -186,20 +197,20 @@ class AddServiceFragment : BaseFragment(), OnMapReadyCallback {
         cbPickDrop.setOnCheckedChangeListener { _, isChecked ->
             viewModel.serviceState.value.pickDrop = isChecked
         }
-
         btnNext.setOnClickListener {
             AppState.user?.firebaseId?.let { firebaseId ->
                 var service = Service(
                     serviceType = viewModel.serviceState.value.serviceType,
-                    vehicleName = vehicle.name,
-                    vehicleId = vehicle.regNo,
-                    regNum = vehicle.regNo,
+                    vehicleName = vehicleViewModel.selectedVehicleState.value?.name.toString(),
+                    vehicleId = vehicleViewModel.selectedVehicleState.value?.regNo.toString(),
+                    regNum = vehicleViewModel.selectedVehicleState.value?.regNo.toString(),
                     startDate = Calendar.getInstance().time,
                     endDate = null,
                     spareParts = emptyList(),
                     complaint = "",
                     firebaseId = firebaseId,
                     pickDrop = viewModel.serviceState.value.pickDrop,
+                    address = viewModel.serviceState.value.address
                 )
                 val args = AddComplaintsFragmentArgs(service)
                 findNavController().navigate(
@@ -211,18 +222,19 @@ class AddServiceFragment : BaseFragment(), OnMapReadyCallback {
             if (myVehicles.isNotEmpty()) {
                 val vehicles = Vehicles()
                 vehicles.addAll(myVehicles)
-                val args = VehicleListDialogFragmentArgs(vehicles, vehicle)
+                val args = VehicleListDialogFragmentArgs(
+                    vehicles, vehicleViewModel.selectedVehicleState.value
+                )
                 findNavController().navigate(R.id.vehicle_list_fragment_dialog, args.toBundle())
             } else {
-                showToast("Vehicle empty")
+                findNavController().navigate(R.id.navigation_add_vehicle)
             }
 
         }
         btnSearchPlaces.setOnClickListener {
             // return after the user has made a selection.
             val fields = listOf(
-                Place.Field.ADDRESS_COMPONENTS,
-                Place.Field.LAT_LNG, Place.Field.VIEWPORT
+                Place.Field.ADDRESS_COMPONENTS, Place.Field.LAT_LNG, Place.Field.VIEWPORT
             );
 
             // Build the autocomplete intent with field, country, and type filters applied
@@ -234,58 +246,37 @@ class AddServiceFragment : BaseFragment(), OnMapReadyCallback {
         }
     }
 
-    override fun onMapReady(p0: GoogleMap) {
-        mMap = p0
-        mMap.addMarker(
-            MarkerOptions().position(
-                LatLng(
-                    currentLocation.latitude,
-                    currentLocation.longitude
-                )
-            ).title("You are here")
-        )
-        mMap.moveCamera(
-            CameraUpdateFactory.newLatLngZoom(
-                LatLng(
-                    currentLocation.latitude,
-                    currentLocation.longitude
-                ), 20F
-            )
-        )
-        val mGeocoder = Geocoder(requireContext(), Locale.getDefault())
-        var addressString = ""
-
-        // Reverse-Geocoding starts
-        try {
-            val addressList: List<Address>? =
-                mGeocoder.getFromLocation(currentLocation.latitude, currentLocation.longitude, 1)
-
-            // use your lat, long value here
-            if (addressList != null && addressList.isNotEmpty()) {
-                val address = addressList[0]
-                val sb = StringBuilder()
-                for (i in 0 until address.maxAddressLineIndex) {
-                    sb.append(address.getAddressLine(i)).append("\n")
-                }
-
-                // Various Parameters of an Address are appended
-                // to generate a complete Address
-                if (address.premises != null)
-                    sb.append(address.premises).append(", ")
-
-                sb.append(address.subAdminArea).append("\n")
-                sb.append(address.locality).append(", ")
-                sb.append(address.adminArea).append(", ")
-                sb.append(address.countryName).append(", ")
-                sb.append(address.postalCode)
-                addressString = sb.toString()
-                viewModel.updateAddress(addressString)
-
+    @SuppressLint("MissingPermission")
+    override fun onMapReady(googleMap: GoogleMap) {
+        mMap = googleMap
+        mMap.isMyLocationEnabled = true
+        mMap.mapType = GoogleMap.MAP_TYPE_SATELLITE
+        setLocationToMap(mMap, currentLocation.toLatLng())
+        mMap.setOnCameraMoveListener(object : GoogleMap.OnCameraMoveListener {
+            override fun onCameraMove() {
+                val options = MarkerOptions().position(mMap.cameraPosition.target);
+                marker.remove();
+                marker = mMap.addMarker(options)!!
             }
-        } catch (e: IOException) {
-            Toast.makeText(requireContext(), "Unable connect to Geocoder", Toast.LENGTH_LONG)
-                .show()
+        })
+        mMap.setOnCameraIdleListener {
+            viewModel.reverseGeocode(mMap.cameraPosition.target, mGeocoder)
         }
+
     }
 
+    private fun setLocationToMap(map: GoogleMap, location: LatLng) {
+        val options = MarkerOptions().position(location);
+        marker = map.addMarker(options)!!
+        marker.isDraggable = true
+        map.moveCamera(
+            CameraUpdateFactory.newLatLngZoom(
+                location, 18f
+            )
+        )
+    }
+}
+
+private fun Location.toLatLng(): LatLng {
+    return LatLng(latitude, longitude)
 }

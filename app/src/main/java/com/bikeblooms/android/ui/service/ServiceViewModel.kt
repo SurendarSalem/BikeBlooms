@@ -1,5 +1,7 @@
 package com.bikeblooms.android.ui.service
 
+import android.location.Address
+import android.location.Geocoder
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bikeblooms.android.LoginCallback
@@ -8,12 +10,15 @@ import com.bikeblooms.android.model.ApiResponse
 import com.bikeblooms.android.model.AppState
 import com.bikeblooms.android.model.Service
 import com.bikeblooms.android.model.ServiceType
+import com.google.android.gms.maps.model.LatLng
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import java.io.IOException
 import javax.inject.Inject
 
 @HiltViewModel
@@ -63,6 +68,34 @@ class ServiceViewModel @Inject constructor(
     }
 
     fun updateAddress(address: String) {
-        _serviceState.value = _serviceState.value.copy(address = address)
+        viewModelScope.launch(Dispatchers.Main) {
+            _serviceState.value = _serviceState.value.copy(address = address)
+        }
+    }
+
+     fun reverseGeocode(
+        lng: LatLng, mGeocoder: Geocoder
+    ) {
+        var addressString = ""
+        try {
+            val addressList: List<Address>? =
+                mGeocoder.getFromLocation(lng.latitude, lng.longitude, 1)
+
+            // use your lat, long value here
+            if (addressList != null && addressList.isNotEmpty()) {
+                val address = addressList[0]
+                val sb = StringBuilder()
+                sb.append(address.getAddressLine(0)).append("\n")
+                sb.append(address.locality).append("\n")
+                sb.append(address.adminArea).append("\n")
+                sb.append(address.countryName).append("\n")
+                sb.append(address.postalCode).append("\n")
+                addressString = sb.toString()
+                updateAddress(addressString)
+
+            }
+        } catch (e: IOException) {
+
+        }
     }
 }

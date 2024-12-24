@@ -15,8 +15,8 @@ import com.bikeblooms.android.databinding.FragmentMyVehiclesBinding
 import com.bikeblooms.android.databinding.VehicleItemBinding
 import com.bikeblooms.android.model.ApiResponse
 import com.bikeblooms.android.model.AppState
+import com.bikeblooms.android.model.NotifyState
 import com.bikeblooms.android.model.Vehicle
-import com.bikeblooms.android.model.VehicleType
 import com.bikeblooms.android.ui.Utils
 import com.bikeblooms.android.ui.adapter.GenericAdapter
 import com.bikeblooms.android.ui.base.BaseFragment
@@ -82,10 +82,33 @@ class MyVehiclesFragment : BaseFragment() {
                 }
             }
         }
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.notifyState.collect {
+                if (it is NotifyState.Success) {
+                    showToast(it.message)
+                } else if (it is NotifyState.Error) {
+                    showToast(it.message)
+                }
+            }
+        }
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.deletedVehicleState.collectLatest {
+                when (it) {
+                    is ApiResponse.Loading -> {
+                        showProgress()
+                    }
+
+                    else -> {
+                        hideProgress()
+                    }
+                }
+            }
+        }
     }
 
     fun onVehiclesLoaded(vehicles: List<Vehicle>?) {
         if (vehicles.isNullOrEmpty()) {
+            adapter.setItem(emptyList())
             binding.emptyLayout.root.visibility = View.VISIBLE
             binding.fabAddVehicle.visibility = View.GONE
         } else {
@@ -108,17 +131,15 @@ class MyVehiclesFragment : BaseFragment() {
                 if (item is Vehicle) {
                     binding.tvName.text = item.name
                     binding.tvRegNum.text = item.regNo.toRegNum()
-                    val icon = if (item.type == VehicleType.CAR) R.drawable.car else R.drawable.bike
+                    val icon = R.drawable.bike
                     binding.sivVehicle.setImageResource(icon)
                     binding.ivDelete.setOnClickListener {
-                        Utils.showAlertDialog(
-                            context = requireContext(),
+                        Utils.showAlertDialog(context = requireContext(),
                             message = getString(R.string.delete_vehicle_msg),
                             positiveBtnText = "Delete",
                             positiveBtnCallback = {
                                 viewModel.delete(item, AppState.user?.firebaseId.toString())
-                            }
-                        )
+                            })
                     }
                 }
             }

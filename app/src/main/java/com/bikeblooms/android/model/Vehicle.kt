@@ -23,7 +23,7 @@ class Vehicles : ArrayList<Vehicle>(), Parcelable
 
 @Parcelize
 enum class VehicleType(var value: String) : Parcelable {
-    CAR("Car"), BIKE("Bike")
+    BIKE("Bike")
 }
 
 @Parcelize

@@ -6,6 +6,7 @@ import com.bikeblooms.android.LoginCallback
 import com.bikeblooms.android.data.ServiceRepository
 import com.bikeblooms.android.data.SpareRepository
 import com.bikeblooms.android.model.ApiResponse
+import com.bikeblooms.android.model.Bill
 import com.bikeblooms.android.model.NotifyState
 import com.bikeblooms.android.model.Service
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -13,15 +14,14 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class ServiceDetailViewModel @Inject constructor(
-    private var serviceRepository: ServiceRepository,
-    private var spareRepository: SpareRepository
-) :
-    ViewModel() {
+    private var serviceRepository: ServiceRepository, private var spareRepository: SpareRepository
+) : ViewModel() {
 
     private var _updateServiceState = MutableStateFlow<ApiResponse<Service>>(ApiResponse.Empty())
     var updateServiceState = _updateServiceState.asStateFlow()
@@ -30,6 +30,25 @@ class ServiceDetailViewModel @Inject constructor(
     var cancelServiceState = _cancelServiceState.asStateFlow()
 
     var notifyState = MutableSharedFlow<NotifyState>()
+
+    private var _serviceState = MutableStateFlow<Service?>(null)
+    val serviceState = _serviceState.asStateFlow()
+
+    init {
+        viewModelScope.launch {
+            serviceState.collectLatest { service ->
+                service?.let {
+                    var spareAmount = it.spareParts?.sumOf { it.price } ?: 0.0
+                    var complaintsAmount = it.complaints?.sumOf { it.price } ?: 0.0
+                    _serviceState.value = it.copy(
+                        bill = Bill(
+                            totalAmount = spareAmount + complaintsAmount, service.startDate
+                        )
+                    )
+                }
+            }
+        }
+    }
 
     fun setService(service: Service) {
         viewModelScope.launch {
@@ -46,8 +65,6 @@ class ServiceDetailViewModel @Inject constructor(
     val myVehiclesState = serviceRepository.myVehicleState
     val allSparesState = spareRepository.allSparesState
 
-    private var _serviceState = MutableStateFlow<Service?>(null)
-    val serviceState = _serviceState.asStateFlow()
 
     fun updateServiceInFirebase() {
         viewModelScope.launch {

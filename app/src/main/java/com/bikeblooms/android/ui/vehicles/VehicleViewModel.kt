@@ -6,6 +6,7 @@ import com.bikeblooms.android.LoginCallback
 import com.bikeblooms.android.data.VehiclesRepository
 import com.bikeblooms.android.model.ApiResponse
 import com.bikeblooms.android.model.AppState
+import com.bikeblooms.android.model.NotifyState
 import com.bikeblooms.android.model.Vehicle
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -37,6 +38,10 @@ class VehicleViewModel @Inject constructor(
     private var _selectedVehicleState = MutableStateFlow<Vehicle?>(null)
     var selectedVehicleState = _selectedVehicleState.asStateFlow()
 
+    private var _deletedVehicleState = MutableStateFlow<ApiResponse<Vehicle>>(ApiResponse.Empty())
+    var deletedVehicleState = _deletedVehicleState.asStateFlow()
+
+    var notifyState = MutableSharedFlow<NotifyState>()
 
     init {
         viewModelScope.launch {
@@ -100,15 +105,35 @@ class VehicleViewModel @Inject constructor(
     }
 
     fun delete(vehicle: Vehicle, firebaseId: String) {
-        vehiclesRepository.deleteVehicle(firebaseId,vehicle, object : LoginCallback<Vehicle>{
-            override fun onSuccess(t: Vehicle) {
-                TODO("Not yet implemented")
+        _deletedVehicleState.value = ApiResponse.Loading()
+        vehiclesRepository.deleteVehicle(firebaseId, vehicle, object : LoginCallback<Vehicle> {
+            override fun onSuccess(vehicle: Vehicle) {
+                _deletedVehicleState.value = ApiResponse.Success(vehicle)
+                viewModelScope.launch(Dispatchers.Main) {
+                    notifyState.emit(NotifyState.Success("Vehicle deleted successfully!"))
+                }
+                if (_myVehiclesState.value is ApiResponse.Success) {
+                    val vehicles = _myVehiclesState.value.data?.toMutableList()
+                    vehicles?.let {
+                        it.removeIf { item -> item.regNo == vehicle.regNo }
+                        _myVehiclesState.value = ApiResponse.Success(it)
+                    }
+                }
             }
 
             override fun onError(message: String) {
-                TODO("Not yet implemented")
+                _deletedVehicleState.value = ApiResponse.Error(message)
+                viewModelScope.launch(Dispatchers.Main) {
+                    notifyState.emit(NotifyState.Error(message))
+                }
             }
 
         })
+    }
+
+    fun setSelectedVehicle(vehicle: Vehicle?) {
+        vehicle?.let {
+            _selectedVehicleState.value = vehicle
+        }
     }
 }

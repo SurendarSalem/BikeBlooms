@@ -18,34 +18,40 @@
             android:background="@color/cherry_red"
             android:gravity="center"
             android:padding="@dimen/margin_small"
-            android:text="Select your Vehicle"
+            android:text="@string/select_your_vehicle"
             android:textColor="@color/white"
             android:textSize="18sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/btn_add_vehicle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            android:background="@drawable/dotted_white"
+            android:foregroundTint="@color/white"
+            android:paddingHorizontal="20dp"
+            android:paddingVertical="5dp"
+            android:text="@string/add"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_items"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/margin_small"
+            android:layout_marginTop="@dimen/margin_small"
             android:clipToPadding="false"
-            app:layout_constraintBottom_toTopOf="@+id/btn_add_vehicle"
-            app:layout_constraintTop_toBottomOf="@+id/tv_heading"
+            app:layout_constraintTop_toBottomOf="@+id/btn_add_vehicle"
             tools:context=".ui.service.compaints.VehicleListDialogFragment"
             tools:listitem="@layout/name_item" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_add_vehicle"
-            style="@style/AppButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_small"
-            android:text="Add a Vehicle"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/rv_items" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

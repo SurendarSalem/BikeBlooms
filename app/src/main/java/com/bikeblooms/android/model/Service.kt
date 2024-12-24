@@ -20,7 +20,8 @@ data class Service(
     var progress: Progress = Progress.STARTED,
     var serviceType: ServiceType = ServiceType.GENERAL_SERVICE,
     var pickDrop: Boolean = false,
-    var address: String = ""
+    var address: String = "",
+    var bill: Bill? = null
 ) : Parcelable {}
 
 @Parcelize

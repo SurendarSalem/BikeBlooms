@@ -87,9 +87,9 @@ class AddComplaintsFragment : BaseFragment() {
             }
         }
         viewLifecycleOwner.lifecycleScope.launch {
-            addComplaintsViewModel.billState.collectLatest {
-                binding.tvInspectionCharges.text = it?.totalAmount.toString()
-                binding.tvTotalAmt.text = it?.totalAmount.toString()
+            addComplaintsViewModel.serviceState.collectLatest {
+                binding.tvInspectionCharges.text = it?.bill?.totalAmount.toString()
+                binding.tvTotalAmt.text = it?.bill?.totalAmount.toString()
             }
         }
         viewLifecycleOwner.lifecycleScope.launch {
@@ -137,6 +137,7 @@ class AddComplaintsFragment : BaseFragment() {
     private fun FragmentAddComplaintsBinding.setVehicleData(service: Service) {
         tvVehicleName.text = service.vehicleName
         tvVehicleNumber.text = service.regNum.toRegNum()
+        tvAddress.text = service.address
         tvServiceType.text = service.serviceType.title
         if (service.serviceType == ServiceType.GENERAL_SERVICE) {
             llEngineOil.visibility = View.VISIBLE
