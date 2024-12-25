@@ -18,7 +18,7 @@ data class Service(
     var complaint: String? = "",
     var firebaseId: String = "",
     var progress: Progress = Progress.STARTED,
-    var serviceType: ServiceType = ServiceType.GENERAL_SERVICE,
+    var serviceType: ServiceType? = null,
     var pickDrop: Boolean = false,
     var address: String = "",
     var bill: Bill? = null

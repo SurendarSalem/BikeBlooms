@@ -1,10 +1,10 @@
 package com.bikeblooms.android.data
 
-import android.location.Location
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import com.bikeblooms.android.util.LocationClient
+import javax.inject.Singleton
 
-class LocationRepository {
-    private var _myLocationState = MutableStateFlow<Location?>(null)
-    val myLocationState = _myLocationState.asStateFlow()
+@Singleton
+class LocationRepository(private val locationClient: LocationClient) {
+
+    var getLocation = locationClient.getCurrentLocation()
 }

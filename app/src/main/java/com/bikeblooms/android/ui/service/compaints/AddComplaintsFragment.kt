@@ -138,7 +138,7 @@ class AddComplaintsFragment : BaseFragment() {
         tvVehicleName.text = service.vehicleName
         tvVehicleNumber.text = service.regNum.toRegNum()
         tvAddress.text = service.address
-        tvServiceType.text = service.serviceType.title
+        tvServiceType.text = service.serviceType?.title
         if (service.serviceType == ServiceType.GENERAL_SERVICE) {
             llEngineOil.visibility = View.VISIBLE
         } else if (service.serviceType == ServiceType.VEHICLE_REPAIR) {
