@@ -6,145 +6,162 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingHorizontal="@dimen/margin_small">
+        android:layout_height="match_parent">
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/btn_search_places"
+        <com.amar.library.ui.StickyScrollView
+            android:id="@+id/scrollView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:background="@drawable/border_gray_dotted"
-            android:drawableStart="@android:drawable/ic_menu_search"
-            android:drawablePadding="@dimen/margin_small"
-            android:gravity="center_vertical"
-            android:hint="@string/search_for_places"
-            android:padding="@dimen/margin_small"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/map"
-            android:name="com.google.android.gms.maps.SupportMapFragment"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginTop="@dimen/margin_small"
-            app:layout_constraintBottom_toTopOf="@+id/sv_container"
-            app:layout_constraintTop_toBottomOf="@+id/btn_search_places" />
-
-        <ScrollView
-            android:id="@+id/sv_container"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:nestedScrollingEnabled="true"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
+            android:layout_height="match_parent"
+            app:stickyFooter="@+id/rg_service_type"
+            app:stickyHeader="@+id/map_container">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:orientation="vertical"
-                android:padding="@dimen/margin_small"
-                tools:context=".ui.dashboard.AddVehicleFragment">
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    style="@style/Caption"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/choose_your_service_type"
-                    android:textColor="@color/cherry_red"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
-
-                <RadioGroup
-                    android:id="@+id/rg_service_type"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="0dp">
-
-                    <com.google.android.material.radiobutton.MaterialRadioButton
-                        android:id="@+id/rb_general_service"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="-5dp"
-                        android:drawableEnd="@drawable/black_bike"
-                        android:drawablePadding="15dp"
-                        android:padding="0dp"
-                        android:text="General Service" />
-
-                    <com.google.android.material.radiobutton.MaterialRadioButton
-                        android:id="@+id/rb_vehicle_repair"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="-5dp"
-                        android:layout_marginTop="-15dp"
-                        android:drawableEnd="@drawable/black_repair"
-                        android:drawablePadding="15dp"
-                        android:padding="0dp"
-                        android:text="Vehicle Repairing" />
-
-                </RadioGroup>
+                android:orientation="vertical">
 
                 <RelativeLayout
-                    android:id="@+id/rl_vehicle_details"
+                    android:id="@+id/map_container"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/white">
+                    android:layout_height="wrap_content">
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/tv_vehicle_name"
+                        android:id="@+id/btn_search_places"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:background="@drawable/border_gray_dotted"
+                        android:drawableStart="@android:drawable/ic_menu_search"
+                        android:drawablePadding="@dimen/margin_small"
+                        android:gravity="center_vertical"
+                        android:hint="@string/search_for_places"
+                        android:padding="@dimen/margin_small"
+                        android:textSize="16sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.fragment.app.FragmentContainerView
+                        android:id="@+id/map"
+                        android:name="com.google.android.gms.maps.SupportMapFragment"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/map_height"
+                        android:layout_below="@+id/btn_search_places" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/iv_overlay"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/map_height" />
+
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:id="@+id/sticky_footer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:clickable="true"
+                    android:orientation="vertical"
+                    android:padding="@dimen/margin_small"
+                    android:paddingStart="@dimen/activity_horizontal_margin"
+                    android:paddingEnd="@dimen/activity_horizontal_margin"
+                    android:translationZ="999dp">
+
+                    <androidx.appcompat.widget.AppCompatTextView
                         style="@style/Caption"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/margin_small"
+                        android:text="@string/choose_your_service_type"
                         android:textColor="@color/cherry_red"
                         android:textSize="18sp"
-                        tools:text="Royal Enfield Classic 350" />
+                        android:textStyle="bold" />
 
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/tv_add_change"
+                    <RadioGroup
+                        android:id="@+id/rg_service_type"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="0dp">
+
+                        <com.google.android.material.radiobutton.MaterialRadioButton
+                            android:id="@+id/rb_general_service"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="-5dp"
+                            android:drawableEnd="@drawable/black_bike"
+                            android:drawablePadding="15dp"
+                            android:padding="0dp"
+                            android:text="General Service" />
+
+                        <com.google.android.material.radiobutton.MaterialRadioButton
+                            android:id="@+id/rb_vehicle_repair"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="-5dp"
+                            android:layout_marginTop="-15dp"
+                            android:drawableEnd="@drawable/black_repair"
+                            android:drawablePadding="15dp"
+                            android:padding="0dp"
+                            android:text="Vehicle Repairing" />
+
+                    </RadioGroup>
+
+                    <RelativeLayout
+                        android:id="@+id/rl_vehicle_details"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tv_vehicle_name"
+                            style="@style/Caption"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/margin_small"
+                            android:textColor="@color/cherry_red"
+                            android:textSize="18sp"
+                            tools:text="Royal Enfield Classic 350" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tv_add_change"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:background="@drawable/border_gray_dotted"
+                            android:clickable="true"
+                            android:gravity="center"
+                            android:padding="@dimen/margin_small"
+                            android:text="@string/add_or_change"
+                            android:textColor="@color/dark_gray"
+                            android:textSize="12sp" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tv_vehicle_number"
+                            style="@style/Body"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/tv_vehicle_name"
+                            tools:text="TN 54 AB 6767" />
+                    </RelativeLayout>
+
+                    <com.google.android.material.checkbox.MaterialCheckBox
+                        android:id="@+id/cb_pick_drop"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"
-                        android:background="@drawable/border_gray_dotted"
-                        android:clickable="true"
-                        android:gravity="center"
-                        android:padding="@dimen/margin_small"
-                        android:text="@string/add_or_change"
-                        android:textColor="@color/dark_gray"
-                        android:textSize="12sp" />
+                        android:layout_marginStart="-5dp"
+                        android:text="Pick and Drop Service (Optional)" />
 
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/tv_vehicle_number"
-                        style="@style/Body"
-                        android:layout_width="wrap_content"
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_next"
+                        style="@style/AppButton"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/tv_vehicle_name"
-                        tools:text="TN 54 AB 6767" />
-                </RelativeLayout>
+                        android:layout_marginTop="@dimen/activity_horizontal_margin"
+                        android:text="Next" />
 
-                <com.google.android.material.checkbox.MaterialCheckBox
-                    android:id="@+id/cb_pick_drop"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="-5dp"
-                    android:text="Pick and Drop Service (Optional)" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_next"
-                    style="@style/AppButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/activity_horizontal_margin"
-                    android:text="Next" />
-
+                </LinearLayout>
             </LinearLayout>
-        </ScrollView>
 
+        </com.amar.library.ui.StickyScrollView>
 
         <ProgressBar
             android:id="@+id/progress_bar"
@@ -157,4 +174,6 @@
             app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 </layout>

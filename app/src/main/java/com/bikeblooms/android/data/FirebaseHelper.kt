@@ -13,6 +13,7 @@ import com.bikeblooms.android.model.User
 import com.bikeblooms.android.model.Vehicle
 import com.bikeblooms.android.model.VehicleStatus
 import com.bikeblooms.android.model.VehicleType
+import com.bikeblooms.android.model.Vendor
 import com.bikeblooms.android.util.AppConstants.VEHICLES
 import com.bikeblooms.android.util.FirebaseConstants.Bike.BIKE_BRANDS
 import com.bikeblooms.android.util.FirebaseConstants.Bike.BIKE_MODELS
@@ -21,6 +22,7 @@ import com.bikeblooms.android.util.FirebaseConstants.SERVICES
 import com.bikeblooms.android.util.FirebaseConstants.SPARES
 import com.bikeblooms.android.util.FirebaseConstants.USERS
 import com.bikeblooms.android.util.FirebaseConstants.USER_VEHICLES
+import com.bikeblooms.android.util.FirebaseConstants.VENDORS
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.Filter
@@ -149,19 +151,26 @@ class FirebaseHelper {
             }
     }
 
-    fun getMyServices(uid: String, callback: LoginCallback<List<Service>>) {
-        Firebase.firestore.collection(SERVICES).whereEqualTo("firebaseId", uid).get()
-            .addOnSuccessListener { result ->
-                val vehicleList = mutableListOf<Service>()
-                result.forEach {
-                    val service = it.toObject<Service>(Service::class.java)
-                    service.id = it.id
-                    vehicleList.add(service)
-                }
-                callback.onSuccess(vehicleList)
-            }.addOnFailureListener {
-                callback.onError(it.message.toString())
+    fun getMyServices(
+        uid: String, callback: LoginCallback<List<Service>>, isAdmin: Boolean = false
+    ) {
+        val collectionRef = Firebase.firestore.collection(SERVICES)
+        val task = if (isAdmin) {
+            collectionRef.get()
+        } else {
+            collectionRef.whereEqualTo("firebaseId", uid).get()
+        }
+        task.addOnSuccessListener { result ->
+            val services = mutableListOf<Service>()
+            result.forEach {
+                val service = it.toObject<Service>(Service::class.java)
+                service.id = it.id
+                services.add(service)
             }
+            callback.onSuccess(services)
+        }.addOnFailureListener {
+            callback.onError(it.message.toString())
+        }
     }
 
 
@@ -233,4 +242,32 @@ class FirebaseHelper {
                 callback.onError(it.message.toString())
             }
     }
+
+    fun getAllVendors(uid: String, callback: LoginCallback<List<Vendor>>) {
+        Firebase.firestore.collection(VENDORS).get().addOnSuccessListener { result ->
+            val vendors = mutableListOf<Vendor>()
+            result.forEach {
+                val vehicle = it.toObject<Vendor>(Vendor::class.java)
+                vendors.add(vehicle)
+            }
+            callback.onSuccess(vendors)
+        }.addOnFailureListener {
+            callback.onError(it.message.toString())
+        }
+    }
+
+    inline fun <reified T> getAllItems(tableName: String, callback: LoginCallback<List<T>>) {
+        Firebase.firestore.collection(VENDORS).get().addOnSuccessListener { result ->
+            val vendors = mutableListOf<T>()
+            result.forEach {
+                val vehicle = it.toObject<T>(T::class.java)
+                vendors.add(vehicle)
+            }
+            callback.onSuccess(vendors)
+        }.addOnFailureListener {
+            callback.onError(it.message.toString())
+        }
+    }
+
+
 }

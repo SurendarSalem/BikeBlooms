@@ -43,7 +43,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/activity_horizontal_margin"
-            android:contentDescription="add_vehicle"
             android:src="@android:drawable/ic_input_add"
             android:text="Add Vehicle"
             android:textAllCaps="false"

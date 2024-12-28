@@ -9,6 +9,7 @@ import com.bikeblooms.android.data.LocationRepository
 import com.bikeblooms.android.data.Repository
 import com.bikeblooms.android.data.RoomDBHelper
 import com.bikeblooms.android.data.VehiclesRepository
+import com.bikeblooms.android.data.VendorRepository
 import com.bikeblooms.android.util.LocationClient
 import com.bikeblooms.android.util.LocationHelper
 import com.bikeblooms.android.util.SharedPrefHelper
@@ -66,6 +67,12 @@ class AppModule {
     @Provides
     fun provideVehicleRepository(firebaseHelper: FirebaseHelper): VehiclesRepository {
         return VehiclesRepository(firebaseHelper)
+    }
+
+    @Singleton
+    @Provides
+    fun provideVendorRepository(firebaseHelper: FirebaseHelper): VendorRepository {
+        return VendorRepository(firebaseHelper)
     }
 
     @Singleton

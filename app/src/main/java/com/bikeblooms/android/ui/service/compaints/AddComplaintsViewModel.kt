@@ -157,7 +157,6 @@ class AddComplaintsViewModel @Inject constructor(
                     body
                 )
             }
-
         }
     }
 

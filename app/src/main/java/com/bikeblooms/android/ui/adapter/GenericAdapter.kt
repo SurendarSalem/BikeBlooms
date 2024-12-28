@@ -100,4 +100,10 @@ class GenericAdapter<T : Any>(
             return oldItem == newItem
         }
     }
+
+    fun updateItem(item: T) {
+        val position = itemList.indexOf(item)
+        itemList.toMutableList()[position] = item
+        notifyItemChanged(position)
+    }
 }

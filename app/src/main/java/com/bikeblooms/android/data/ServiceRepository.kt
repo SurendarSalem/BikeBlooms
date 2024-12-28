@@ -5,6 +5,7 @@ import com.bikeblooms.android.model.ApiResponse
 import com.bikeblooms.android.model.AppState
 import com.bikeblooms.android.model.Service
 import com.bikeblooms.android.model.Vehicle
+import com.bikeblooms.android.model.Vendor
 import com.bikeblooms.android.util.AppConstants.VEHICLES
 import com.bikeblooms.android.util.FirebaseConstants.SERVICES
 import com.bikeblooms.android.util.FirebaseConstants.USER_VEHICLES
@@ -27,8 +28,7 @@ class ServiceRepository @Inject constructor(private val repository: VehiclesRepo
             val uid = AppState.user?.firebaseId.toString()
             if (uid.isNotEmpty()) {
                 Firebase.firestore.collection(USER_VEHICLES).document(uid).collection(VEHICLES)
-                    .get()
-                    .addOnSuccessListener { result ->
+                    .get().addOnSuccessListener { result ->
                         val vehicleList = mutableListOf<Vehicle>()
                         result.forEach {
                             val vehicle = it.toObject<Vehicle>(Vehicle::class.java)
@@ -54,6 +54,15 @@ class ServiceRepository @Inject constructor(private val repository: VehiclesRepo
 
     fun cancelService(service: Service, callback: LoginCallback<Service>) {
         Firebase.firestore.collection(SERVICES).document(service.id).update("progress", CANCELLED)
+            .addOnSuccessListener {
+                callback.onSuccess(service)
+            }.addOnFailureListener {
+                callback.onError(it.message.toString())
+            }
+    }
+
+    fun assignService(vendor: Vendor, service: Service, callback: LoginCallback<Service>) {
+        Firebase.firestore.collection(SERVICES).document(service.id).update("assignee", vendor)
             .addOnSuccessListener {
                 callback.onSuccess(service)
             }.addOnFailureListener {

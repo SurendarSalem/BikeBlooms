@@ -21,7 +21,9 @@ data class Service(
     var serviceType: ServiceType? = null,
     var pickDrop: Boolean = false,
     var address: String = "",
-    var bill: Bill? = null
+    var bill: Bill? = null,
+    var assignee: Vendor? = null,
+    var ownerFcmToken: String = ""
 ) : Parcelable {}
 
 @Parcelize

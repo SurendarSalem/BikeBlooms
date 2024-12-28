@@ -7,8 +7,12 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.lifecycleScope
+import com.bikeblooms.android.AdminActivity
 import com.bikeblooms.android.MainActivity
 import com.bikeblooms.android.model.ApiResponse
+import com.bikeblooms.android.model.User
+import com.bikeblooms.android.model.UserType
+import com.bikeblooms.android.model.isAdmin
 import com.bikeblooms.android.ui.authentication.AuthenticationActivity
 import com.bikeblooms.android.ui.home.UserViewModel
 import com.bikeblooms.android.util.SharedPrefHelper
@@ -37,7 +41,7 @@ class LauncherActivity : AppCompatActivity() {
                 userViewModel.userState.collectLatest { userResponse ->
                     when (userResponse) {
                         is ApiResponse.Success -> {
-                            doSplashWork(500)
+                            doSplashWork(500, userResponse.data)
                         }
 
                         is ApiResponse.Error -> {
@@ -48,7 +52,6 @@ class LauncherActivity : AppCompatActivity() {
 
                         is ApiResponse.Empty -> {}
                         is ApiResponse.Loading -> {}
-                        null -> {}
                     }
                 }
             } else {
@@ -57,13 +60,18 @@ class LauncherActivity : AppCompatActivity() {
         }
     }
 
-    suspend fun doSplashWork(time: Long) {
+    suspend fun doSplashWork(time: Long, user: User? = null) {
         delay(time)
         isLoading = false
         val intent = Intent(
-            this@LauncherActivity, if (sharedPrefHelper.isLoggedIn()) {
+            this,
+            if (user?.isAdmin() == true) {
+                AdminActivity::class.java
+            } else if (user?.userType == UserType.CONSUMER) {
                 MainActivity::class.java
-            } else AuthenticationActivity::class.java
+            } else {
+                AuthenticationActivity::class.java
+            }
         )
         startActivity(intent)
         finish()

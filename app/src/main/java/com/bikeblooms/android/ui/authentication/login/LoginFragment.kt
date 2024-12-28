@@ -11,11 +11,14 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.bikeblooms.android.AdminActivity
 import com.bikeblooms.android.MainActivity
 import com.bikeblooms.android.R
 import com.bikeblooms.android.databinding.FragmentLoginBinding
 import com.bikeblooms.android.model.ApiResponse
+import com.bikeblooms.android.model.AppState
 import com.bikeblooms.android.model.User
+import com.bikeblooms.android.model.isAdmin
 import com.bikeblooms.android.ui.base.BaseFragment
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -132,7 +135,12 @@ class LoginFragment : BaseFragment() {
                 when (notifyState) {
                     is ApiResponse.Success -> {
                         showToast(notifyState.data.toString())
-                        val intent = Intent(requireContext(), MainActivity::class.java)
+                        val className = if (AppState.user?.isAdmin() == true) {
+                            AdminActivity::class.java
+                        } else {
+                            MainActivity::class.java
+                        }
+                        val intent = Intent(requireContext(), className)
                         startActivity(intent)
                         requireActivity().finish()
                     }

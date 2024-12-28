@@ -9,6 +9,7 @@ val vehicleTypes = arrayOf(VehicleType.BIKE)
 object AppConstants {
     const val BRAND = "brand"
     const val VEHICLE = "vehicle"
+    const val SELECTED_VENDOR = "selectedVendor"
     const val CURRENT_VEHICLE = "current_vehicle"
     const val BRANDS = "brands"
     const val SOURCE = "source"
@@ -20,6 +21,7 @@ object AppConstants {
 object FirebaseConstants {
     const val USERS = "users"
     const val USER_VEHICLES = "user_vehicles"
+    const val VENDORS = "vendors"
     const val COMPLAINTS = "complaints"
     const val NAME = "Name"
     const val SERVICES = "services"

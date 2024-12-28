@@ -13,14 +13,13 @@ object Utils {
         negativeBtnCallback: () -> Unit? = {}
     ) {
         var alertDialog = AlertDialog.Builder(context).create();
-        alertDialog.setMessage(message);
+        alertDialog.setMessage(message)
         alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, positiveBtnText) { _, _ ->
             alertDialog.dismiss()
             positiveBtnCallback()
         }
         negativeBtnText?.let {
             alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, negativeBtnText) { _, _ ->
-                alertDialog.dismiss();
                 negativeBtnCallback()
             }
         }

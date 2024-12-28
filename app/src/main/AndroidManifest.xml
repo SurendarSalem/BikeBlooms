@@ -24,8 +24,8 @@
             android:exported="true" />
         <activity
             android:name=".ui.LauncherActivity"
-            android:exported="true"
             android:configChanges="uiMode"
+            android:exported="true"
             android:theme="@style/Theme.App.Starting">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -35,6 +35,10 @@
         </activity>
         <activity
             android:name=".MainActivity"
+            android:configChanges="uiMode"
+            android:exported="true" />
+        <activity
+            android:name=".AdminActivity"
             android:configChanges="uiMode"
             android:exported="true" />
 

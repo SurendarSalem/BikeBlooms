@@ -6,6 +6,7 @@ import android.content.Intent
 import android.location.Geocoder
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RadioGroup
@@ -64,7 +65,10 @@ class AddServiceFragment : BaseFragment(), OnMapReadyCallback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        AppState.user?.let { service.firebaseId = it.firebaseId }
+        AppState.user?.let {
+            service.firebaseId = it.firebaseId
+            service.ownerFcmToken = it.fcmToken
+        }
     }
 
     private fun initGoogleMap() {
@@ -185,6 +189,22 @@ class AddServiceFragment : BaseFragment(), OnMapReadyCallback {
                 .setTypesFilter(listOf(TypeFilter.ADDRESS.toString().toLowerCase()))
                 .build(requireContext())
             startAutocomplete.launch(intent)
+        }
+        binding.ivOverlay.setOnTouchListener { _, event ->
+            val action = event.action
+            when (action) {
+                MotionEvent.ACTION_DOWN -> {
+                    binding.scrollView.requestDisallowInterceptTouchEvent(true)
+                    false
+                }
+
+                MotionEvent.ACTION_UP -> {
+                    binding.scrollView.requestDisallowInterceptTouchEvent(false)
+                    true
+                }
+
+                else -> true
+            }
         }
     }
 

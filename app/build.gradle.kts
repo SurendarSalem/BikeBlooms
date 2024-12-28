@@ -77,6 +77,7 @@ dependencies {
     kapt(libs.hilt.compiler)
     implementation(libs.places)
     implementation(libs.play.services.location)
+    implementation(libs.stickyscrollview)
 
     // splash
     implementation(libs.androidx.core.splashscreen)

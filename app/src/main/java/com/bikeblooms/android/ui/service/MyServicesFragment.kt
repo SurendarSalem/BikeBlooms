@@ -14,8 +14,13 @@ import com.bikeblooms.android.R
 import com.bikeblooms.android.databinding.FragmentMyServicesBinding
 import com.bikeblooms.android.databinding.ServiceItemBinding
 import com.bikeblooms.android.model.ApiResponse
+import com.bikeblooms.android.model.AppState
 import com.bikeblooms.android.model.Progress
 import com.bikeblooms.android.model.Service
+import com.bikeblooms.android.model.User
+import com.bikeblooms.android.model.UserType
+import com.bikeblooms.android.model.isAdmin
+import com.bikeblooms.android.ui.VendorListFragmentArgs
 import com.bikeblooms.android.ui.adapter.GenericAdapter
 import com.bikeblooms.android.ui.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -24,6 +29,7 @@ import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Locale
 import kotlin.Any
+
 
 @AndroidEntryPoint
 class MyServicesFragment : BaseFragment() {
@@ -36,7 +42,6 @@ class MyServicesFragment : BaseFragment() {
     }
     private val viewModel: ServiceViewModel by activityViewModels()
     private lateinit var binding: FragmentMyServicesBinding
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,7 +58,7 @@ class MyServicesFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         progressBar = binding.progressBar
         binding.rvServices.layoutManager = LinearLayoutManager(requireContext())
-        viewModel.getMyServices()
+        viewModel.getMyServices(AppState.user?.isAdmin() == true)
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.myServicesState.collectLatest {
                 when (it) {
@@ -76,15 +81,11 @@ class MyServicesFragment : BaseFragment() {
         }
     }
 
-    fun onServicesLoaded(services: List<Service>?) {
-        if (services.isNullOrEmpty()) {
+    fun onServicesLoaded(services: List<Service>?) = if (services.isNullOrEmpty()) {
 
-        } else {
-            binding.rvServices.adapter = adapter
-            adapter.setItem(services.sortedWith({ service1, service2 ->
-                service1.progress.compareTo(service2.progress)
-            }).toList())
-        }
+    } else {
+        binding.rvServices.adapter = adapter
+        adapter.setItem(services)
     }
 
     private fun bindViewHolder(view: View, item: Any, viewType: Int) {
@@ -108,6 +109,21 @@ class MyServicesFragment : BaseFragment() {
                     } else {
                         binding.root.alpha = 1f
                     }
+                    if (AppState.user?.isAdmin() == true) {
+                        binding.tvAssign.visibility = View.VISIBLE
+                        item.assignee?.let {
+                            binding.tvAssign.text = it.name
+                            binding.tvAssign.isClickable = false
+                        } ?: run {
+                            binding.tvAssign.text = getString(R.string.assign)
+                            binding.tvAssign.isClickable = true
+                            binding.tvAssign.setOnClickListener {
+                                openVendorListScreen(item)
+                            }
+                        }
+                    } else {
+                        binding.tvAssign.visibility = View.GONE
+                    }
                 }
             }
         }
@@ -120,5 +136,10 @@ class MyServicesFragment : BaseFragment() {
                 R.id.action_navigation_bookings_to_navigation_service_detail, args.toBundle()
             )
         }
+    }
+
+    fun openVendorListScreen(service: Service) {
+        var args = VendorListFragmentArgs(true, service)
+        findNavController().navigate(R.id.navigation_vendors, args.toBundle())
     }
 }

@@ -34,11 +34,7 @@ class ServiceViewModel @Inject constructor(
 
     var myLocationState = locationRepository.getLocation
 
-    init {
-        getMyServices()
-    }
-
-    fun getMyServices() {
+    fun getMyServices(isAdmin: Boolean = false) {
         viewModelScope.launch {
             _myServicesState.value = ApiResponse.Loading()
             AppState.user?.firebaseId?.run {
@@ -50,7 +46,7 @@ class ServiceViewModel @Inject constructor(
                     override fun onError(message: String) {
                         _myServicesState.value = ApiResponse.Error(message)
                     }
-                })
+                }, isAdmin)
             }
         }
     }

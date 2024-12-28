@@ -17,10 +17,6 @@ public class BikeBloomsApp : Application() {
         super.onCreate();
         FirebaseApp.initializeApp(applicationContext);
 
-
-        Firebase.messaging.subscribeToTopic(SERVICE_UPDATE).addOnCompleteListener { task ->
-            Log.d("New FCM token", "Subscribed")
-        }
         val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
         StrictMode.setThreadPolicy(policy)
         Places.initialize(applicationContext, "AIzaSyB1E_XAP2VhvW2c3aFIAZywY6jcgvseucc")

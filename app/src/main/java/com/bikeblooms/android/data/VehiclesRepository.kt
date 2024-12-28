@@ -57,12 +57,8 @@ class VehiclesRepository @Inject constructor(private val firebaseHelper: Firebas
         firebaseHelper.getMyVehicles(uid, callback)
     }
 
-    fun getMyServices(uid: String, callback: LoginCallback<List<Service>>) {
-        firebaseHelper.getMyServices(uid, callback)
-    }
-
-    fun addVehicleToState(vehicle: Vehicle) {
-
+    fun getMyServices(uid: String, callback: LoginCallback<List<Service>>, isAdmin: Boolean) {
+        firebaseHelper.getMyServices(uid, callback, isAdmin)
     }
 
     fun deleteVehicle(

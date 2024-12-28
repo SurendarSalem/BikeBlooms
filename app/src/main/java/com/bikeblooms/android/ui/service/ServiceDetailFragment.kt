@@ -265,7 +265,10 @@ class ServiceDetailFragment : BaseFragment() {
                 positiveBtnCallback = {
                     serviceDetailViewModel.updateServiceInFirebase()
                 },
-                negativeBtnText = "Cancel"
+                negativeBtnText = "Cancel",
+                negativeBtnCallback = {
+
+                }
             )
         }
         btnCancelService.setOnClickListener {

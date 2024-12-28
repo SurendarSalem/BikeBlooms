@@ -1,6 +1,6 @@
 package com.bikeblooms.android.model
 
-data class User(
+open class User(
     var name: String = "",
     var mobileNum: String = "",
     var emailId: String = "",
@@ -13,5 +13,9 @@ data class User(
 )
 
 enum class UserType {
-    ADMIN, CONSUMER
+    ADMIN, CONSUMER, VENDOR
+}
+
+fun User.isAdmin(): Boolean {
+    return this.userType == UserType.ADMIN
 }
