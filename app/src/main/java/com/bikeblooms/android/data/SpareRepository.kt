@@ -3,6 +3,8 @@ package com.bikeblooms.android.data
 import com.bikeblooms.android.LoginCallback
 import com.bikeblooms.android.model.ApiResponse
 import com.bikeblooms.android.model.Spare
+import com.bikeblooms.android.model.SpareCategory
+import com.bikeblooms.android.model.SpareItem
 import com.bikeblooms.android.model.SpareType
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -33,4 +35,11 @@ class SpareRepository @Inject constructor(private var firebaseHelper: FirebaseHe
         }
     }
 
+    fun getAllSparesAndAccessories(callback: LoginCallback<List<SpareCategory>>) {
+        firebaseHelper.getAllSparesAndAccessories(callback)
+    }
+
+    fun updateSpare(sparItem: SpareItem, callback: LoginCallback<SpareItem>) {
+        firebaseHelper.updateSpare(sparItem, callback)
+    }
 }

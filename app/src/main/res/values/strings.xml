@@ -61,4 +61,22 @@
     <string name="whatsapp">Whatsapp</string>
     <string name="vendors">Vendors</string>
     <string name="assign">Assign</string>
+    <string name="enter_spare_name">Enter Spare Name</string>
+    <string name="quantity">Quantity</string>
+    <string name="cancel">Cancel</string>
+    <string name="update">Update</string>
+    <string name="price">Price</string>
+    <string name="spares_add_update">Add/Update Spare</string>
+    <string name="approve_confirm_message">Do you want to approve this vendor?. Have you verified all details of this vendor?</string>
+    <string name="approve_cancel_message">Do you want to reject this vendor?</string>
+    <string name="approve">Approve</string>
+    <string name="later">Later</string>
+    <string name="reject">Reject</string>
+    <string name="vendor_approve_error_msg">The vendor has not added any shops</string>
+    <string name="ok">OK</string>
+    <string name="other_charges">Other Charges</string>
+    <string name="no_shops_available">Shop not added</string>
+    <string name="it_seems_you_dont_have_any_vendors_added">It seems you don\'t have any Vendors added</string>
+    <string name="view_details"><u>View Details</u></string>
+    <string name="general_service_details_title">General Service\'s Items </string>
 </resources>

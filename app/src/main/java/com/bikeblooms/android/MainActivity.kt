@@ -14,6 +14,7 @@ import com.bikeblooms.android.data.FirebaseHelper
 import com.bikeblooms.android.data.ServiceRepository
 import com.bikeblooms.android.data.SpareRepository
 import com.bikeblooms.android.databinding.ActivityMainBinding
+import com.bikeblooms.android.util.FirebaseConstants.GENERAL_SERVICE
 import com.bikeblooms.android.util.SharedPrefHelper
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -47,6 +48,7 @@ class MainActivity() : AppCompatActivity() {
 
         lifecycleScope.launch {
             serviceRepository.getMyVehicles(isForceRefresh = true)
+            serviceRepository.getGeneralDetails(GENERAL_SERVICE)
             spareRepository.getAllSparesAndReturn(isForceRefresh = true)
         }
         val navView: BottomNavigationView = binding.navView

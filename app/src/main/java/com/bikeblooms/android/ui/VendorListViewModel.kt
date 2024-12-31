@@ -7,13 +7,16 @@ import com.bikeblooms.android.data.ServiceRepository
 import com.bikeblooms.android.data.VendorRepository
 import com.bikeblooms.android.model.ApiResponse
 import com.bikeblooms.android.model.AppState
+import com.bikeblooms.android.model.NotifyState
 import com.bikeblooms.android.model.Service
 import com.bikeblooms.android.model.Vendor
 import com.bikeblooms.android.util.FCMPushNotificationProvider
 import com.bikeblooms.android.util.FirebaseConstants.FCM.SERVICE_UPDATE
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -27,6 +30,13 @@ class VendorListViewModel @Inject constructor(
 
     var _assignServiceState = MutableStateFlow<ApiResponse<Service>>(ApiResponse.Empty())
     val assignServiceState = _assignServiceState.asStateFlow()
+
+    private var _updateVendorState = MutableStateFlow<ApiResponse<Vendor>>(ApiResponse.Empty())
+    var updateVendorState = _updateVendorState.asStateFlow()
+
+
+    private var _notifyState = MutableSharedFlow<NotifyState>()
+    var notifyState = _notifyState.asSharedFlow()
 
     init {
         repository.getAllVendors()
@@ -87,4 +97,24 @@ class VendorListViewModel @Inject constructor(
         }
     }
 
+    fun updateVendor(vendor: Vendor) {
+        _updateVendorState.value = ApiResponse.Loading()
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.updateVendor(vendor, object : LoginCallback<Vendor> {
+                override fun onSuccess(t: Vendor) {
+                    _updateVendorState.value = ApiResponse.Success(t)
+                    viewModelScope.launch(Dispatchers.Main) {
+                        _notifyState.emit(NotifyState.Success("${vendor.name} has been approved"))
+                    }
+                }
+
+                override fun onError(message: String) {
+                    _updateVendorState.value = ApiResponse.Error(message)
+                    viewModelScope.launch(Dispatchers.Main) {
+                        _notifyState.emit(NotifyState.Error(message))
+                    }
+                }
+            })
+        }
+    }
 }

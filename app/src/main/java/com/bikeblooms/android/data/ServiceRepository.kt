@@ -3,10 +3,12 @@ package com.bikeblooms.android.data
 import com.bikeblooms.android.LoginCallback
 import com.bikeblooms.android.model.ApiResponse
 import com.bikeblooms.android.model.AppState
+import com.bikeblooms.android.model.Progress
 import com.bikeblooms.android.model.Service
 import com.bikeblooms.android.model.Vehicle
 import com.bikeblooms.android.model.Vendor
 import com.bikeblooms.android.util.AppConstants.VEHICLES
+import com.bikeblooms.android.util.FirebaseConstants.GENERAL_DETAILS
 import com.bikeblooms.android.util.FirebaseConstants.SERVICES
 import com.bikeblooms.android.util.FirebaseConstants.USER_VEHICLES
 import com.google.firebase.firestore.FirebaseFirestoreException.Code.CANCELLED
@@ -14,6 +16,7 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import java.util.Calendar
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -22,6 +25,9 @@ class ServiceRepository @Inject constructor(private val repository: VehiclesRepo
 
     private var _myVehicleState = MutableStateFlow<ApiResponse<List<Vehicle>>>(ApiResponse.Empty())
     val myVehicleState = _myVehicleState.asStateFlow()
+
+    private var _generalServiceDetails = MutableStateFlow<List<String>>(emptyList())
+    val generalServiceDetails = _generalServiceDetails.asStateFlow()
 
     fun getMyVehicles(isForceRefresh: Boolean = false) {
         if (isForceRefresh) {
@@ -62,11 +68,26 @@ class ServiceRepository @Inject constructor(private val repository: VehiclesRepo
     }
 
     fun assignService(vendor: Vendor, service: Service, callback: LoginCallback<Service>) {
-        Firebase.firestore.collection(SERVICES).document(service.id).update("assignee", vendor)
-            .addOnSuccessListener {
-                callback.onSuccess(service)
-            }.addOnFailureListener {
-                callback.onError(it.message.toString())
+        Firebase.firestore.collection(SERVICES).document(service.id).update(
+            mapOf(
+                "assignee" to vendor,
+                "progress" to Progress.STARTED,
+                "startDate" to Calendar.getInstance().time
+            )
+        ).addOnSuccessListener {
+            callback.onSuccess(service)
+        }.addOnFailureListener {
+            callback.onError(it.message.toString())
+        }
+    }
+
+    fun getGeneralDetails(generalItem: String) {
+        Firebase.firestore.collection(GENERAL_DETAILS).document(generalItem).get()
+            .addOnSuccessListener { result ->
+                val generalItems = mutableListOf<String>()
+                result.data?.forEach {
+                    _generalServiceDetails.value = it.value as List<String>
+                }
             }
     }
 }

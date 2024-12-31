@@ -5,7 +5,6 @@ import android.util.SparseIntArray
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -16,6 +15,7 @@ import com.bikeblooms.android.R
 import com.bikeblooms.android.databinding.FragmentMyVehiclesBinding
 import com.bikeblooms.android.databinding.VendorItemBinding
 import com.bikeblooms.android.model.ApiResponse
+import com.bikeblooms.android.model.NotifyState
 import com.bikeblooms.android.model.Vendor
 import com.bikeblooms.android.ui.adapter.GenericAdapter
 import com.bikeblooms.android.ui.base.BaseFragment
@@ -56,16 +56,14 @@ class VendorListFragment : BaseFragment() {
                 when (it) {
                     is ApiResponse.Success -> {
                         hideProgress()
-                        onVendorsLoaded(it.data)
+                        onVendorsLoaded(emptyList())
                     }
 
                     is ApiResponse.Error -> {
-                        binding.fabAddVehicle.visibility = View.GONE
                         hideProgress()
                     }
 
                     is ApiResponse.Loading -> {
-                        binding.fabAddVehicle.visibility = View.GONE
                         showProgress()
                     }
 
@@ -74,7 +72,7 @@ class VendorListFragment : BaseFragment() {
             }
         }
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel._assignServiceState.collectLatest {
+            viewModel.assignServiceState.collectLatest {
                 when (it) {
                     is ApiResponse.Success -> {
                         hideProgress()/* findNavController().previousBackStackEntry?.savedStateHandle?.set(
@@ -96,19 +94,52 @@ class VendorListFragment : BaseFragment() {
                 }
             }
         }
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.updateVendorState.collectLatest { vendor ->
+                when (vendor) {
+                    is ApiResponse.Success -> {
+                        hideProgress()
+                    }
+
+                    is ApiResponse.Error -> {
+                        hideProgress()
+                    }
+
+                    is ApiResponse.Loading -> {
+                        showProgress()
+                    }
+
+                    else -> {}
+                }
+            }
+        }
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.notifyState.collectLatest {
+                when (it) {
+                    is NotifyState.Success -> {
+                        showToast(it.message)
+                    }
+
+                    is NotifyState.Error -> {
+                        hideProgress()
+                        showToast(it.message)
+                    }
+                }
+            }
+        }
     }
 
     fun onVendorsLoaded(vehicles: List<Vendor>?) {
         if (vehicles.isNullOrEmpty()) {
             adapter.setItem(emptyList())
             binding.emptyLayout.root.visibility = View.VISIBLE
-            binding.fabAddVehicle.visibility = View.GONE
+            binding.emptyLayout.tvErrorMessage.text =
+                getString(R.string.it_seems_you_dont_have_any_vendors_added)
+            binding.emptyLayout.btnAddItem.visibility = View.GONE
         } else {
             binding.emptyLayout.root.visibility = View.GONE
             binding.rvVehicles.adapter = adapter
             adapter.setItem(vehicles)
-            binding.fabAddVehicle.visibility = View.VISIBLE
-            binding.fabAddVehicle.text = getString(R.string.add_vendor)
         }
     }
 
@@ -122,8 +153,43 @@ class VendorListFragment : BaseFragment() {
         when (binding) {
             is VendorItemBinding -> {
                 if (item is Vendor) {
-                    binding.tvName.text = item.name
+                    binding.tvName.text = if (item.shop == null) {
+                        item.name
+                    } else {
+                        item.shop?.shopName
+                    }
+                    if (item.shop != null) {
+                        binding.tvOwnerName.text = "Owned by ${item.name}"
+                    } else {
+                        binding.tvOwnerName.text = getString(R.string.no_shops_available)
+                    }
                     binding.sivInitial.text = item.name.substring(0, 1).uppercase()
+                    binding.tvActiveStatus.text = if (item.isActive) {
+                        "Active"
+                    } else {
+                        "InActive"
+                    }
+                    binding.tvActiveStatus.setOnClickListener {
+                        if (item.shop == null) {
+                            Utils.showAlertDialog(context = requireContext(),
+                                message = getString(R.string.vendor_approve_error_msg),
+                                positiveBtnText = getString(R.string.ok),
+                                positiveBtnCallback = {})
+                        } else {
+                            Utils.showAlertDialog(
+                                context = requireContext(),
+                                message = if (item.isActive) getString(R.string.approve_cancel_message)
+                                else getString(R.string.approve_confirm_message),
+                                positiveBtnText = if (item.isActive) getString(R.string.reject)
+                                else getString(R.string.approve),
+                                positiveBtnCallback = {
+                                    item.isActive = !item.isActive
+                                    viewModel.updateVendor(item)
+                                },
+                                negativeBtnText = getString(R.string.later)
+                            )
+                        }
+                    }
                 }
             }
         }
@@ -146,9 +212,7 @@ class VendorListFragment : BaseFragment() {
                         Unit
                     })
             } else {
-                if (item is Vendor) {
-                    findNavController().navigate(R.id.action_navigation_vendors_to_navigation_user_detail)
-                }
+                findNavController().navigate(R.id.action_navigation_vendors_to_navigation_user_detail)
             }
         }
     }

@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="@dimen/margin_small"
     android:layout_marginTop="@dimen/margin_small"
     android:background="@color/white"
+    android:elevation="4dp"
     android:padding="@dimen/margin_small"
     app:cardBackgroundColor="@color/white"
-    app:cardCornerRadius="8dp">
+    app:cardCornerRadius="8dp"
+    app:cardElevation="10dp">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -22,10 +25,10 @@
             android:layout_height="@dimen/icon_size"
             android:background="@drawable/border_rounded"
             android:gravity="center"
-            android:padding="@dimen/margin_small"
+            android:paddingBottom="@dimen/margin_small"
             android:text="A"
             android:textColor="@color/off_white"
-            android:textSize="30sp"
+            android:textSize="22sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -35,22 +38,36 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/activity_horizontal_margin"
-            android:layout_marginTop="@dimen/margin_small"
-            android:text="Bajaj Pusar 150 cc"
+            android:text="Surendar V"
             app:layout_constraintStart_toEndOf="@+id/siv_initial"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_reg_num"
+            android:id="@+id/tv_owner_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/activity_horizontal_margin"
-            android:layout_marginTop="@dimen/margin_small"
-            android:text="Active"
-            android:textColor="@color/dark_gray"
+            android:textColor="@color/light_gray"
+            android:textSize="@dimen/textsize_medium"
             app:layout_constraintStart_toEndOf="@+id/siv_initial"
-            app:layout_constraintTop_toBottomOf="@+id/tv_name" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_name"
+            tools:text="Owned by: Surendar" />
 
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_active_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:background="@drawable/border_gray_dotted"
+            android:clickable="true"
+            android:focusable="true"
+            android:paddingHorizontal="@dimen/textsize_small"
+            android:text="Active"
+            android:textColor="@color/green"
+            android:textSize="@dimen/textsize_medium"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

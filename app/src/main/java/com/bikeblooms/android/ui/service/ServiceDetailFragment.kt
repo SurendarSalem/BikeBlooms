@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
@@ -13,6 +14,7 @@ import androidx.navigation.fragment.navArgs
 import com.bikeblooms.android.R
 import com.bikeblooms.android.databinding.FragmentServiceDetailBinding
 import com.bikeblooms.android.model.ApiResponse
+import com.bikeblooms.android.model.AppState
 import com.bikeblooms.android.model.Complaint
 import com.bikeblooms.android.model.ComplaintsList
 import com.bikeblooms.android.model.NotifyState
@@ -23,6 +25,7 @@ import com.bikeblooms.android.model.Spare
 import com.bikeblooms.android.model.SpareListArgs
 import com.bikeblooms.android.model.Vehicle
 import com.bikeblooms.android.model.Vehicles
+import com.bikeblooms.android.model.isAdmin
 import com.bikeblooms.android.ui.Utils
 import com.bikeblooms.android.ui.VehicleListDialogFragmentArgs
 import com.bikeblooms.android.ui.base.BaseFragment
@@ -173,18 +176,30 @@ class ServiceDetailFragment : BaseFragment() {
                 complaints?.forEachIndexed { index, complaint ->
                     complaintsNames += "${index + 1}) ${complaint.name}\n"
                 }
-                tvComplaints.text = complaintsNames
+
+                if (complaintsNames.isEmpty()) {
+                    tvComplaints.text = getString(R.string.select_vehicle_problem)
+                } else {
+                    tvComplaints.text = complaintsNames
+                }
 
             }
             tvVehicleName.text = vehicleName
             tvVehicleNumber.text = regNum.toRegNum()
             cbPickDrop.isChecked = pickDrop
-            var spareAmount = service.spareParts?.sumOf { it.price } ?: 0.0
-            var complaintsAmount = service.complaints?.sumOf { it.price } ?: 0.0
-            val totalAmount = spareAmount + complaintsAmount
+            if (AppState.user?.isAdmin() == true) {
+                binding.rlOtherCharges.visibility = View.VISIBLE
+                binding.etOtherCharges.setText(buildString {
+                    append(service.hiddenCharges.toString())
+                })
+                binding.etOtherCharges.setSelection(binding.etOtherCharges.length())
+
+            }else{
+                binding.etOtherCharges.isEnabled = false
+            }
             tvTotalAmt.text = buildString {
                 append(getString(R.string.rupee_symbol))
-                append(totalAmount.toString())
+                append(bill?.totalAmount.toString())
             }
             if (service.progress == Progress.CANCELLED) {
                 btnUpdateService.visibility = View.GONE
@@ -258,8 +273,7 @@ class ServiceDetailFragment : BaseFragment() {
             }
         }
         btnUpdateService.setOnClickListener {
-            Utils.showAlertDialog(
-                context = requireContext(),
+            Utils.showAlertDialog(context = requireContext(),
                 message = "Are you sure want to update this service?",
                 positiveBtnText = "Update",
                 positiveBtnCallback = {
@@ -268,8 +282,7 @@ class ServiceDetailFragment : BaseFragment() {
                 negativeBtnText = "Cancel",
                 negativeBtnCallback = {
 
-                }
-            )
+                })
         }
         btnCancelService.setOnClickListener {
             Utils.showAlertDialog(
@@ -282,6 +295,16 @@ class ServiceDetailFragment : BaseFragment() {
                 negativeBtnText = "No"
             )
         }
+        binding.etOtherCharges.addTextChangedListener(afterTextChanged = {
+            try {
+                serviceDetailViewModel.updateService(
+                    service.copy(
+                        hiddenCharges = it.toString().toInt()
+                    )
+                )
+            } catch (e: NumberFormatException) {
+            }
+        })
     }
 
     override fun onDestroyView() {

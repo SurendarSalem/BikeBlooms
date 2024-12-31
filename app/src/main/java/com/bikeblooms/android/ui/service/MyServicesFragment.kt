@@ -17,12 +17,11 @@ import com.bikeblooms.android.model.ApiResponse
 import com.bikeblooms.android.model.AppState
 import com.bikeblooms.android.model.Progress
 import com.bikeblooms.android.model.Service
-import com.bikeblooms.android.model.User
-import com.bikeblooms.android.model.UserType
 import com.bikeblooms.android.model.isAdmin
 import com.bikeblooms.android.ui.VendorListFragmentArgs
 import com.bikeblooms.android.ui.adapter.GenericAdapter
 import com.bikeblooms.android.ui.base.BaseFragment
+import com.bikeblooms.android.util.toRegNum
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -99,16 +98,11 @@ class MyServicesFragment : BaseFragment() {
             is ServiceItemBinding -> {
                 if (item is Service) {
                     binding.tvName.text = item.vehicleName
-                    binding.tvRegNum.text = item.regNum
+                    binding.tvRegNum.text = item.regNum.toRegNum()
                     binding.tvStatus.text = item.progress.title
-                    val df = SimpleDateFormat("dd-MM-yy", Locale.US);
+                    val df = SimpleDateFormat("MMM dd", Locale.US);
                     binding.tvDate.text = "Updated at " + df.format(item.startDate)
                     binding.tvTotalAmt.text = "\u20B9 " + item.bill?.totalAmount.toString()
-                    if (item.progress == Progress.CANCELLED) {
-                        binding.root.alpha = 0.5f
-                    } else {
-                        binding.root.alpha = 1f
-                    }
                     if (AppState.user?.isAdmin() == true) {
                         binding.tvAssign.visibility = View.VISIBLE
                         item.assignee?.let {
@@ -124,6 +118,12 @@ class MyServicesFragment : BaseFragment() {
                     } else {
                         binding.tvAssign.visibility = View.GONE
                     }
+                    if (item.progress == Progress.CANCELLED) {
+                        binding.tvAssign.setTextColor(resources.getColor(R.color.cherry_red))
+                    } else {
+                        binding.tvAssign.setTextColor(resources.getColor(com.google.android.libraries.places.R.color.quantum_googgreen))
+                    }
+                    binding.tvStatus.text = item.progress.title
                 }
             }
         }

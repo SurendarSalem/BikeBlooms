@@ -14,6 +14,7 @@ import com.bikeblooms.android.databinding.FragmentListItemsBinding
 import com.bikeblooms.android.databinding.NameItemBinding
 import com.bikeblooms.android.model.AppState
 import com.bikeblooms.android.model.ProfileItem
+import com.bikeblooms.android.model.isAdmin
 import com.bikeblooms.android.ui.adapter.GenericAdapter
 import com.bikeblooms.android.ui.authentication.AuthenticationActivity
 import com.bikeblooms.android.ui.base.BaseFragment
@@ -31,7 +32,7 @@ class ProfileFragment : BaseFragment() {
     @Inject
     lateinit var sharedPrefHelper: SharedPrefHelper
     lateinit var binding: FragmentListItemsBinding
-    val profileItems = ProfileItem.entries.toList()
+    var profileItems = ProfileItem.entries.toList()
 
     private val adapter: GenericAdapter<Any> by lazy {
         val layoutResIds = SparseIntArray().apply {
@@ -56,6 +57,11 @@ class ProfileFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.rvItems.layoutManager = LinearLayoutManager(requireContext())
         binding.rvItems.adapter = adapter
+        if (AppState.user?.isAdmin() == true) {
+            profileItems = profileItems.filter {
+                it != ProfileItem.MY_VEHICLES
+            }
+        }
         adapter.setItem(profileItems)
     }
 

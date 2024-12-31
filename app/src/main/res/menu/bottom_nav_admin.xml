@@ -9,6 +9,11 @@
     <item
         android:id="@+id/navigation_vendors"
         android:icon="@drawable/ic_notifications_black_24dp"
-        android:title="@string/title_profile" />
+        android:title="@string/vendors" />
+
+    <item
+        android:id="@+id/navigation_spares"
+        android:icon="@drawable/black_repair"
+        android:title="@string/spares" />
 
 </menu>

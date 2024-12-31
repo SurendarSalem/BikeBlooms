@@ -60,7 +60,6 @@ class GenericAdapter<T : Any>(
     }
 
     override fun getItemViewType(position: Int): Int {
-        return super.getItemViewType(position)
         val item = itemList[position]
         val itemClass = item.javaClass
         return viewTypeMap.getOrPut(itemClass) {
@@ -103,7 +102,9 @@ class GenericAdapter<T : Any>(
 
     fun updateItem(item: T) {
         val position = itemList.indexOf(item)
-        itemList.toMutableList()[position] = item
-        notifyItemChanged(position)
+        if (position >= 0) {
+            itemList.toMutableList()[position] = item
+            notifyItemChanged(position)
+        }
     }
 }

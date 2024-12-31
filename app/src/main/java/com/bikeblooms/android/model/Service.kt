@@ -17,12 +17,13 @@ data class Service(
     var complaints: List<Complaint>? = null,
     var complaint: String? = "",
     var firebaseId: String = "",
-    var progress: Progress = Progress.STARTED,
+    var progress: Progress = Progress.PENDING,
     var serviceType: ServiceType? = null,
     var pickDrop: Boolean = false,
     var address: String = "",
     var bill: Bill? = null,
     var assignee: Vendor? = null,
+    var hiddenCharges: Int = 0,
     var ownerFcmToken: String = ""
 ) : Parcelable {}
 

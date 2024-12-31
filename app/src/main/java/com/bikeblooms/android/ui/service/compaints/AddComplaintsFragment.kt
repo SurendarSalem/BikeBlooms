@@ -16,6 +16,7 @@ import com.bikeblooms.android.model.Service
 import com.bikeblooms.android.model.ServiceType
 import com.bikeblooms.android.model.Spare
 import com.bikeblooms.android.model.SpareListArgs
+import com.bikeblooms.android.ui.Utils
 import com.bikeblooms.android.ui.base.BaseFragment
 import com.bikeblooms.android.util.toRegNum
 import dagger.hilt.android.AndroidEntryPoint
@@ -132,6 +133,13 @@ class AddComplaintsFragment : BaseFragment() {
                 }
             }
         }
+        viewLifecycleOwner.lifecycleScope.launch {
+            addComplaintsViewModel.generalDetails.collectLatest {
+                if (it.isNotEmpty() && args.service?.serviceType == ServiceType.GENERAL_SERVICE) {
+                    binding.tvViewDetails.visibility = View.VISIBLE
+                }
+            }
+        }
     }
 
     private fun FragmentAddComplaintsBinding.setVehicleData(service: Service) {
@@ -163,6 +171,15 @@ class AddComplaintsFragment : BaseFragment() {
         }
         btnAddService.setOnClickListener {
             addComplaintsViewModel.isServiceValid()
+        }
+        binding.tvViewDetails.setOnClickListener {
+            Utils.showAlertDialog(context = requireContext(), message = buildString {
+                append(getString(R.string.general_service_details_title)).append("\n").append("\n")
+                addComplaintsViewModel.generalDetails.value.toTypedArray()
+                    .forEachIndexed { index, s ->
+                        append("${index + 1}. $s \n")
+                    }
+            }.toString(), positiveBtnText = getString(R.string.ok), positiveBtnCallback = {})
         }
     }
 

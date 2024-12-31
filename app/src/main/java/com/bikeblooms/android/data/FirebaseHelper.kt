@@ -8,6 +8,8 @@ import com.bikeblooms.android.model.Brand
 import com.bikeblooms.android.model.Complaint
 import com.bikeblooms.android.model.Service
 import com.bikeblooms.android.model.Spare
+import com.bikeblooms.android.model.SpareCategory
+import com.bikeblooms.android.model.SpareItem
 import com.bikeblooms.android.model.SpareType
 import com.bikeblooms.android.model.User
 import com.bikeblooms.android.model.Vehicle
@@ -18,8 +20,10 @@ import com.bikeblooms.android.util.AppConstants.VEHICLES
 import com.bikeblooms.android.util.FirebaseConstants.Bike.BIKE_BRANDS
 import com.bikeblooms.android.util.FirebaseConstants.Bike.BIKE_MODELS
 import com.bikeblooms.android.util.FirebaseConstants.COMPLAINTS
+import com.bikeblooms.android.util.FirebaseConstants.ITEMS
 import com.bikeblooms.android.util.FirebaseConstants.SERVICES
 import com.bikeblooms.android.util.FirebaseConstants.SPARES
+import com.bikeblooms.android.util.FirebaseConstants.SPARES_AND_ACCESSORIES
 import com.bikeblooms.android.util.FirebaseConstants.USERS
 import com.bikeblooms.android.util.FirebaseConstants.USER_VEHICLES
 import com.bikeblooms.android.util.FirebaseConstants.VENDORS
@@ -215,8 +219,8 @@ class FirebaseHelper {
         Firebase.firestore.collection(SPARES).get().addOnSuccessListener { result ->
             val spares = mutableListOf<Spare>()
             result.forEach {
-                val complaint = it.toObject<Spare>(Spare::class.java)
-                spares.add(complaint)
+                val spare = it.toObject<Spare>(Spare::class.java)
+                spares.add(spare)
             }
             callback.onSuccess(spares)
         }.addOnFailureListener {
@@ -267,6 +271,58 @@ class FirebaseHelper {
         }.addOnFailureListener {
             callback.onError(it.message.toString())
         }
+    }
+
+    fun getAllSparesAndAccessories(callback: LoginCallback<List<SpareCategory>>) {
+        Firebase.firestore.collection(SPARES_AND_ACCESSORIES).get()
+            .addOnSuccessListener { sparesCategoriesResult ->
+                val categoriesSize = sparesCategoriesResult.size()
+                val spareCategories = mutableListOf<SpareCategory>()
+                sparesCategoriesResult.forEach {
+                    var spareCategory = it.toObject<SpareCategory>(SpareCategory::class.java)
+                    spareCategory.id = it.id
+                    Firebase.firestore.collection(SPARES_AND_ACCESSORIES).document(spareCategory.id)
+                        .collection(ITEMS).get().addOnSuccessListener { sparesResult ->
+                            val sparesSize = sparesResult.size()
+                            val items = mutableListOf<SpareItem>()
+                            sparesResult.forEach {
+                                val spareItem = it.toObject<SpareItem>(SpareItem::class.java)
+                                spareItem.id = it.id
+                                spareItem.spareCategoryId = spareCategory.id
+                                items.add(spareItem)
+                                if (sparesSize == items.size) {
+                                    spareCategory.items = items
+                                    spareCategories.add(spareCategory)
+                                }
+                                if (categoriesSize == spareCategories.size) {
+                                    callback.onSuccess(spareCategories)
+                                }
+                            }
+                        }.addOnFailureListener {
+                            callback.onError(it.message.toString())
+                        }
+                }
+            }.addOnFailureListener {
+                callback.onError(it.message.toString())
+            }
+    }
+
+    fun updateSpare(spareItem: SpareItem, callback: LoginCallback<SpareItem>) {
+        Firebase.firestore.collection(SPARES_AND_ACCESSORIES).document(spareItem.spareCategoryId)
+            .collection(ITEMS).document(spareItem.id).set(spareItem).addOnSuccessListener {
+                callback.onSuccess(spareItem)
+            }.addOnFailureListener {
+                callback.onError(it.message.toString())
+            }
+    }
+
+    fun updateVendor(vendor: Vendor, callback: LoginCallback<Vendor>) {
+        Firebase.firestore.collection(VENDORS).document(vendor.firebaseId).set(vendor)
+            .addOnSuccessListener {
+                callback.onSuccess(vendor)
+            }.addOnFailureListener {
+                callback.onError(it.message.toString())
+            }
     }
 
 

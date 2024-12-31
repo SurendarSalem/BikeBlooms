@@ -8,6 +8,7 @@
     android:padding="@dimen/margin_small">
 
     <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_error_message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -18,11 +19,11 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_add_item"
+        style="@style/AppButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="@dimen/activity_horizontal_margin"
-        android:text="Add Vehicle"
-        style="@style/AppButton"/>
+        android:text="Add Vehicle" />
 
 </LinearLayout>

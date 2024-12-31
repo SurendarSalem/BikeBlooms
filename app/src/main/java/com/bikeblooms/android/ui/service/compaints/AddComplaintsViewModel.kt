@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.bikeblooms.android.LoginCallback
 import com.bikeblooms.android.data.ComplaintsRepository
 import com.bikeblooms.android.data.Repository
+import com.bikeblooms.android.data.ServiceRepository
 import com.bikeblooms.android.data.SpareRepository
 import com.bikeblooms.android.model.ApiResponse
 import com.bikeblooms.android.model.AppState
@@ -30,6 +31,7 @@ import javax.inject.Inject
 class AddComplaintsViewModel @Inject constructor(
     complaintsRepository: ComplaintsRepository,
     spareRepository: SpareRepository,
+    serviceRepository: ServiceRepository,
     private val repository: Repository,
 ) : ViewModel() {
 
@@ -54,6 +56,8 @@ class AddComplaintsViewModel @Inject constructor(
 
     private var _selectedSpareState = MutableStateFlow<Spare?>(null)
     var selectedSpareState = _selectedSpareState.asStateFlow()
+
+    var generalDetails = serviceRepository.generalServiceDetails
 
     init {
         viewModelScope.launch {
@@ -86,10 +90,12 @@ class AddComplaintsViewModel @Inject constructor(
                     var complaintsAmount = service.complaints?.sumOf { it.price } ?: 0.0
                     serviceState.value = serviceState.value?.copy(
                         bill = Bill(
+                            hiddenCharges = 0.0,
                             totalAmount = spareAmount + complaintsAmount, service.startDate
                         )
                     )
                     _billState.value = Bill(
+                        hiddenCharges = 0.0,
                         totalAmount = spareAmount + complaintsAmount, service.startDate
                     )
                 }

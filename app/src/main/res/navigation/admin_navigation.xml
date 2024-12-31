@@ -96,5 +96,49 @@
         android:label="@string/details"
         tools:layout="@layout/fragment_user_detail" />
 
+    <fragment
+        android:id="@+id/navigation_profile"
+        android:name="com.bikeblooms.android.ui.profile.ProfileFragment"
+        android:label="@string/title_profile"
+        tools:layout="@layout/fragment_list_items" />
+
+    <fragment
+        android:id="@+id/navigation_spares"
+        android:name="com.bikeblooms.android.ui.spares.SparesFragment"
+        android:label="@string/spares_add_update"
+        tools:layout="@layout/fragment_list_items">
+        <action
+            android:id="@+id/action_navigation_spares_to_navigation_spares_update"
+            app:destination="@id/navigation_spares_update"
+            app:enterAnim="@anim/nav_slide_in_right"
+            app:exitAnim="@anim/nav_slide_out_left"
+            app:popEnterAnim="@anim/nav_slide_in_left"
+            app:popExitAnim="@anim/nav_slide_out_right" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_spares_update"
+        android:name="com.bikeblooms.android.ui.spares.SpareAddUpdateFragment"
+        android:label="@string/spares_add_update"
+        tools:layout="@layout/fragment_spare_add_update">
+
+        <argument
+            android:name="isEdit"
+            android:defaultValue="false"
+            app:argType="boolean" />
+
+        <argument
+            android:name="spareItem"
+            android:defaultValue="@null"
+            app:argType="com.bikeblooms.android.model.SpareItem"
+            app:nullable="true" />
+
+        <argument
+            android:name="spareCategories"
+            android:defaultValue="@null"
+            app:argType="com.bikeblooms.android.model.SpareCategories"
+            app:nullable="true" />
+
+    </fragment>
 
 </navigation>

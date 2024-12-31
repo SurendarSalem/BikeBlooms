@@ -42,7 +42,9 @@ class ServiceDetailViewModel @Inject constructor(
                     var complaintsAmount = it.complaints?.sumOf { it.price } ?: 0.0
                     _serviceState.value = it.copy(
                         bill = Bill(
-                            totalAmount = spareAmount + complaintsAmount, service.startDate
+                            hiddenCharges = 0.0,
+                            totalAmount = service.hiddenCharges + spareAmount + complaintsAmount,
+                            service.startDate
                         )
                     )
                 }
