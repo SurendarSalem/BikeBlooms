@@ -11,6 +11,7 @@ data class Vehicle(
     var type: VehicleType? = null,
     var fuelType: FuelType? = null,
     var regNo: String = "",
+    var firebaseId: String = "",
     var vehicleStatus: VehicleStatus = VehicleStatus.ACTIVE
 ) : Parcelable {
 }

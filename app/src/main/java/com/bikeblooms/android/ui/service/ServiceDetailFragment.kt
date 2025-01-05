@@ -31,6 +31,7 @@ import com.bikeblooms.android.ui.VehicleListDialogFragmentArgs
 import com.bikeblooms.android.ui.base.BaseFragment
 import com.bikeblooms.android.ui.service.compaints.ComplaintsSelectionFragmentArgs
 import com.bikeblooms.android.ui.service.compaints.SpareSelectionFragmentArgs
+import com.bikeblooms.android.ui.toDisplayDate
 import com.bikeblooms.android.util.AppConstants.SELECTED_COMPLAINTS
 import com.bikeblooms.android.util.AppConstants.SELECTED_SPARE
 import com.bikeblooms.android.util.AppConstants.VEHICLE
@@ -38,6 +39,7 @@ import com.bikeblooms.android.util.toRegNum
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import java.util.Calendar
 
 class ServiceDetailFragment : BaseFragment() {
 
@@ -45,10 +47,12 @@ class ServiceDetailFragment : BaseFragment() {
     private lateinit var binding: FragmentServiceDetailBinding
     private val serviceDetailFragmentArgs: ServiceDetailFragmentArgs by navArgs()
     private lateinit var service: Service
+    private lateinit var serviceCopy: Service
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         serviceDetailFragmentArgs.service?.let {
             this.service = it
+            serviceCopy = it.copy()
             serviceDetailViewModel.setService(it)
         }
 
@@ -182,10 +186,14 @@ class ServiceDetailFragment : BaseFragment() {
                 } else {
                     tvComplaints.text = complaintsNames
                 }
-
             }
             tvVehicleName.text = vehicleName
             tvVehicleNumber.text = regNum.toRegNum()
+            service.updateDate?.let {
+                tvBookingDate.text = it.toDisplayDate()
+            } ?: run {
+                tvBookingDate.text = service.bookingDate.toDisplayDate()
+            }
             cbPickDrop.isChecked = pickDrop
             if (AppState.user?.isAdmin() == true) {
                 binding.rlOtherCharges.visibility = View.VISIBLE
@@ -194,7 +202,7 @@ class ServiceDetailFragment : BaseFragment() {
                 })
                 binding.etOtherCharges.setSelection(binding.etOtherCharges.length())
 
-            }else{
+            } else {
                 binding.etOtherCharges.isEnabled = false
             }
             tvTotalAmt.text = buildString {
@@ -235,6 +243,14 @@ class ServiceDetailFragment : BaseFragment() {
                 R.id.action_navigation_service_detail_to_navigation_complaints_selection,
                 args.toBundle()
             )
+        }
+        ivPickDate.setOnClickListener {
+            Utils.showDatePicker(
+                requireContext(), Calendar.getInstance()
+            ) { calendar ->
+                service.updateDate = calendar.time
+                binding.tvBookingDate.text = calendar.time.toDisplayDate()
+            }
         }
         cbPickDrop.setOnCheckedChangeListener { _, isChecked ->
             serviceDetailViewModel.updateService(service.copy(pickDrop = isChecked))

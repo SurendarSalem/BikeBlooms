@@ -146,9 +146,9 @@ class MyVehiclesFragment : BaseFragment() {
         }
     }
 
-    private fun onItemClick(item: Any, isBookServiceClicked: Boolean = false) {
+    private fun onItemClick(item: Any) {
         if (item is Vehicle) {
-
+            
         }
     }
 }

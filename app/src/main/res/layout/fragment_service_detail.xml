@@ -29,7 +29,7 @@
                     style="@style/Caption"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Service Type"
+                    android:text="@string/service_type"
                     android:textColor="@color/cherry_red"
                     android:textSize="18sp" />
 
@@ -103,12 +103,47 @@
                         android:text="TN 54 AB 6767" />
                 </RelativeLayout>
 
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        style="@style/Body"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/booking_date"
+                        android:textColor="@color/cherry_red"
+                        android:textSize="@dimen/textsize_large" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_booking_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/margin_small"
+                        android:background="@drawable/border_blue"
+                        android:gravity="center"
+                        android:hint="@string/dd_mm_yy"
+                        android:textColor="@color/dark_gray"
+                        android:textSize="@dimen/textsize_medium" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/iv_pick_date"
+                        android:layout_width="@dimen/icon_size"
+                        android:layout_height="@dimen/icon_size"
+                        android:padding="@dimen/margin_small"
+                        android:src="@drawable/calendar"
+                        android:tint="@color/cherry_red" />
+
+                </LinearLayout>
+
                 <com.google.android.material.checkbox.MaterialCheckBox
                     android:id="@+id/cb_pick_drop"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="-5dp"
-                    android:text="Pick and Drop Service (Optional)" />
+                    android:text="@string/pick_and_drop_service_optional" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -229,7 +264,6 @@
                         <androidx.appcompat.widget.AppCompatTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentStart="true"
                             android:layout_marginTop="@dimen/margin_small"
                             android:text="@string/address"
                             android:textColor="@color/cherry_red"
@@ -239,7 +273,6 @@
                             android:id="@+id/rl_address_details"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
                             android:layout_marginTop="@dimen/margin_small"
                             android:background="@color/white">
 
@@ -369,9 +402,10 @@ Tamilnadu -6000018"
                             style="@style/AppButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/activity_horizontal_margin"
                             android:layout_marginTop="@dimen/activity_horizontal_margin"
                             android:backgroundTint="@android:color/holo_green_dark"
-                            android:text="Update"
+                            android:text="@string/update"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
@@ -381,7 +415,8 @@ Tamilnadu -6000018"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/activity_horizontal_margin"
-                            android:text="Cancel"
+                            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                            android:text="@string/cancel"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 

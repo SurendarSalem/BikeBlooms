@@ -1,307 +1,375 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.amar.library.ui.StickyScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/scrollView"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    app:stickyFooter="@+id/tv_personal_details"
-    app:stickyHeader="@+id/map">
+    android:layout_height="match_parent">
 
-    <LinearLayout
+    <com.amar.library.ui.StickyScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <RelativeLayout
-            android:id="@+id/map_container"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <androidx.fragment.app.FragmentContainerView
-                android:id="@+id/map"
-                android:name="com.google.android.gms.maps.SupportMapFragment"
-                android:layout_width="match_parent"
-                android:layout_height="300dp" />
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/iv_overlay"
-                android:layout_width="match_parent"
-                android:layout_height="300dp" />
-
-
-        </RelativeLayout>
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/btn_update"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:stickyFooter="@+id/tv_personal_details"
+        app:stickyHeader="@+id/map_container">
 
         <LinearLayout
-            android:id="@+id/sticky_footer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:orientation="vertical"
-            android:translationZ="999dp">
+            android:orientation="vertical">
 
-            <LinearLayout
-                android:id="@+id/sticky_container"
+            <RelativeLayout
+                android:id="@+id/map_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/border_rounded_20"
-                android:gravity="center"
-                android:orientation="vertical">
+                android:visibility="gone">
 
-                <com.google.android.material.imageview.ShapeableImageView
-                    android:id="@+id/siv_vehicle"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:layout_marginTop="@dimen/margin_small"
-                    android:scaleType="fitXY"
-                    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent"
-                    app:srcCompat="@drawable/main"
-                    app:strokeColor="@color/dark_gray"
-                    app:strokeWidth="0.5dp" />
-
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    style="@style/Heading"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_small"
-                    android:text="Surendar V"
-                    android:textColor="@color/white" />
-
-                <LinearLayout
+                <androidx.fragment.app.FragmentContainerView
+                    android:id="@+id/map"
+                    android:name="com.google.android.gms.maps.SupportMapFragment"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/activity_horizontal_margin"
-                    android:layout_marginBottom="@dimen/activity_horizontal_margin"
-                    android:orientation="horizontal"
-                    android:weightSum="3">
+                    android:layout_height="300dp" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/iv_overlay"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp" />
 
 
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@drawable/border_off_white"
-                        android:gravity="center_horizontal"
-                        android:orientation="vertical"
-                        android:padding="@dimen/margin_small">
-
-                        <androidx.appcompat.widget.AppCompatImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:src="@drawable/mail_24"
-                            android:tint="@color/off_white" />
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/email_id"
-                            android:textColor="@color/off_white" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/margin_large"
-                        android:layout_weight="1"
-                        android:background="@drawable/border_off_white"
-                        android:gravity="center_horizontal"
-                        android:orientation="vertical"
-                        android:padding="@dimen/margin_small">
-
-                        <androidx.appcompat.widget.AppCompatImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:src="@drawable/phone_24"
-                            android:tint="@color/off_white" />
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/call"
-                            android:textColor="@color/off_white" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/margin_large"
-                        android:layout_weight="1"
-                        android:background="@drawable/border_off_white"
-                        android:gravity="center_horizontal"
-                        android:orientation="vertical"
-                        android:padding="@dimen/margin_small">
-
-                        <androidx.appcompat.widget.AppCompatImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:src="@drawable/whatsapp"
-                            android:tint="@color/off_white" />
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/whatsapp"
-                            android:textColor="@color/off_white" />
-
-                    </LinearLayout>
-
-
-                </LinearLayout>
-
-            </LinearLayout>
+            </RelativeLayout>
 
             <LinearLayout
+                android:id="@+id/sticky_footer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:clickable="true"
+                android:focusable="true"
                 android:orientation="vertical"
-                android:paddingHorizontal="@dimen/activity_horizontal_margin">
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/tv_personal_details"
-                    style="@style/Heading"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="@dimen/activity_horizontal_margin"
-                    android:text="@string/personal_details" />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    style="@style/Heading"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_small"
-                    android:text="@string/email_id" />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    style="@style/Body"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:drawableStart="@drawable/mail_24"
-                    android:drawablePadding="@dimen/margin_small"
-                    android:drawableTint="@color/cherry_red_light"
-                    android:gravity="center_vertical"
-                    android:text="suren@gmail.com" />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    style="@style/Heading"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_small"
-                    android:text="@string/mobile_number" />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    style="@style/Body"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:drawableStart="@drawable/phone_24"
-                    android:drawablePadding="@dimen/margin_small"
-                    android:drawableTint="@color/cherry_red_light"
-                    android:gravity="center_vertical"
-                    android:text="9790318161" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="2dp"
-                    android:layout_marginTop="@dimen/activity_horizontal_margin"
-                    android:background="@drawable/dotted" />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    style="@style/Heading"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="@dimen/margin_small"
-                    android:text="@string/shop_details" />
+                android:translationZ="999dp">
 
                 <LinearLayout
+                    android:id="@+id/sticky_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_small"
-                    android:orientation="horizontal"
-                    android:weightSum="3">
+                    android:background="@drawable/border_rounded_20"
+                    android:gravity="center"
+                    android:orientation="vertical">
 
-                    <androidx.appcompat.widget.AppCompatTextView
-                        style="@style/Caption"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="1"
-                        android:text="@string/shop_id" />
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
 
-                    <androidx.appcompat.widget.AppCompatTextView
-                        style="@style/Body"
-                        android:layout_width="0dp"
+                        <com.google.android.material.imageview.ShapeableImageView
+                            android:id="@+id/siv_vehicle"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:layout_centerInParent="true"
+                            android:layout_marginTop="@dimen/margin_small"
+                            android:scaleType="fitXY"
+                            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent"
+                            app:srcCompat="@drawable/main"
+                            app:strokeColor="@color/dark_gray"
+                            app:strokeWidth="0.5dp" />
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/iv_edit"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginTop="@dimen/margin_small"
+                            android:src="@drawable/edit_bg"
+                            android:tint="@color/white" />
+                    </RelativeLayout>
+
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/et_name"
+                        style="@style/Heading.Dark"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="2"
-                        android:text="Shop12345" />
+                        android:background="@drawable/et_selector_bg_dark"
+                        android:paddingHorizontal="@dimen/activity_horizontal_margin"
+                        android:textColor="@color/white"
+                        tools:text="Surendar V" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/activity_horizontal_margin"
+                        android:layout_marginBottom="@dimen/activity_horizontal_margin"
+                        android:orientation="horizontal"
+                        android:weightSum="3">
+
+
+                        <LinearLayout
+                            android:id="@+id/ll_email"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/border_off_white"
+                            android:gravity="center_horizontal"
+                            android:orientation="vertical"
+                            android:padding="@dimen/margin_small">
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/mail_24"
+                                android:tint="@color/off_white" />
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/email_id"
+                                android:textColor="@color/off_white" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/ll_call"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/margin_large"
+                            android:layout_weight="1"
+                            android:background="@drawable/border_off_white"
+                            android:gravity="center_horizontal"
+                            android:orientation="vertical"
+                            android:padding="@dimen/margin_small">
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/phone_24"
+                                android:tint="@color/off_white" />
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/call"
+                                android:textColor="@color/off_white" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/ll_whatsapp"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/margin_large"
+                            android:layout_weight="1"
+                            android:background="@drawable/border_off_white"
+                            android:gravity="center_horizontal"
+                            android:orientation="vertical"
+                            android:padding="@dimen/margin_small">
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/whatsapp"
+                                android:tint="@color/off_white" />
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/whatsapp"
+                                android:textColor="@color/off_white" />
+
+                        </LinearLayout>
+
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_small"
-                    android:orientation="horizontal"
-                    android:weightSum="3">
+                    android:orientation="vertical"
+                    android:paddingHorizontal="@dimen/activity_horizontal_margin">
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        style="@style/Caption"
-                        android:layout_width="0dp"
+                        android:id="@+id/tv_personal_details"
+                        style="@style/Heading"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_weight="1"
-                        android:text="@string/shop_name" />
+                        android:layout_marginTop="@dimen/activity_horizontal_margin"
+                        android:text="@string/personal_details" />
 
                     <androidx.appcompat.widget.AppCompatTextView
+                        style="@style/Heading"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_small"
+                        android:text="@string/email_id" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/et_email"
                         style="@style/Body"
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="2"
-                        android:text="RK Bikers" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_small"
-                    android:orientation="horizontal"
-                    android:weightSum="3">
+                        android:layout_marginTop="@dimen/margin_small"
+                        android:drawableStart="@drawable/mail_24"
+                        android:drawablePadding="@dimen/margin_small"
+                        android:drawableTint="@color/cherry_red_light"
+                        android:gravity="center_vertical"
+                        tools:text="suren@gmail.com" />
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        style="@style/Caption"
-                        android:layout_width="0dp"
+                        style="@style/Heading"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="1"
-                        android:text="@string/address" />
+                        android:layout_marginTop="@dimen/margin_small"
+                        android:text="@string/mobile_number" />
 
-                    <androidx.appcompat.widget.AppCompatTextView
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/et_mobile_num"
                         style="@style/Body"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="2"
-                        android:text="120/3, 2nd Cross, VIP Nagar \n
-Kitchipalaya, Salem -15 \n
+                        android:layout_marginTop="@dimen/margin_small"
+                        android:background="@drawable/et_selector_bg"
+                        android:drawableStart="@drawable/phone_24"
+                        android:drawablePadding="@dimen/margin_small"
+                        android:drawableTint="@color/cherry_red_light"
+                        android:gravity="center_vertical"
+                        android:inputType="phone"
+                        android:paddingEnd="@dimen/activity_horizontal_margin"
+                        tools:text="9790318161" />
+
+                    <LinearLayout
+                        android:id="@+id/ll_shop_details"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"
+                            android:layout_marginTop="@dimen/activity_horizontal_margin"
+                            android:background="@drawable/dotted" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            style="@style/Heading"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="@dimen/margin_small"
+                            android:text="@string/shop_details" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/margin_small"
+                            android:orientation="horizontal"
+                            android:weightSum="3">
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                style="@style/Caption"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_weight="1"
+                                android:text="@string/shop_id" />
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/et_shop_id"
+                                style="@style/Body"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_weight="2"
+                                android:text="Shop12345" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/margin_small"
+                            android:orientation="horizontal"
+                            android:weightSum="3">
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                style="@style/Caption"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_weight="1"
+                                android:text="@string/shop_name" />
+
+                            <androidx.appcompat.widget.AppCompatEditText
+                                android:id="@+id/et_shop_name"
+                                style="@style/Body"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_weight="2"
+                                android:background="@drawable/et_selector_bg"
+                                android:text="RK Bikers" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/margin_small"
+                            android:orientation="horizontal"
+                            android:weightSum="3">
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                style="@style/Caption"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_weight="1"
+                                android:text="@string/address" />
+
+                            <androidx.appcompat.widget.AppCompatEditText
+                                android:id="@+id/et_address"
+                                style="@style/Body"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_weight="2"
+                                android:background="@drawable/et_selector_bg"
+                                tools:text="120/3, 2nd Cross, VIP Nagar \n
+Kitchipalayam, Salem -15 \n
 Tamilnadu - 636015" />
 
+                        </LinearLayout>
+
+                    </LinearLayout>
+
                 </LinearLayout>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="2dp"
-                    android:layout_marginTop="@dimen/margin_small"
-                    android:background="@drawable/dotted" />
-
             </LinearLayout>
-
         </LinearLayout>
-    </LinearLayout>
 
-</com.amar.library.ui.StickyScrollView>
+    </com.amar.library.ui.StickyScrollView>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_update"
+        style="@style/AppButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
+        android:text="@string/update"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>
 

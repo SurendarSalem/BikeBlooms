@@ -62,10 +62,12 @@ class VehiclesRepository @Inject constructor(private val firebaseHelper: Firebas
     }
 
     fun deleteVehicle(
-        userId: String,
-        vehicle: Vehicle,
-        callback: LoginCallback<Vehicle>
+        userId: String, vehicle: Vehicle, callback: LoginCallback<Vehicle>
     ) {
         firebaseHelper.deleteVehicle(userId, vehicle, callback)
+    }
+
+    fun getAllUserVehicles(callback: LoginCallback<List<Vehicle>>) {
+        firebaseHelper.getAllUserVehicles(callback)
     }
 }

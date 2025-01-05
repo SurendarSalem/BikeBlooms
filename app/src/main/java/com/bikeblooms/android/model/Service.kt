@@ -11,6 +11,8 @@ data class Service(
     var vehicleName: String = "",
     var vehicleId: String = "",
     var regNum: String = "",
+    var bookingDate: Date = Calendar.getInstance().time,
+    var updateDate: Date? = null,
     var startDate: Date = Calendar.getInstance().time,
     var endDate: Date? = null,
     var spareParts: List<Spare>? = null,

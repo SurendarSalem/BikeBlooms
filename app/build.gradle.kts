@@ -7,6 +7,7 @@ plugins {
     id("kotlin-kapt")
     id("kotlin-parcelize")
     id("androidx.navigation.safeargs.kotlin")
+    alias(libs.plugins.google.firebase.crashlytics)
 }
 
 android {
@@ -67,6 +68,7 @@ dependencies {
     implementation(libs.firebase.firestore)
     implementation(libs.firebase.messaging)
     implementation(libs.androidx.recyclerview)
+    implementation(libs.firebase.crashlytics)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     implementation(libs.google.auth.library.oauth2.http)
@@ -78,7 +80,6 @@ dependencies {
     implementation(libs.places)
     implementation(libs.play.services.location)
     implementation(libs.stickyscrollview)
-
     // splash
     implementation(libs.androidx.core.splashscreen)
 }

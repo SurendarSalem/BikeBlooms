@@ -21,7 +21,10 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class ServiceRepository @Inject constructor(private val repository: VehiclesRepository) {
+class ServiceRepository @Inject constructor(
+    private val repository: VehiclesRepository,
+    private val firebaseHelper: FirebaseHelper
+) {
 
     private var _myVehicleState = MutableStateFlow<ApiResponse<List<Vehicle>>>(ApiResponse.Empty())
     val myVehicleState = _myVehicleState.asStateFlow()
@@ -89,5 +92,13 @@ class ServiceRepository @Inject constructor(private val repository: VehiclesRepo
                     _generalServiceDetails.value = it.value as List<String>
                 }
             }
+    }
+
+    fun getServiceHistory(
+        fieldName: String,
+        value: String,
+        callback: LoginCallback<List<Service>>
+    ) {
+        firebaseHelper.getServiceHistory(fieldName, value, callback)
     }
 }

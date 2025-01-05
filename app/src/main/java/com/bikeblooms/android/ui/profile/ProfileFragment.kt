@@ -15,9 +15,11 @@ import com.bikeblooms.android.databinding.NameItemBinding
 import com.bikeblooms.android.model.AppState
 import com.bikeblooms.android.model.ProfileItem
 import com.bikeblooms.android.model.isAdmin
+import com.bikeblooms.android.ui.Utils
 import com.bikeblooms.android.ui.adapter.GenericAdapter
 import com.bikeblooms.android.ui.authentication.AuthenticationActivity
 import com.bikeblooms.android.ui.base.BaseFragment
+import com.bikeblooms.android.ui.user.UserDetailFragmentArgs
 import com.bikeblooms.android.util.SharedPrefHelper
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
@@ -86,14 +88,29 @@ class ProfileFragment : BaseFragment() {
         if (item is ProfileItem) {
             if (item == ProfileItem.MY_VEHICLES) {
                 findNavController().navigate(R.id.navigation_vehicle_list)
+            } else if (item == ProfileItem.BASIC_INFO) {
+                val args = UserDetailFragmentArgs(AppState.user)
+                findNavController().navigate(R.id.navigation_user_detail, args.toBundle())
             } else if (item == ProfileItem.LOGOUT) {
-                Firebase.auth.signOut()
-                sharedPrefHelper.clearAll()
-                AppState.user = null
-                val intent = Intent(requireActivity(), AuthenticationActivity::class.java)
-                startActivity(intent)
-                requireActivity().finish()
+                Utils.showAlertDialog(
+                    context = requireContext(),
+                    message = "Are you sure want to logout?",
+                    positiveBtnText = "Yes, Logout",
+                    positiveBtnCallback = {
+                        logout()
+                    },
+                    negativeBtnText = "Cancel"
+                )
             }
         }
+    }
+
+    private fun logout() {
+        Firebase.auth.signOut()
+        sharedPrefHelper.clearAll()
+        AppState.user = null
+        val intent = Intent(requireActivity(), AuthenticationActivity::class.java)
+        startActivity(intent)
+        requireActivity().finish()
     }
 }

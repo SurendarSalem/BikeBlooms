@@ -6,7 +6,6 @@ import com.bikeblooms.android.LoginCallback
 import com.bikeblooms.android.data.ServiceRepository
 import com.bikeblooms.android.data.VendorRepository
 import com.bikeblooms.android.model.ApiResponse
-import com.bikeblooms.android.model.AppState
 import com.bikeblooms.android.model.NotifyState
 import com.bikeblooms.android.model.Service
 import com.bikeblooms.android.model.Vendor
@@ -38,7 +37,7 @@ class VendorListViewModel @Inject constructor(
     private var _notifyState = MutableSharedFlow<NotifyState>()
     var notifyState = _notifyState.asSharedFlow()
 
-    init {
+    fun getAllVendor() {
         repository.getAllVendors()
     }
 
@@ -47,11 +46,8 @@ class VendorListViewModel @Inject constructor(
         serviceRepository.assignService(vendor, service, object : LoginCallback<Service> {
             override fun onSuccess(t: Service) {
                 _assignServiceState.value = ApiResponse.Success(t)
-                AppState.user?.run {
-                    sendNotificationToVendor(name, fcmToken)
-                    sendNotificationToUser(name, fcmToken)
-                }
-
+                sendNotificationToVendor(vendor.name, vendor.fcmToken)
+                sendNotificationToUser("Hello Customer! ", service.ownerFcmToken)
             }
 
             override fun onError(message: String) {
@@ -61,20 +57,22 @@ class VendorListViewModel @Inject constructor(
     }
 
     fun sendNotificationToVendor(vendorName: String, userFcmToken: String) {
-        viewModelScope.launch(Dispatchers.IO) {
-            val vendorBody = mutableMapOf(
-                "serviceId" to "",
-                "title" to "Hi ${vendorName}!. New service update",
-                "message" to "Admin has allotted a new service to you"
-            )
-            FCMPushNotificationProvider.sendMessage(
-                userFcmToken,
-                vendorBody["title"].toString(),
-                vendorBody["message"].toString(),
-                false,
-                SERVICE_UPDATE,
-                vendorBody
-            )
+        if (vendorName.isNotEmpty() && userFcmToken.isNotEmpty()) {
+            viewModelScope.launch(Dispatchers.IO) {
+                val vendorBody = mutableMapOf(
+                    "serviceId" to "",
+                    "title" to "Hi ${vendorName}!. New service update",
+                    "message" to "Admin has allotted a new service to you"
+                )
+                FCMPushNotificationProvider.sendMessage(
+                    userFcmToken,
+                    vendorBody["title"].toString(),
+                    vendorBody["message"].toString(),
+                    false,
+                    SERVICE_UPDATE,
+                    vendorBody
+                )
+            }
         }
     }
 

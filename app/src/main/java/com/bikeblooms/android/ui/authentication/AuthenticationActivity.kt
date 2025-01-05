@@ -68,7 +68,9 @@ class AuthenticationActivity() : AppCompatActivity() {
 
     private fun checkForPermissions() {
         val arr = mutableListOf(
-            Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION,
+            Manifest.permission.CALL_PHONE
         )
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             arr.add(Manifest.permission.POST_NOTIFICATIONS)

@@ -7,6 +7,7 @@ import com.bikeblooms.android.model.Service
 import com.bikeblooms.android.model.User
 import com.bikeblooms.android.model.Vehicle
 import com.bikeblooms.android.model.VehicleType
+import com.bikeblooms.android.model.Vendor
 import com.google.firebase.auth.FirebaseUser
 import javax.inject.Inject
 
@@ -26,6 +27,12 @@ class Repository @Inject constructor(
         user: User, callback: LoginCallback<User>
     ) {
         firebaseHelper.addUser(user, callback)
+    }
+
+    fun updateVendor(
+        user: User, callback: LoginCallback<User>
+    ) {
+        firebaseHelper.updateVendor((user as Vendor), callback)
     }
 
     fun getAllVehicles(

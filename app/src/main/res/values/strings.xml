@@ -79,4 +79,11 @@
     <string name="it_seems_you_dont_have_any_vendors_added">It seems you don\'t have any Vendors added</string>
     <string name="view_details"><u>View Details</u></string>
     <string name="general_service_details_title">General Service\'s Items </string>
+    <string name="booking_date">Booking date:</string>
+    <string name="dd_mm_yy">DD-MM-YY</string>
+    <string name="all_vehicles">All Vehicles</string>
+    <string name="service_history">Service History</string>
+    <string name="choose_manufacturer">Choose Manufacturer</string>
+    <string name="vehicles">Vehicles</string>
+    <string name="update_vehicle">Update Vehicle</string>
 </resources>

@@ -24,9 +24,11 @@ import com.bikeblooms.android.model.Service
 import com.bikeblooms.android.model.ServiceType
 import com.bikeblooms.android.model.Vehicle
 import com.bikeblooms.android.model.Vehicles
+import com.bikeblooms.android.ui.Utils
 import com.bikeblooms.android.ui.VehicleListDialogFragmentArgs
 import com.bikeblooms.android.ui.base.BaseFragment
 import com.bikeblooms.android.ui.service.compaints.AddComplaintsFragmentArgs
+import com.bikeblooms.android.ui.toDisplayDate
 import com.bikeblooms.android.ui.vehicles.VehicleViewModel
 import com.bikeblooms.android.util.toRegNum
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -44,6 +46,7 @@ import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import java.util.Calendar
 import javax.inject.Inject
 import kotlin.getValue
 
@@ -206,6 +209,15 @@ class AddServiceFragment : BaseFragment(), OnMapReadyCallback {
                 else -> true
             }
         }
+        binding.tvBookingDate.text = Calendar.getInstance().time.toDisplayDate()
+        binding.ivPickDate.setOnClickListener {
+            Utils.showDatePicker(
+                requireContext(), Calendar.getInstance()
+            ) { calendar ->
+                service.bookingDate = calendar.time
+                binding.tvBookingDate.text = calendar.time.toDisplayDate()
+            }
+        }
     }
 
     private fun isValid(service: Service): String {
@@ -299,3 +311,5 @@ class AddServiceFragment : BaseFragment(), OnMapReadyCallback {
         }
     }
 }
+
+

@@ -19,6 +19,7 @@ import com.bikeblooms.android.model.NotifyState
 import com.bikeblooms.android.model.Vendor
 import com.bikeblooms.android.ui.adapter.GenericAdapter
 import com.bikeblooms.android.ui.base.BaseFragment
+import com.bikeblooms.android.ui.user.UserDetailFragmentArgs
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -50,13 +51,15 @@ class VendorListFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         progressBar = binding.progressBar
+
+        viewModel.getAllVendor()
         binding.rvVehicles.layoutManager = LinearLayoutManager(requireContext())
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.vendorListState.collectLatest {
                 when (it) {
                     is ApiResponse.Success -> {
                         hideProgress()
-                        onVendorsLoaded(emptyList())
+                        onVendorsLoaded(it.data)
                     }
 
                     is ApiResponse.Error -> {
@@ -212,7 +215,11 @@ class VendorListFragment : BaseFragment() {
                         Unit
                     })
             } else {
-                findNavController().navigate(R.id.action_navigation_vendors_to_navigation_user_detail)
+                val args = UserDetailFragmentArgs(item)
+                findNavController().navigate(
+                    R.id.action_navigation_vendors_to_navigation_user_detail,
+                    args.toBundle()
+                )
             }
         }
     }

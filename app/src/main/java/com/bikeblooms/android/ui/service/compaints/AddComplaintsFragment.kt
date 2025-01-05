@@ -65,7 +65,7 @@ class AddComplaintsFragment : BaseFragment() {
                     addComplaintsViewModel.serviceState.value =
                         addComplaintsViewModel.serviceState.value?.copy(complaints = selectedComplaints)
                     selectedComplaints.forEach {
-                        complaintsNames += it.name + "\n"
+                        complaintsNames += it.name + "-" + "\u20B9 " + it.price + "\n"
                     }
                     if (selectedComplaints.isEmpty()) {
                         complaintsNames = getString(R.string.select_vehicle_problem)

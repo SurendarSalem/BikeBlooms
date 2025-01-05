@@ -12,4 +12,5 @@
     <dimen name="map_height">400dp</dimen>
     <dimen name="textsize_small">10sp</dimen>
     <dimen name="textsize_medium">12sp</dimen>
+    <dimen name="textsize_large">16sp</dimen>
 </resources>

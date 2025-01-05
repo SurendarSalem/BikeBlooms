@@ -6,4 +6,5 @@ plugins {
     alias(libs.plugins.hilt.android) apply false
     alias(libs.plugins.kotlin.android.ksp) apply false
     id("androidx.navigation.safeargs.kotlin") version ("2.5.0") apply false
+    alias(libs.plugins.google.firebase.crashlytics) apply false
 }

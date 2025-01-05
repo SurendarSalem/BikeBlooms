@@ -16,4 +16,9 @@
         android:icon="@drawable/black_repair"
         android:title="@string/spares" />
 
+    <item
+        android:id="@+id/navigation_vehicles"
+        android:icon="@drawable/black_bike"
+        android:title="@string/vehicles" />
+
 </menu>

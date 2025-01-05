@@ -35,7 +35,7 @@ class AddVehicleFragment : BaseFragment() {
 
     private lateinit var binding: FragmentDashboardBinding
     val addVehicleViewModel: VehicleViewModel by activityViewModels()
-    private var currentVehicle = Vehicle()
+    private var currentVehicle = Vehicle(firebaseId = AppState.user?.firebaseId.toString())
     private var totalVehicleMap: VehicleMap? = null
     private var selectedBrands: List<Brand> = emptyList()
     private var selectedVehicles: List<Vehicle> = emptyList()
