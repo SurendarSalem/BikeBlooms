@@ -117,7 +117,8 @@
                     android:background="@drawable/border_gray_dotted"
                     android:clickable="true"
                     android:drawableEnd="@drawable/arrow_right"
-                    android:gravity="center"
+                    android:focusable="true"
+                    android:gravity="start"
                     android:padding="@dimen/activity_horizontal_margin"
                     android:text="@string/select_engine_oil"
                     android:textSize="14sp" />

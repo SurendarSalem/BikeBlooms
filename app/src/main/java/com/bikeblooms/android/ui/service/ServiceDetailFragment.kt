@@ -178,7 +178,7 @@ class ServiceDetailFragment : BaseFragment() {
                 llVehicleRepair.visibility = View.VISIBLE
                 var complaintsNames = ""
                 complaints?.forEachIndexed { index, complaint ->
-                    complaintsNames += "${index + 1}) ${complaint.name}\n"
+                    complaintsNames += "${index + 1}) ${complaint.name} - ${getString(R.string.rupee_symbol)} ${complaint.price}\n"
                 }
 
                 if (complaintsNames.isEmpty()) {
@@ -213,6 +213,7 @@ class ServiceDetailFragment : BaseFragment() {
                 btnUpdateService.visibility = View.GONE
                 btnCancelService.visibility = View.GONE
             }
+            binding.etOtherComplaints.setText(complaint)
         }
     }
 
@@ -289,6 +290,12 @@ class ServiceDetailFragment : BaseFragment() {
             }
         }
         btnUpdateService.setOnClickListener {
+            val complaints = binding.etOtherComplaints.text.toString()
+            serviceDetailViewModel.updateService(
+                service.copy(
+                    complaint = complaints
+                )
+            )
             Utils.showAlertDialog(context = requireContext(),
                 message = "Are you sure want to update this service?",
                 positiveBtnText = "Update",

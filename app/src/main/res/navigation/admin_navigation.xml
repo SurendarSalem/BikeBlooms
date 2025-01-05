@@ -119,7 +119,7 @@
     <fragment
         android:id="@+id/navigation_spares"
         android:name="com.bikeblooms.android.ui.spares.SparesFragment"
-        android:label="@string/spares_add_update"
+        android:label="@string/spares"
         tools:layout="@layout/fragment_list_items">
         <action
             android:id="@+id/action_navigation_spares_to_navigation_spares_update"
@@ -133,7 +133,7 @@
     <fragment
         android:id="@+id/navigation_spares_update"
         android:name="com.bikeblooms.android.ui.spares.SpareAddUpdateFragment"
-        android:label="@string/spares_add_update"
+        android:label="@string/spares"
         tools:layout="@layout/fragment_spare_add_update">
 
         <argument

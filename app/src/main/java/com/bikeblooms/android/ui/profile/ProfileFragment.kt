@@ -101,6 +101,8 @@ class ProfileFragment : BaseFragment() {
                     },
                     negativeBtnText = "Cancel"
                 )
+            } else {
+                showToast("Development in Progress")
             }
         }
     }

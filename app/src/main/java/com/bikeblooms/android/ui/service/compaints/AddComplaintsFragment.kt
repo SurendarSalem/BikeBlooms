@@ -64,8 +64,8 @@ class AddComplaintsFragment : BaseFragment() {
                     }
                     addComplaintsViewModel.serviceState.value =
                         addComplaintsViewModel.serviceState.value?.copy(complaints = selectedComplaints)
-                    selectedComplaints.forEach {
-                        complaintsNames += it.name + "-" + "\u20B9 " + it.price + "\n"
+                    selectedComplaints.forEachIndexed { index, complaint ->
+                        complaintsNames += "${index + 1}) ${complaint.name} - ${getString(R.string.rupee_symbol)} ${complaint.price}\n"
                     }
                     if (selectedComplaints.isEmpty()) {
                         complaintsNames = getString(R.string.select_vehicle_problem)
@@ -170,6 +170,10 @@ class AddComplaintsFragment : BaseFragment() {
             }
         }
         btnAddService.setOnClickListener {
+            addComplaintsViewModel.serviceState.value =
+                addComplaintsViewModel.serviceState.value?.copy(
+                    complaint = binding.etOtherComplaints.text.toString()
+                )
             addComplaintsViewModel.isServiceValid()
         }
         binding.tvViewDetails.setOnClickListener {
