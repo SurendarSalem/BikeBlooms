@@ -51,4 +51,20 @@ class UserValidator() {
         return "success"
     }
 
+    fun isValidVendorForRegister(user: Vendor): String {
+        if (user.emailId.isEmpty()) {
+            return "Email id must not be empty"
+        }
+        if (user.mobileNum.isEmpty() || user.mobileNum.length < 10) {
+            return "Please enter a valid mobile number"
+        }
+        if (user.emailId.isEmpty()) {
+            return "Email id must not be empty"
+        }
+        if (!Patterns.EMAIL_ADDRESS.matcher(user.emailId).matches()) {
+            return "Please enter valid mail id"
+        }
+        return "success"
+    }
+
 }

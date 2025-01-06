@@ -49,9 +49,9 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_password"
-            android:inputType="textPassword"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:inputType="textPassword" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -78,13 +78,13 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_login"
+        style="@style/AppButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/activity_horizontal_margin"
         android:text="@string/login"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        style="@style/AppButton"
         app:layout_constraintTop_toBottomOf="@id/tv_login_error" />
 
     <View
@@ -109,6 +109,20 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_or" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/tv_become_partner"
+        style="@style/AppButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:backgroundTint="@color/blue"
+        android:text="Become a Partner?"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textsize_very_large1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_sign_up" />
 
     <ProgressBar
         android:id="@+id/progress_bar"

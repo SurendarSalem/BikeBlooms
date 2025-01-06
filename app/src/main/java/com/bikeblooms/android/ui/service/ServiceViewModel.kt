@@ -40,6 +40,9 @@ class ServiceViewModel @Inject constructor(
             AppState.user?.firebaseId?.run {
                 vehiclesRepository.getMyServices(this, object : LoginCallback<List<Service>> {
                     override fun onSuccess(services: List<Service>) {
+                        services.sortedBy {
+                            it.updateDate
+                        }
                         _myServicesState.value = ApiResponse.Success(services)
                     }
 

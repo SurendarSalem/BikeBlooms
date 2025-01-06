@@ -185,6 +185,59 @@
                         android:layout_marginStart="-5dp"
                         android:text="Pick and Drop Service (Optional)" />
 
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            style="@style/Caption"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/margin_small"
+                            android:text="@string/address"
+                            android:textColor="@color/cherry_red"
+                            android:textSize="16sp" />
+
+                        <RelativeLayout
+                            android:id="@+id/rl_address_details"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/margin_small"
+                            android:background="@color/white">
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="top|start"
+                                android:hint="@string/address"
+                                app:boxBackgroundColor="@color/white"
+                                app:boxBackgroundMode="outline"
+                                app:boxCornerRadiusBottomEnd="@dimen/text_area_corner_radius"
+                                app:boxCornerRadiusBottomStart="@dimen/text_area_corner_radius"
+                                app:boxCornerRadiusTopEnd="@dimen/text_area_corner_radius"
+                                app:boxCornerRadiusTopStart="@dimen/text_area_corner_radius"
+                                app:boxStrokeColor="@color/cherry_red"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/et_address"
+                                    style="@style/Body"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="start|top"
+                                    android:minLines="2" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+
+                        </RelativeLayout>
+
+
+                    </LinearLayout>
+
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btn_next"
                         style="@style/AppButton"

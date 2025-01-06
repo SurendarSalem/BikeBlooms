@@ -14,8 +14,6 @@
         <!-- Customize your theme here. -->
         <item name="colorControlNormal">@color/cherry_red</item>
         <item name="android:textColor">@color/black</item>
-
-        <item name="android:fontFamily">@font/salmapro</item>
     </style>
 
     <style name="Heading" parent="Widget.AppCompat.TextView">

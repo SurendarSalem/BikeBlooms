@@ -216,4 +216,10 @@
 
     </fragment>
 
+    <fragment
+        android:id="@+id/navigation_contact_us"
+        android:name="com.bikeblooms.android.ui.contactus.ContactUsFragment"
+        android:label="@string/contact_us"
+        tools:layout="@layout/fragment_contact_us" />
+
 </navigation>

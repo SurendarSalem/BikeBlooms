@@ -21,14 +21,12 @@ import com.bikeblooms.android.util.FirebaseConstants.Bike.BIKE_MODELS
 import com.bikeblooms.android.util.FirebaseConstants.COMPLAINTS
 import com.bikeblooms.android.util.FirebaseConstants.ITEMS
 import com.bikeblooms.android.util.FirebaseConstants.SERVICES
-import com.bikeblooms.android.util.FirebaseConstants.SPARES
 import com.bikeblooms.android.util.FirebaseConstants.SPARES_AND_ACCESSORIES
 import com.bikeblooms.android.util.FirebaseConstants.USERS
 import com.bikeblooms.android.util.FirebaseConstants.USER_VEHICLES
 import com.bikeblooms.android.util.FirebaseConstants.VENDORS
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.Filter
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
@@ -69,6 +67,17 @@ class FirebaseHelper {
             }.addOnFailureListener {
                 callback.onError(it.message.toString())
             }
+    }
+
+    fun addVendor(vendor: Vendor, callback: LoginCallback<Vendor>) {
+        Firebase.firestore.collection(VENDORS).document().apply {
+            vendor.firebaseId = id
+            set(vendor).addOnSuccessListener { result ->
+                callback.onSuccess(vendor)
+            }.addOnFailureListener {
+                callback.onError(it.message.toString())
+            }
+        }
     }
 
     fun updateVendor(vendor: Vendor, callback: LoginCallback<Vendor>) {
@@ -228,8 +237,8 @@ class FirebaseHelper {
     }
 
     fun getAllSpares(type: SpareType, callback: LoginCallback<List<Spare>>) {
-        Firebase.firestore.collection(SPARES).where(Filter.equalTo("spareType", type.name)).get()
-            .addOnSuccessListener { result ->
+        Firebase.firestore.collection(SPARES_AND_ACCESSORIES).document("engine_oil")
+            .collection("items").get().addOnSuccessListener { result ->
                 val spares = mutableListOf<Spare>()
                 result.forEach {
                     val complaint = it.toObject<Spare>(Spare::class.java)
@@ -242,16 +251,17 @@ class FirebaseHelper {
     }
 
     fun getAllSparesAndReturn(callback: LoginCallback<List<Spare>>, type: SpareType) {
-        Firebase.firestore.collection(SPARES).get().addOnSuccessListener { result ->
-            val spares = mutableListOf<Spare>()
-            result.forEach {
-                val spare = it.toObject<Spare>(Spare::class.java)
-                spares.add(spare)
+        Firebase.firestore.collection(SPARES_AND_ACCESSORIES).document("engine_oil")
+            .collection("items").get().addOnSuccessListener { result ->
+                val spares = mutableListOf<Spare>()
+                result.forEach {
+                    val spare = it.toObject<Spare>(Spare::class.java)
+                    spares.add(spare)
+                }
+                callback.onSuccess(spares)
+            }.addOnFailureListener {
+                callback.onError(it.message.toString())
             }
-            callback.onSuccess(spares)
-        }.addOnFailureListener {
-            callback.onError(it.message.toString())
-        }
     }
 
 

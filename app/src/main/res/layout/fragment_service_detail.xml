@@ -282,12 +282,59 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:lineSpacingExtra="@dimen/margin_small"
-                                android:text="56/2, 3rd Phase, Park Avenue \n
+                                android:textSize="14sp"
+                                tools:text="56/2, 3rd Phase, Park Avenue \n
 Egmore, Chennai\n
-Tamilnadu -6000018"
-                                android:textSize="14sp" />
+Tamilnadu -6000018" />
+
 
                         </RelativeLayout>
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/margin_small"
+                            android:text="@string/customer_details"
+                            android:textColor="@color/cherry_red"
+                            android:textSize="16sp" />
+
+                        <LinearLayout
+                            android:id="@+id/ll_user_details"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/margin_small"
+                            android:background="@color/white"
+                            android:orientation="horizontal"
+                            android:visibility="gone">
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/tv_user_name"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                tools:text="Surendar V" />
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/tv_mobile_number"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/margin_small"
+                                android:clickable="true"
+                                android:drawableEnd="@drawable/phone_24"
+                                android:drawablePadding="@dimen/margin_small"
+                                android:drawableTint="@color/cherry_red"
+                                android:focusable="true"
+                                tools:text="(9790318161)" />
+
+                        </LinearLayout>
+
 
                     </LinearLayout>
 

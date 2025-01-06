@@ -9,6 +9,11 @@ import com.bikeblooms.android.model.Vehicle
 import com.bikeblooms.android.model.VehicleType
 import com.bikeblooms.android.model.Vendor
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.PhoneAuthOptions
+import com.google.firebase.auth.PhoneAuthProvider
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class Repository @Inject constructor(
@@ -27,6 +32,12 @@ class Repository @Inject constructor(
         user: User, callback: LoginCallback<User>
     ) {
         firebaseHelper.addUser(user, callback)
+    }
+
+    fun addVendor(
+        vendor: Vendor, callback: LoginCallback<Vendor>
+    ) {
+        firebaseHelper.addVendor(vendor, callback)
     }
 
     fun updateVendor(
@@ -50,10 +61,21 @@ class Repository @Inject constructor(
     }
 
     fun setPassword(
-        email: String,
-        callback: LoginCallback<String>
+        email: String, callback: LoginCallback<String>
     ) {
         firebaseHelper.setPassword(email, callback)
     }
+
+    fun requestCode(
+        mobileNum: String, callbacks: PhoneAuthProvider.OnVerificationStateChangedCallbacks
+    ) {
+        val options = PhoneAuthOptions.newBuilder(Firebase.auth)
+            .setPhoneNumber("+91$mobileNum") // Phone number to verify
+            .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
+            .setCallbacks(callbacks) // OnVerificationStateChangedCallbacks
+            .build()
+        PhoneAuthProvider.verifyPhoneNumber(options)
+    }
+
 
 }

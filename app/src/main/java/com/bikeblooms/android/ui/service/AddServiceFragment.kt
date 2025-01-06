@@ -71,6 +71,8 @@ class AddServiceFragment : BaseFragment(), OnMapReadyCallback {
         AppState.user?.let {
             service.firebaseId = it.firebaseId
             service.ownerFcmToken = it.fcmToken
+            service.mobileNumber = it.mobileNum
+            service.ownerName = it.name
         }
     }
 
@@ -157,6 +159,7 @@ class AddServiceFragment : BaseFragment(), OnMapReadyCallback {
             service.pickDrop = isChecked
         }
         btnNext.setOnClickListener {
+            service.address = etAddress.text.toString()
             val validationErrorMsg = isValid(service)
             if (validationErrorMsg.isEmpty()) {
                 val args = AddComplaintsFragmentArgs(service)
@@ -261,7 +264,9 @@ class AddServiceFragment : BaseFragment(), OnMapReadyCallback {
         }
 
         mMap.setOnCameraIdleListener {
-            service.address = serviceViewModel.reverseGeocode(mMap.cameraPosition.target, mGeocoder)
+            val address = serviceViewModel.reverseGeocode(mMap.cameraPosition.target, mGeocoder)
+            service.address = address
+            binding.etAddress.setText(address)
             setMarkersToMap(mMap, mMap.cameraPosition.target, markerOptions)
         }
 
@@ -304,6 +309,7 @@ class AddServiceFragment : BaseFragment(), OnMapReadyCallback {
                 place.location?.let {
                     setLocationToMap(mMap, it, markerOptions)
                     service.address = address
+                    binding.etAddress.setText(address)
                 }
             }
         } else if (result.resultCode == Activity.RESULT_CANCELED) {

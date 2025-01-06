@@ -12,7 +12,7 @@ data class Service(
     var vehicleId: String = "",
     var regNum: String = "",
     var bookingDate: Date = Calendar.getInstance().time,
-    var updateDate: Date? = null,
+    var updateDate: Date? = Calendar.getInstance().time,
     var startDate: Date = Calendar.getInstance().time,
     var endDate: Date? = null,
     var spareParts: List<Spare>? = null,
@@ -26,7 +26,9 @@ data class Service(
     var bill: Bill? = null,
     var assignee: Vendor? = null,
     var hiddenCharges: Int = 0,
-    var ownerFcmToken: String = ""
+    var ownerFcmToken: String = "",
+    var mobileNumber: String = "",
+    var ownerName: String = ""
 ) : Parcelable {}
 
 @Parcelize

@@ -36,6 +36,11 @@ object FirebaseConstants {
         const val BIKE_MODELS = "bikes"
     }
 
+    object Social {
+        const val FB_URL = "https://www.facebook.com/profile.php?id=61568531913824"
+        const val INSTA_URL = "https://www.instagram.com/bikebloom_official1/?igsh=MWt5ZTJhY3lvcjF3MQ%3D%3D&utm_source=qr"
+    }
+
     object FCM {
         const val SERVICE_UPDATE = "serviceupdate"
         const val FIREBASE_MESSAGING_SCOPE = "https://www.googleapis.com/auth/firebase.messaging"

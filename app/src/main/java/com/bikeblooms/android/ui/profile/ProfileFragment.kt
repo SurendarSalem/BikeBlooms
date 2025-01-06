@@ -91,6 +91,8 @@ class ProfileFragment : BaseFragment() {
             } else if (item == ProfileItem.BASIC_INFO) {
                 val args = UserDetailFragmentArgs(AppState.user)
                 findNavController().navigate(R.id.navigation_user_detail, args.toBundle())
+            } else if (item == ProfileItem.CONTACT_US) {
+                findNavController().navigate(R.id.navigation_contact_us)
             } else if (item == ProfileItem.LOGOUT) {
                 Utils.showAlertDialog(
                     context = requireContext(),

@@ -18,11 +18,7 @@ object ReverseGeocoder {
             if (addressList != null && addressList.isNotEmpty()) {
                 val address = addressList[0]
                 val sb = StringBuilder()
-                sb.append(address.getAddressLine(0)).append("\n")
-                sb.append(address.locality).append("\n")
-                sb.append(address.adminArea).append("\n")
-                sb.append(address.countryName).append("\n")
-                sb.append(address.postalCode).append("\n")
+                sb.append(address.getAddressLine(0))
                 addressString = sb.toString()
                 return addressString
             }

@@ -16,4 +16,10 @@
         android:name="com.bikeblooms.android.ui.authentication.signup.SignupFragment"
         android:label="@string/register"
         tools:layout="@layout/fragment_signup" />
+
+    <fragment
+        android:id="@+id/navigation_vendor_request"
+        android:name="com.bikeblooms.android.ui.authentication.vendor.VendorRequestFragment"
+        android:label="@string/partner_register"
+        tools:layout="@layout/fragment_vendor_request" />
 </navigation>

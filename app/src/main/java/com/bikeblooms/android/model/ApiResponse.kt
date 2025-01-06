@@ -1,5 +1,7 @@
 package com.bikeblooms.android.model
 
+import com.google.firebase.auth.FirebaseUser
+
 sealed class ApiResponse<T>(
     val data: T? = null, val message: String? = null
 ) {
@@ -17,4 +19,14 @@ sealed class ApiResponse<T>(
 sealed class NotifyState {
     class Success(val message: String) : NotifyState()
     class Error(val message: String) : NotifyState()
+}
+
+sealed class LoginState {
+    class Loading : LoginState()
+    class Empty : LoginState()
+    class Success(val data: PhoneAuthResponse) : LoginState()
+    class Error(val message: String) : LoginState()
+    class OnVerificationCompleted(val user: FirebaseUser) : LoginState()
+    class OnVerificationFailed(val message: String) : LoginState()
+    class OnCodeSent(val verificationId: String) : LoginState()
 }

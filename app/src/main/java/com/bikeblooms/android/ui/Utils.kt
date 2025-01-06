@@ -85,6 +85,11 @@ object Utils {
         context.startActivity(Intent.createChooser(emailIntent, "Send feedback"))
     }
 
+    fun openUrl(context: Context, url: String) {
+        val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+        context.startActivity(browserIntent)
+    }
+
 }
 
 fun CoroutineScope.inMainThread(block: suspend CoroutineScope.() -> Unit) {

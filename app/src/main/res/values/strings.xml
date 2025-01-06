@@ -86,4 +86,10 @@
     <string name="choose_manufacturer">Choose Manufacturer</string>
     <string name="vehicles">Vehicles</string>
     <string name="update_vehicle">Update Vehicle</string>
+    <string name="customer_details">Customer Details</string>
+    <string name="contact_us">Contact Us</string>
+    <string name="enter_otp">Enter OTP</string>
+    <string name="resend_otp">Resend OTP</string>
+    <string name="phone_number_verification">Phone Number Verification</string>
+    <string name="partner_register">Partner Register</string>
 </resources>

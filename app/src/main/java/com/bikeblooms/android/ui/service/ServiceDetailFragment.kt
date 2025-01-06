@@ -188,6 +188,7 @@ class ServiceDetailFragment : BaseFragment() {
                 }
             }
             tvVehicleName.text = vehicleName
+            tvAddress.text = address
             tvVehicleNumber.text = regNum.toRegNum()
             service.updateDate?.let {
                 tvBookingDate.text = it.toDisplayDate()
@@ -214,6 +215,11 @@ class ServiceDetailFragment : BaseFragment() {
                 btnCancelService.visibility = View.GONE
             }
             binding.etOtherComplaints.setText(complaint)
+            if (ownerName.isNotEmpty() && mobileNumber.isNotEmpty()) {
+                llUserDetails.visibility = View.VISIBLE
+                binding.tvUserName.text = ownerName
+                binding.tvMobileNumber.text = mobileNumber
+            }
         }
     }
 
@@ -328,6 +334,9 @@ class ServiceDetailFragment : BaseFragment() {
             } catch (e: NumberFormatException) {
             }
         })
+        tvMobileNumber.setOnClickListener {
+            Utils.callPhone(requireContext(), service.mobileNumber)
+        }
     }
 
     override fun onDestroyView() {
