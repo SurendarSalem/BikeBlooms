@@ -1,12 +1,8 @@
 package com.bikeblooms.android.ui.authentication
 
 import android.Manifest
-import android.content.Context
-import android.content.Intent
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.provider.Settings
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -19,6 +15,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import com.bikeblooms.android.R
 import com.bikeblooms.android.databinding.ActivityAuthenticationBinding
 import com.bikeblooms.android.ui.Utils
+import com.bikeblooms.android.ui.openAppSystemSettings
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -34,16 +31,20 @@ class AuthenticationActivity() : AppCompatActivity() {
             if (!permissionsStatusMap.containsValue(false)) {
 
             } else {
-                Utils.showAlertDialog(context = this,
+                Utils.showAlertDialog(
+                    context = this,
                     message = "Please approve all the permissions before opening the app",
                     positiveBtnText = "Open Settings",
                     positiveBtnCallback = {
+                        finish()
                         this.openAppSystemSettings()
                     },
                     negativeBtnText = "Cancel",
                     negativeBtnCallback = {
                         finish()
-                    })
+                    },
+                    nonCancellable = false
+                )
             }
         }
 
@@ -86,12 +87,5 @@ class AuthenticationActivity() : AppCompatActivity() {
         } else {
             return navController.navigateUp()
         }
-    }
-
-    fun Context.openAppSystemSettings() {
-        startActivity(Intent().apply {
-            action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
-            data = Uri.fromParts("package", packageName, null)
-        })
     }
 }

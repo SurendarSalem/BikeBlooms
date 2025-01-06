@@ -89,7 +89,7 @@ class AddComplaintsFragment : BaseFragment() {
         }
         viewLifecycleOwner.lifecycleScope.launch {
             addComplaintsViewModel.serviceState.collectLatest {
-                binding.tvInspectionCharges.text = it?.bill?.totalAmount.toString()
+                binding.tvInspectionCharges.text = it?.bill?.inspectionCharges.toString()
                 binding.tvTotalAmt.text = it?.bill?.totalAmount.toString()
             }
         }

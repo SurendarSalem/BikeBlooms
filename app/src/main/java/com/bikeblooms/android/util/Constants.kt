@@ -26,6 +26,7 @@ object FirebaseConstants {
     const val NAME = "Name"
     const val SERVICES = "services"
     const val GENERAL_DETAILS = "general_details"
+    const val CHARGES = "charges"
     const val GENERAL_SERVICE = "general_service"
     const val SPARES = "spares"
     const val SPARES_AND_ACCESSORIES = "spares_and_accessories"

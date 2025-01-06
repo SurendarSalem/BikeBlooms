@@ -35,7 +35,11 @@ class AddVehicleFragment : BaseFragment() {
 
     private lateinit var binding: FragmentDashboardBinding
     val addVehicleViewModel: VehicleViewModel by activityViewModels()
-    private var currentVehicle = Vehicle(firebaseId = AppState.user?.firebaseId.toString())
+    private var currentVehicle = Vehicle(
+        firebaseId = AppState.user?.firebaseId.toString(),
+        type = VehicleType.BIKE,
+        fuelType = FuelType.PETROL
+    )
     private var totalVehicleMap: VehicleMap? = null
     private var selectedBrands: List<Brand> = emptyList()
     private var selectedVehicles: List<Vehicle> = emptyList()
@@ -147,7 +151,6 @@ class AddVehicleFragment : BaseFragment() {
         binding.tvVehicleModel.text = currentVehicle.name
         binding.tgBtnFuelType.check(
             if (vehicle.fuelType == FuelType.PETROL) R.id.btn_petrol
-            else if (vehicle.fuelType == FuelType.DIESEL) R.id.btn_diesel
             else View.NO_ID
         )
     }
@@ -206,8 +209,6 @@ class AddVehicleFragment : BaseFragment() {
         tgBtnFuelType.addOnButtonCheckedListener { group, checkedId, isChecked ->
             if (checkedId == binding.btnPetrol.id) {
                 currentVehicle.fuelType = FuelType.PETROL
-            } else if (checkedId == binding.btnDiesel.id) {
-                currentVehicle.fuelType = FuelType.DIESEL
             }
         }
         btnAddVehicle.setOnClickListener {

@@ -16,8 +16,10 @@ class LocationHelper @Inject constructor(
     @SuppressLint("MissingPermission")
     override fun getCurrentLocation(): Flow<Location> {
         return callbackFlow {
-            client.lastLocation.addOnSuccessListener {
-                trySend(it)
+            client.lastLocation.addOnSuccessListener { lastLocation ->
+                lastLocation?.let {
+                    trySend(it)
+                }
             }
             awaitClose()
         }

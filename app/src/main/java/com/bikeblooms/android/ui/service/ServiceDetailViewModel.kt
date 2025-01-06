@@ -23,6 +23,8 @@ class ServiceDetailViewModel @Inject constructor(
     private var serviceRepository: ServiceRepository, private var spareRepository: SpareRepository
 ) : ViewModel() {
 
+    var charges = serviceRepository.chargesState
+
     private var _updateServiceState = MutableStateFlow<ApiResponse<Service>>(ApiResponse.Empty())
     var updateServiceState = _updateServiceState.asStateFlow()
 
@@ -43,7 +45,8 @@ class ServiceDetailViewModel @Inject constructor(
                     _serviceState.value = it.copy(
                         bill = Bill(
                             hiddenCharges = 0.0,
-                            totalAmount = service.hiddenCharges + spareAmount + complaintsAmount,
+                            totalAmount = getChargesAmount(service) + service.hiddenCharges + spareAmount + complaintsAmount,
+                            inspectionCharges = getChargesAmount(service),
                             service.startDate
                         )
                     )
@@ -51,6 +54,14 @@ class ServiceDetailViewModel @Inject constructor(
             }
         }
     }
+
+    fun getChargesAmount(service: Service): Double {
+        if (charges.value.isNotEmpty()) {
+            return charges.value.first { it.name == service.serviceType?.name }.price
+        }
+        return 0.0
+    }
+
 
     fun setService(service: Service) {
         viewModelScope.launch {

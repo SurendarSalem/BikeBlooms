@@ -30,7 +30,6 @@ import kotlin.Any
 @AndroidEntryPoint
 class ProfileFragment : BaseFragment() {
 
-
     @Inject
     lateinit var sharedPrefHelper: SharedPrefHelper
     lateinit var binding: FragmentListItemsBinding
@@ -78,7 +77,16 @@ class ProfileFragment : BaseFragment() {
         when (binding) {
             is NameItemBinding -> {
                 if (item is ProfileItem) {
-                    binding.tvName.text = item.title
+                    if (item.title == ProfileItem.SETTINGS.title) {
+                        binding.tvName.text = buildString {
+                            append("Our Services:").append("\n")
+                            append("\u2713  Free Pick and Drop").append("\n")
+                            append("\u2713 Expert Workmanship").append("\n")
+                            append("\u2713 Genuine Spare parts and Best Pricing").append("\n")
+                        }
+                    } else {
+                        binding.tvName.text = item.title
+                    }
                 }
             }
         }

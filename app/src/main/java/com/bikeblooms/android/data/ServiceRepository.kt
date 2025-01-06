@@ -3,11 +3,13 @@ package com.bikeblooms.android.data
 import com.bikeblooms.android.LoginCallback
 import com.bikeblooms.android.model.ApiResponse
 import com.bikeblooms.android.model.AppState
+import com.bikeblooms.android.model.Charge
 import com.bikeblooms.android.model.Progress
 import com.bikeblooms.android.model.Service
 import com.bikeblooms.android.model.Vehicle
 import com.bikeblooms.android.model.Vendor
 import com.bikeblooms.android.util.AppConstants.VEHICLES
+import com.bikeblooms.android.util.FirebaseConstants.CHARGES
 import com.bikeblooms.android.util.FirebaseConstants.GENERAL_DETAILS
 import com.bikeblooms.android.util.FirebaseConstants.SERVICES
 import com.bikeblooms.android.util.FirebaseConstants.USER_VEHICLES
@@ -22,9 +24,11 @@ import javax.inject.Singleton
 
 @Singleton
 class ServiceRepository @Inject constructor(
-    private val repository: VehiclesRepository,
-    private val firebaseHelper: FirebaseHelper
+    private val repository: VehiclesRepository, private val firebaseHelper: FirebaseHelper
 ) {
+
+    private var _chargesState = MutableStateFlow<List<Charge>>(emptyList())
+    val chargesState = _chargesState.asStateFlow()
 
     private var _myVehicleState = MutableStateFlow<ApiResponse<List<Vehicle>>>(ApiResponse.Empty())
     val myVehicleState = _myVehicleState.asStateFlow()
@@ -94,10 +98,18 @@ class ServiceRepository @Inject constructor(
             }
     }
 
+    fun getCharges() {
+        Firebase.firestore.collection(CHARGES).get().addOnSuccessListener {
+            val charges = mutableListOf<Charge>()
+            it.forEach {
+                charges.add(it.toObject(Charge::class.java))
+            }
+            _chargesState.value = charges
+        }
+    }
+
     fun getServiceHistory(
-        fieldName: String,
-        value: String,
-        callback: LoginCallback<List<Service>>
+        fieldName: String, value: String, callback: LoginCallback<List<Service>>
     ) {
         firebaseHelper.getServiceHistory(fieldName, value, callback)
     }

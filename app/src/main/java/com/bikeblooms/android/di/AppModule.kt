@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
 import android.location.Geocoder
+import android.location.LocationManager
 import com.bikeblooms.android.data.FirebaseHelper
 import com.bikeblooms.android.data.LocationRepository
 import com.bikeblooms.android.data.Repository
@@ -85,6 +86,12 @@ class AppModule {
     @Provides
     fun provideLocationRepository(locationClient: LocationClient): LocationRepository {
         return LocationRepository(locationClient)
+    }
+
+    @Singleton
+    @Provides
+    fun provideLocationService(@ApplicationContext context: Context): LocationManager {
+        return context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
     }
 }
 

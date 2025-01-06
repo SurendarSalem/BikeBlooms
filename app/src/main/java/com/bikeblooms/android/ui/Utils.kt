@@ -5,6 +5,7 @@ import android.app.DatePickerDialog
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.provider.Settings
 import android.widget.DatePicker
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -21,7 +22,8 @@ object Utils {
         positiveBtnText: String,
         positiveBtnCallback: () -> Unit,
         negativeBtnText: String? = null,
-        negativeBtnCallback: () -> Unit? = {}
+        negativeBtnCallback: () -> Unit? = {},
+        nonCancellable: Boolean = true
     ) {
         var alertDialog = AlertDialog.Builder(context).create();
         alertDialog.setMessage(message)
@@ -35,6 +37,7 @@ object Utils {
                 negativeBtnCallback()
             }
         }
+        alertDialog.setCancelable(nonCancellable)
         alertDialog.show();
         alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).isAllCaps = false
         alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE).isAllCaps = false
@@ -107,4 +110,11 @@ fun CoroutineScope.inIOThread(block: suspend CoroutineScope.() -> Unit) {
 fun Date.toDisplayDate(): String {
     val df = SimpleDateFormat("DD-MM-yy", Locale.US);
     return df.format(this).toString()
+}
+
+fun Context.openAppSystemSettings() {
+    startActivity(Intent().apply {
+        action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+        data = Uri.fromParts("package", packageName, null)
+    })
 }

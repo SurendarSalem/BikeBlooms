@@ -8,6 +8,7 @@ import java.util.Date
 data class Bill(
     var hiddenCharges: Double = 0.0,
     var totalAmount: Double = 0.0,
+    var inspectionCharges: Double = 0.0,
     var billDate: Date? = null
 ) : Parcelable {
 

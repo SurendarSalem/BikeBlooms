@@ -59,6 +59,8 @@ class AddComplaintsViewModel @Inject constructor(
 
     var generalDetails = serviceRepository.generalServiceDetails
 
+    var charges = serviceRepository.chargesState
+
     init {
         viewModelScope.launch {
             complaintsRepository.getAllComplaints(object : LoginCallback<List<Complaint>> {
@@ -91,16 +93,27 @@ class AddComplaintsViewModel @Inject constructor(
                     serviceState.value = serviceState.value?.copy(
                         bill = Bill(
                             hiddenCharges = 0.0,
-                            totalAmount = spareAmount + complaintsAmount, service.startDate
+                            totalAmount = getChargesAmount(service) + spareAmount + complaintsAmount,
+                            inspectionCharges = getChargesAmount(service),
+                            service.startDate
                         )
                     )
                     _billState.value = Bill(
                         hiddenCharges = 0.0,
-                        totalAmount = spareAmount + complaintsAmount, service.startDate
+                        totalAmount = getChargesAmount(service) + spareAmount + complaintsAmount,
+                        inspectionCharges = getChargesAmount(service),
+                        service.startDate
                     )
                 }
             }
         }
+    }
+
+    fun getChargesAmount(service: Service): Double {
+        if (charges.value.isNotEmpty()) {
+            return charges.value.first { it.name == service.serviceType?.title }.price
+        }
+        return 0.0
     }
 
     fun clearSelections() {

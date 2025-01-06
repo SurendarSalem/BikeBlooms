@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.location.Geocoder
+import android.location.LocationManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -13,6 +14,7 @@ import android.widget.RadioGroup
 import android.widget.RadioGroup.OnCheckedChangeListener
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.location.LocationManagerCompat
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -27,6 +29,7 @@ import com.bikeblooms.android.model.Vehicles
 import com.bikeblooms.android.ui.Utils
 import com.bikeblooms.android.ui.VehicleListDialogFragmentArgs
 import com.bikeblooms.android.ui.base.BaseFragment
+import com.bikeblooms.android.ui.openAppSystemSettings
 import com.bikeblooms.android.ui.service.compaints.AddComplaintsFragmentArgs
 import com.bikeblooms.android.ui.toDisplayDate
 import com.bikeblooms.android.ui.vehicles.VehicleViewModel
@@ -64,6 +67,9 @@ class AddServiceFragment : BaseFragment(), OnMapReadyCallback {
     @Inject
     lateinit var mGeocoder: Geocoder
 
+    @Inject
+    lateinit var mLocationManager: LocationManager
+
     var service = Service()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -91,10 +97,30 @@ class AddServiceFragment : BaseFragment(), OnMapReadyCallback {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        checkIfLocationEnabled()
         initGoogleMap()
         progressBar = binding.progressBar
         observeStates()
         binding.addListeners()
+    }
+
+    private fun checkIfLocationEnabled() {
+        if (!LocationManagerCompat.isLocationEnabled(mLocationManager)) {
+            Utils.showAlertDialog(
+                context = requireContext(),
+                message = "Please enable GPS/Location to proceed.",
+                positiveBtnText = "Open Settings",
+                positiveBtnCallback = {
+                    requireActivity().finish()
+                    requireContext().openAppSystemSettings()
+                },
+                negativeBtnText = "Close App",
+                negativeBtnCallback = {
+                    requireActivity().finish()
+                },
+                nonCancellable = false
+            )
+        }
     }
 
     private fun observeStates() {
@@ -241,7 +267,7 @@ class AddServiceFragment : BaseFragment(), OnMapReadyCallback {
                 return "Please select a Vehicle"
             }
             if (address.isEmpty()) {
-                return "Please select a location"
+                return "Please select a location. Please check if you enabled you GPS/Location"
             }
         }
         return ""

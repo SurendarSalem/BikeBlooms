@@ -50,6 +50,7 @@ class MainActivity() : AppCompatActivity() {
             serviceRepository.getMyVehicles(isForceRefresh = true)
             serviceRepository.getGeneralDetails(GENERAL_SERVICE)
             spareRepository.getAllSparesAndReturn(isForceRefresh = true)
+            serviceRepository.getCharges()
         }
         val navView: BottomNavigationView = binding.navView
         val navHostFragment =

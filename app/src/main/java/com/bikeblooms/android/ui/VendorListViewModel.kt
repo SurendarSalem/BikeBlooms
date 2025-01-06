@@ -82,7 +82,7 @@ class VendorListViewModel @Inject constructor(
             val vendorBody = mutableMapOf(
                 "serviceId" to "",
                 "title" to "Hi ${userName}!. Your service update",
-                "message" to "You service has been started and assigned to a vendor"
+                "message" to "You service has been started and assigned to a Service partner"
             )
             FCMPushNotificationProvider.sendMessage(
                 userFcmToken,

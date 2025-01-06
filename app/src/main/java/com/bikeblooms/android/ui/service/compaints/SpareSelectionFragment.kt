@@ -16,7 +16,6 @@ import com.bikeblooms.android.databinding.NameItemBinding
 import com.bikeblooms.android.model.Spare
 import com.bikeblooms.android.ui.adapter.GenericAdapter
 import com.bikeblooms.android.util.AppConstants.SELECTED_SPARE
-import com.bikeblooms.android.util.AppConstants.VEHICLE
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlin.Any
@@ -65,7 +64,7 @@ class SpareSelectionFragment : BottomSheetDialogFragment() {
         when (binding) {
             is NameItemBinding -> {
                 if (item is Spare) {
-                    binding.tvName.text = item.name
+                    binding.tvName.text = item.name + " - " + item.price
                     binding.cbSelected.visibility =
                         if (viewModel.selectedSpareState.value?.name == item.name) {
                             View.VISIBLE
