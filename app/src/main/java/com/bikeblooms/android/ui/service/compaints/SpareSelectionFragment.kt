@@ -64,7 +64,8 @@ class SpareSelectionFragment : BottomSheetDialogFragment() {
         when (binding) {
             is NameItemBinding -> {
                 if (item is Spare) {
-                    binding.tvName.text = item.name + " - " + item.price
+                    binding.tvName.text =
+                        item.name + " - " + getString(R.string.rupee_symbol) + item.price
                     binding.cbSelected.visibility =
                         if (viewModel.selectedSpareState.value?.name == item.name) {
                             View.VISIBLE
