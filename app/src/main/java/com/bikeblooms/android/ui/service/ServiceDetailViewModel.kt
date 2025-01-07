@@ -57,7 +57,7 @@ class ServiceDetailViewModel @Inject constructor(
 
     fun getChargesAmount(service: Service): Double {
         if (charges.value.isNotEmpty()) {
-            return charges.value.first { it.name == service.serviceType?.name }.price
+            return charges.value.first { it.name == service.serviceType?.title }.price
         }
         return 0.0
     }

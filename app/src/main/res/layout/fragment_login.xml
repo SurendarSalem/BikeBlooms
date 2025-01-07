@@ -110,16 +110,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_or" />
 
-    <com.google.android.material.button.MaterialButton
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_become_partner"
         style="@style/AppButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        android:backgroundTint="@color/blue"
+        android:background="@drawable/border_rounded_gray"
         android:text="Become a Partner?"
-        android:textColor="@color/white"
-        android:textSize="@dimen/textsize_very_large1"
+        android:textColor="@color/cherry_red"
+        android:textSize="@dimen/textsize_very_large2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_sign_up" />

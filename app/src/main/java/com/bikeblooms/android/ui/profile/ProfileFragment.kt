@@ -80,7 +80,7 @@ class ProfileFragment : BaseFragment() {
                     if (item.title == ProfileItem.SETTINGS.title) {
                         binding.tvName.text = buildString {
                             append("Our Services:").append("\n")
-                            append("\u2713  Free Pick and Drop").append("\n")
+                            append("\u2713 Free Pick and Drop").append("\n")
                             append("\u2713 Expert Workmanship").append("\n")
                             append("\u2713 Genuine Spare parts and Best Pricing").append("\n")
                         }

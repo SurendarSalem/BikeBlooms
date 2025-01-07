@@ -65,7 +65,7 @@ class AddComplaintsFragment : BaseFragment() {
                     addComplaintsViewModel.serviceState.value =
                         addComplaintsViewModel.serviceState.value?.copy(complaints = selectedComplaints)
                     selectedComplaints.forEachIndexed { index, complaint ->
-                        complaintsNames += "${index + 1}) ${complaint.name} - ${getString(R.string.rupee_symbol)} ${complaint.price}\n"
+                        complaintsNames += "✓ ${complaint.name} - ${getString(R.string.rupee_symbol)} ${complaint.price}\n"
                     }
                     if (selectedComplaints.isEmpty()) {
                         complaintsNames = getString(R.string.select_vehicle_problem)
@@ -181,7 +181,7 @@ class AddComplaintsFragment : BaseFragment() {
                 append(getString(R.string.general_service_details_title)).append("\n").append("\n")
                 addComplaintsViewModel.generalDetails.value.toTypedArray()
                     .forEachIndexed { index, s ->
-                        append("${index + 1}. $s \n")
+                        append("✓ $s \n")
                     }
             }.toString(), positiveBtnText = getString(R.string.ok), positiveBtnCallback = {})
         }

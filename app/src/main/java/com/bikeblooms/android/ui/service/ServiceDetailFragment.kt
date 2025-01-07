@@ -178,7 +178,7 @@ class ServiceDetailFragment : BaseFragment() {
                 llVehicleRepair.visibility = View.VISIBLE
                 var complaintsNames = ""
                 complaints?.forEachIndexed { index, complaint ->
-                    complaintsNames += "${index + 1}) ${complaint.name} - ${getString(R.string.rupee_symbol)} ${complaint.price}\n"
+                    complaintsNames += "✓ ${complaint.name} - ${getString(R.string.rupee_symbol)} ${complaint.price}\n"
                 }
 
                 if (complaintsNames.isEmpty()) {
