@@ -141,7 +141,7 @@ class SpareAddUpdateFragment : BaseFragment() {
                 args.spareCategories?.let { spareCategories ->
                     val newSpare = SpareItem().apply {
                         name = binding.etName.text.toString()
-                        id = binding.etName.text.toString().toLowerCase().replace(" ", "")
+                        id = binding.etName.text.toString().lowercase().replace(" ", "")
                         qty = binding.etQty.text.toString().toInt()
                         price = binding.etPrice.text.toString().toDouble()
                         spareCategoryId =

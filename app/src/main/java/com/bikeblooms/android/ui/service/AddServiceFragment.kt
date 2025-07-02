@@ -218,7 +218,7 @@ class AddServiceFragment : BaseFragment(), OnMapReadyCallback {
             // Build the autocomplete intent with field, country, and type filters applied
             val intent = Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fields)
                 .setCountries(listOf("IN"))
-                .setTypesFilter(listOf(TypeFilter.ADDRESS.toString().toLowerCase()))
+                .setTypesFilter(listOf(TypeFilter.ADDRESS.toString().lowercase()))
                 .build(requireContext())
             startAutocomplete.launch(intent)
         }
